@@ -11,6 +11,7 @@ export const orders = async (
   ctx: Context
 ): Promise<OrdersResponse> => {
   await validationParams('Orders', searchOrdersParams)
+
   const { resultDetail } = await searchOrdersService(searchOrdersParams, ctx)
 
   return resultDetail

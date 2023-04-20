@@ -1,34 +1,7 @@
-import xmlbuilder from 'xmlbuilder'
 import Papa from 'papaparse'
+import XLSX from 'xlsx'
 
 import { getInvoice } from './getInvoice'
-
-function generateXMLNode(parent: any, obj: any): void {
-  Object.entries(obj).forEach(([key, value]) => {
-    // eslint-disable-next-line no-restricted-globals
-    const nodeName = isNaN(Number(key)) ? key : `n${key}`
-
-    if (typeof value === 'object' && value !== null) {
-      const childNode = parent.ele(nodeName)
-
-      generateXMLNode(childNode, value)
-    } else {
-      parent.ele(nodeName, {}, value)
-    }
-  })
-}
-
-function generateXML(data: any[]): string {
-  const root = xmlbuilder.create('items')
-
-  data.forEach((item) => {
-    const entry = root.ele('item')
-
-    generateXMLNode(entry, item)
-  })
-
-  return root.end({ pretty: true })
-}
 
 function flattenObject(obj: any, prefix = ''): any {
   return Object.entries(obj).reduce((acc: any, [key, value]) => {
@@ -44,13 +17,24 @@ function flattenObject(obj: any, prefix = ''): any {
   }, {})
 }
 
+const createXLSBuffer = (data: any[]) => {
+  const flattenedData = data.map((item) => flattenObject(item))
+
+  const workbook = XLSX.utils.book_new()
+  const worksheet = XLSX.utils.json_to_sheet(flattenedData)
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'invoice')
+
+  return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
+}
+
 function generateCSV(data: any[]): string {
   const flattenedData = data.map((item) => flattenObject(item))
 
   return Papa.unparse(flattenedData)
 }
 
-type FileType = 'xml' | 'csv'
+type FileType = 'csv' | 'xls'
 
 type GenerateFileFunction = (invoice: any) => string
 
@@ -61,8 +45,8 @@ type GenerateFileObject = {
 }
 
 const generateFile: GenerateFileObject = {
-  xml: (invoice: any) => generateXML([invoice]),
   csv: (invoice: any) => generateCSV([invoice]),
+  xls: (invoice: any) => createXLSBuffer([invoice]),
   default: () => {
     throw new Error('Invalid file type')
   },
@@ -93,7 +77,7 @@ export async function generateFileByType(
   const file = genarator(invoice)
 
   ctx.status = 200
-  ctx.set('Content-Type', 'application/{type}')
+  ctx.set('Content-Type', `application/${type}`)
   ctx.set('Content-Disposition', `attachment; filename=${invoice?.id}.${type}`)
   ctx.body = file
 

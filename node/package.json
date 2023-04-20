@@ -7,6 +7,7 @@
     "papaparse": "^5.4.1",
     "polly-js": "^1.8.3",
     "ramda": "^0.25.0",
+    "xlsx": "^0.18.5",
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
@@ -16,17 +17,21 @@
     "@types/node-fetch": "^2.6.1",
     "@types/papaparse": "^5.3.7",
     "@types/ramda": "types/npm-ramda#dist",
+    "@types/xlsx": "^0.0.36",
     "@vtex/api": "6.45.15",
     "@vtex/test-tools": "^3.4.3",
     "@vtex/tsconfig": "^0.5.6",
     "tslint": "^5.0.0",
     "tslint-config-vtex": "^2.1.0",
     "typescript": "3.9.7",
+    "vtex.catalog-api-proxy": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-api-proxy@0.10.4/public/_types/react",
+    "vtex.components-financial-commission": "https://johnmartinez--obip1.myvtex.com/_v/private/typings/linked/v1/vtex.components-financial-commission@0.0.13+build1681958535/public/@types/vtex.components-financial-commission",
     "vtex.format-currency": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency",
-    "vtex.native-types": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.8.0/public/@types/vtex.native-types",
+    "vtex.marketplace-financial-commission": "https://johnmartinez--obip1.myvtex.com/_v/private/typings/linked/v1/vtex.marketplace-financial-commission@0.3.23+build1681958784/public/@types/vtex.marketplace-financial-commission",
+    "vtex.native-types": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.10.0/public/@types/vtex.native-types",
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime",
     "vtex.sellers-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.sellers-graphql@8.5.4/public/@types/vtex.sellers-graphql",
-    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide"
+    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide"
   },
   "scripts": {
     "lint": "tsc --noEmit --pretty"

@@ -35,7 +35,7 @@ export class OrdersClient extends JanusClient {
       headers: {
         'X-Vtex-Use-Https': 'true',
         'Content-Type': 'application/json',
-        vtexIdClientAutCookie: context.authToken,
+        VtexIdclientAutCookie: context.adminUserAuthToken ?? context.authToken,
       },
     })
   }
