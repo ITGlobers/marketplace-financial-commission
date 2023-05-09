@@ -5,5 +5,7 @@ query GET_SETTINGS($id: String) {
     endDate
     billingCycle
     integration
+    showEmail
+    showStatus
   }
 }

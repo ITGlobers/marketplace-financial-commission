@@ -4,7 +4,5 @@ mutation CREATE_SETTINGS($settingsData: SettingsDataInput!) {
     endDate
     billingCycle
     integration
-    showEmail
-    showStatus
   }
 }

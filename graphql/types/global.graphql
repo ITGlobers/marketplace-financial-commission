@@ -31,6 +31,8 @@ type SettingsResponse {
   endDate: String
   billingCycle: String
   integration: Int
+  showEmail: Boolean
+  showStatus: Boolean
 }
 
 scalar JSONData
