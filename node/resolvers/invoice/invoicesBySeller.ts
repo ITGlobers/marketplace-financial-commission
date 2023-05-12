@@ -40,15 +40,15 @@ export const invoicesBySeller = async (
     sellerInvoices = await externalInvoices.searchRaw(
       pagination,
       fieldsExternal,
-      'invoiceCreatedDate',
+      'invoiceCreatedDate DESC',
       whereExternal
     )
   } else {
     sellerInvoices = await commissionInvoices.searchRaw(
       pagination,
       fields,
-      'invoiceCreatedDate',
-      where
+      'invoiceCreatedDate DESC',
+      where,
     )
   }
 

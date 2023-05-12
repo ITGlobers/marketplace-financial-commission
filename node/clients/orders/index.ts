@@ -35,7 +35,7 @@ export class OrdersClient extends JanusClient {
       headers: {
         'X-Vtex-Use-Https': 'true',
         'Content-Type': 'application/json',
-        vtexIdClientAutCookie: context.authToken,
+        vtexIdClientAutCookie: context.adminUserAuthToken ?? context.authToken,
       },
     })
   }
@@ -105,6 +105,7 @@ export class OrdersClient extends JanusClient {
         return Polly()
           .waitAndRetry([3000, 5000, 7000, 9000, 10000])
           .executeForPromise(async () => {
+            console.log('params', params)
             const rsp = await fetch(
               routes.listOrders(this.context.account, params),
               {
@@ -112,6 +113,8 @@ export class OrdersClient extends JanusClient {
                 headers: this.options?.headers,
               }
             )
+
+            console.log(this.options?.headers)
 
             if (rsp.ok) {
               return rsp.json()
