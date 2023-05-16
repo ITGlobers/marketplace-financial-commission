@@ -1559,6 +1559,13 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
 
+"@types/papaparse@^5.3.7":
+  version "5.3.7"
+  resolved "https://registry.yarnpkg.com/@types/papaparse/-/papaparse-5.3.7.tgz#8d3bf9e62ac2897df596f49d9ca59a15451aa247"
+  integrity sha512-f2HKmlnPdCvS0WI33WtCs5GD7X1cxzzS/aduaxSu3I7TbhWlENjSPs6z5TaB9K0J+BH1jbmqTaM+ja5puis4wg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/prettier@^1.19.0":
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-1.19.1.tgz#33509849f8e679e4add158959fdb086440e9553f"
@@ -1657,10 +1664,10 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.3.tgz#781d360c282436494b32fe7d9f7f8e64b3118aa3"
   integrity sha512-fbF6oTd4sGGy0xjHPKAt+eS2CrxJ3+6gQ3FGcBoIJR2TLAyCkCyI8JqZNy+FeON0AhVgNJoUumVoZQjBFUqHkw==
 
-"@vtex/api@6.45.12":
-  version "6.45.12"
-  resolved "https://registry.yarnpkg.com/@vtex/api/-/api-6.45.12.tgz#b13c04398b12f576263ea823369f09c970d57479"
-  integrity sha512-SVLKo+Q/TxQy+1UKzH8GswTI3F2OCRCLfgaNQOrVAVdbM6Ci4wzTeX8j/S4Q1aEEnqBFlH/wVpHf8I6NBa+g9A==
+"@vtex/api@6.45.15":
+  version "6.45.15"
+  resolved "https://registry.yarnpkg.com/@vtex/api/-/api-6.45.15.tgz#aa987d22f7df16ce2861130deda6ffd63156817b"
+  integrity sha512-Rg1VGDzJ4hHUNp1vSidMdGGPojr1PikMTptlZsJ3oNZVdEo4cPx2l8ZcAEwHWORL7QjPjXaEgmeA5ZOSf+boCQ==
   dependencies:
     "@types/koa" "^2.11.0"
     "@types/koa-compose" "^3.2.3"
@@ -4951,6 +4958,11 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
+papaparse@^5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.4.1.tgz#f45c0f871853578bd3a30f92d96fdcfb6ebea127"
+  integrity sha512-HipMsgJkZu8br23pW15uvo6sib6wne/4woLZPlFf3rpDyMe9ywEXUsuD7+6K9PRkJlVT51j/sCOYDKGGS3ZJrw==
+
 parse-json@^5.0.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-5.2.0.tgz#c76fc66dee54231c962b22bcc8a72cf2f99753cd"
@@ -5753,7 +5765,7 @@ static-extend@^0.1.1:
     define-property "^0.2.5"
     object-copy "^0.1.0"
 
-stats-lite@vtex/node-stats-lite#dist:
+"stats-lite@github:vtex/node-stats-lite#dist":
   version "2.2.0"
   resolved "https://codeload.github.com/vtex/node-stats-lite/tar.gz/1b0d39cc41ef7aaecfd541191f877887a2044797"
   dependencies:
@@ -6313,11 +6325,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-
 "vtex.format-currency@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency":
   version "0.4.1"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency#aaed82b498270f0bb6f37e93eff7e7f401e4d283"
-
 
 "vtex.native-types@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.8.0/public/@types/vtex.native-types":
   version "0.8.0"
@@ -6454,6 +6464,11 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
+
+xmlbuilder@^15.1.1:
+  version "15.1.1"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-15.1.1.tgz#9dcdce49eea66d8d10b42cae94a79c3c8d0c2ec5"
+  integrity sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==
 
 xmlchars@^2.1.1:
   version "2.2.0"

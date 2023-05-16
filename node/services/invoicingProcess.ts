@@ -33,6 +33,7 @@ export const invoicingProcess = async (
 ): Promise<string> => {
   const {
     clients: { vbase, commissionInvoices, mail },
+    vtex: { account: marketplace },
   } = ctx
 
   const [today] = new Date().toISOString().split('T')
@@ -68,15 +69,19 @@ export const invoicingProcess = async (
 
   const document = await commissionInvoices.save(invoice)
 
-  await mail.sendMail({
-    templateName: config.INVOICE_MAIL_TEMPLATE,
-    jsonData: {
-      message: {
-        to: email,
+  const idBucket = marketplace
+  const configRes = await vbase.getJSON<any>(config.SETTINGS_BUCKET, idBucket)
+
+  configRes.showStatus &&
+    (await mail.sendMail({
+      templateName: config.INVOICE_MAIL_TEMPLATE,
+      jsonData: {
+        message: {
+          to: email,
+        },
+        ...invoice,
       },
-      ...invoice,
-    },
-  })
+    }))
 
   await vbase.saveJSON<JobHistory>(BUCKET, SELLER_NAME, {
     ...HISTORY,
