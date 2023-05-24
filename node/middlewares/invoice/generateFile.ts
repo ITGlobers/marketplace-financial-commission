@@ -45,9 +45,9 @@ function flattenObject(obj: any, prefix = ''): any {
 }
 
 function generateCSV(data: any[]): string {
-  const flattenedData = data.map((item) => flattenObject(item))
+  // const flattenedData = data.map((item) => flattenObject(item))
 
-  return Papa.unparse(flattenedData)
+  return Papa.unparse(data)
 }
 
 type FileType = 'xml' | 'csv'
@@ -62,7 +62,7 @@ type GenerateFileObject = {
 
 const generateFile: GenerateFileObject = {
   xml: (invoice: any) => generateXML([invoice]),
-  csv: (invoice: any) => generateCSV([invoice]),
+  csv: (invoice: any) => generateCSV(invoice),
   default: () => {
     throw new Error('Invalid file type')
   },
@@ -90,7 +90,7 @@ export async function generateFileByType(
   const genarator =
     generateFile[type as keyof GenerateFileObject] || generateFile.default
 
-  const file = genarator(invoice)
+  const file = genarator(invoice.jsonData.orders)
 
   ctx.status = 200
   ctx.set('Content-Type', 'application/{type}')

@@ -45,7 +45,7 @@ export async function authenticationMarketplace(
     if (bearerHeader) {
       const bearer = bearerHeader.split(' ')
 
-      if (autheticationToken !== bearer[1]) {
+      if (autheticationToken !== bearer[0]) {
         logger.warn({
           message: 'incoming-wrongApiKey',
         })

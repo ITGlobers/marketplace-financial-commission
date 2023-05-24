@@ -41,23 +41,24 @@ export const getInvoice = async (
     const culture = await catalog.salesChannelById(sellerInfo?.salesChannel)
     // @ts-ignore
     let objectData = JSON.parse(externalInvoice[0].jsonData)
-    objectData.orders = objectData.orders.map((order: any) => {
-      order.items = order.items.map((item: any) => {
-        const { itemGrossPrice, itemTotalValue, itemCommissionAmount} = item
-        return {
-          ...item,
-          orderId: order.orderId,
-          itemGrossPrice: setSymbol(culture, itemGrossPrice),
-          itemTotalValue: setSymbol(culture, itemTotalValue),
-          itemCommissionAmount: setSymbol(culture, itemCommissionAmount),
-        }
-      })
-      items.push(...order.items)
-      return order
-    })
-    objectData.items = items
+    console.info("objectData", objectData)
+    // objectData.orders = objectData.orders.map((order: any) => {
+    //   order.items = order.items.map((item: any) => {
+    //     const { itemGrossPrice, itemTotalValue, itemCommissionAmount} = item
+    //     return {
+    //       ...item,
+    //       orderId: order.orderId,
+    //       itemGrossPrice: setSymbol(culture, itemGrossPrice),
+    //       itemTotalValue: setSymbol(culture, itemTotalValue),
+    //       itemCommissionAmount: setSymbol(culture, itemCommissionAmount),
+    //     }
+    //   })
+    //   items.push(...order.items)
+    //   return order
+    // })
+    // objectData.items = items
     console.info("objectData.items", objectData.items)
-    externalInvoice[0].jsonData = JSON.stringify(objectData);
+    // externalInvoice[0].jsonData = JSON.stringify(objectData);
 
     if (externalInvoice.length === 0) {
       invoice = externalInvoice
@@ -115,6 +116,8 @@ export const getInvoice = async (
   }
 
   if (invoice.length > 0) {
+    console.info("invoice", invoice[0])
+
     return invoice[0]
   }
 
