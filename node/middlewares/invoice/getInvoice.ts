@@ -7,7 +7,7 @@ import { typeIntegration } from '../../utils/typeIntegration'
 /**
  * @description Retrieves a specific Invoice by ID.
  */
-export async function getInvoice(ctx: Context) {
+export async function getInvoice(ctx: Context): Promise<any> {
   const {
     query: { sellerName },
     vtex: {
