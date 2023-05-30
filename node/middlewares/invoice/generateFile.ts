@@ -30,19 +30,19 @@ function generateXML(data: any[]): string {
   return root.end({ pretty: true })
 }
 
-function flattenObject(obj: any, prefix = ''): any {
-  return Object.entries(obj).reduce((acc: any, [key, value]) => {
-    const newKey = prefix ? `${prefix}.${key}` : key
+// function flattenObject(obj: any, prefix = ''): any {
+//   return Object.entries(obj).reduce((acc: any, [key, value]) => {
+//     const newKey = prefix ? `${prefix}.${key}` : key
 
-    if (typeof value === 'object' && value !== null) {
-      return { ...acc, ...flattenObject(value, newKey) }
-    }
+//     if (typeof value === 'object' && value !== null) {
+//       return { ...acc, ...flattenObject(value, newKey) }
+//     }
 
-    acc[newKey] = value
+//     acc[newKey] = value
 
-    return acc
-  }, {})
-}
+//     return acc
+//   }, {})
+// }
 
 function generateCSV(data: any[]): string {
   // const flattenedData = data.map((item) => flattenObject(item))
@@ -90,13 +90,20 @@ export async function generateFileByType(
   const genarator =
     generateFile[type as keyof GenerateFileObject] || generateFile.default
 
-  const file = genarator(invoice.jsonData.orders)
+  if (invoice.jsonData.orders.length > 0) {
+    const file = genarator(invoice.jsonData.orders)
 
-  ctx.status = 200
-  ctx.set('Content-Type', 'application/{type}')
-  ctx.set('Content-Disposition', `attachment; filename=${invoice?.id}.${type}`)
-  ctx.body = file
+    ctx.status = 200
+    ctx.set('Content-Type', 'application/{type}')
+    ctx.set(
+      'Content-Disposition',
+      `attachment; filename=${invoice?.id}.${type}`
+    )
+    ctx.body = file
+  }
 
+  ctx.status = 400
+  ctx.body = { message: 'Invalid file type' }
   ctx.set('Cache-Control', 'no-cache')
   await next()
 }

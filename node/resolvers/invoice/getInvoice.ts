@@ -9,39 +9,41 @@ export const getInvoice = async (
   ctx: Context
 ): Promise<any> => {
   const {
-    clients: { commissionInvoices, externalInvoices, sellersIO, catalog },
+    clients: { commissionInvoices, externalInvoices },
   } = ctx
 
   const { id } = params
 
   const where = `id=${id}`
 
-  let invoice, items: any[] = []
+  let invoice
+  // const items: any[] = []
 
   const integration = await typeIntegration(ctx)
 
-  const setSymbol = ({ CurrencySymbol, CurrencyFormatInfo: { StartsWithCurrencySymbol } }: any, value: number) => {
-    if (StartsWithCurrencySymbol) {
-      return `${CurrencySymbol} ${value}`
-    }
-    return `${value.toFixed(2)} ${CurrencySymbol}`
-  }
+  // const setSymbol = (
+  //   { CurrencySymbol, CurrencyFormatInfo: { StartsWithCurrencySymbol } }: any,
+  //   value: number
+  // ) => {
+  //   if (StartsWithCurrencySymbol) {
+  //     return `${CurrencySymbol} ${value}`
+  //   }
+
+  //   return `${value.toFixed(2)} ${CurrencySymbol}`
+  // }
 
   if (TypeIntegration.external === integration) {
-    let externalInvoice = await externalInvoices.search(
+    const externalInvoice = await externalInvoices.search(
       { page: PAGE_DEFAULT, pageSize: PAGE_SIZE_DEFAULT },
       ['id,status,invoiceCreatedDate,seller,jsonData,comment'],
       '',
       where
     )
 
-    // @ts-ignore
-    const sellerInfo = await sellersIO.seller(externalInvoice[0].seller?.id)
-    // @ts-ignore
-    const culture = await catalog.salesChannelById(sellerInfo?.salesChannel)
-    // @ts-ignore
-    let objectData = JSON.parse(externalInvoice[0].jsonData)
-    console.info("objectData", objectData)
+    // const sellerInfo = await sellersIO.seller(externalInvoice[0].seller?.id)
+    // const culture = await catalog.salesChannelById(sellerInfo?.salesChannel)
+    // const objectData = JSON.parse(externalInvoice[0].jsonData)
+
     // objectData.orders = objectData.orders.map((order: any) => {
     //   order.items = order.items.map((item: any) => {
     //     const { itemGrossPrice, itemTotalValue, itemCommissionAmount} = item
@@ -57,7 +59,6 @@ export const getInvoice = async (
     //   return order
     // })
     // objectData.items = items
-    console.info("objectData.items", objectData.items)
     // externalInvoice[0].jsonData = JSON.stringify(objectData);
 
     if (externalInvoice.length === 0) {
@@ -82,9 +83,7 @@ export const getInvoice = async (
       where
     )) as unknown as CommissionInvoice[]
 
-    console.info("internalInvoice", internalInvoice)
-
-    const orders: any[] = internalInvoice[0].orders.map((order) => {
+    const orders: any[] = internalInvoice[0].orders.map((order: any) => {
       return {
         orderId: order.orderId as string,
         sellerOrderId: order.sellerOrderId as string,
@@ -116,7 +115,7 @@ export const getInvoice = async (
   }
 
   if (invoice.length > 0) {
-    console.info("invoice", invoice[0])
+    console.info('invoice', invoice[0])
 
     return invoice[0]
   }
