@@ -32,6 +32,9 @@ export async function generate(ctx: Context, next: () => Promise<Dashboards>) {
         end,
       })
 
+      // eslint-disable-next-line no-console
+      console.log('getD', getDates)
+
       let loop = new Date(getDates.dateInvoiceInitial)
       const endLoop = new Date(getDates.dateInvoiceEnd)
       const responseSellersMD = []
@@ -44,6 +47,9 @@ export async function generate(ctx: Context, next: () => Promise<Dashboards>) {
           start: dayToProcess,
           end: dayToProcess,
         }
+
+        // eslint-disable-next-line no-console
+        console.log('range', dateRange)
 
         const responseCalculateSellers = await calculateSellers(
           ctx,

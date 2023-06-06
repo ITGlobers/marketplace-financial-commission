@@ -55,16 +55,7 @@
     },
     "generateDashboard": {
       "path": "/dashboard/generate",
-      "public": false,
-      "policies": [
-        {
-          "effect": "allow",
-          "actions": ["post"],
-          "principals": [
-            "vrn:apps:*:*:*:app/vtex.marketplace-financial-commission-cron@*"
-          ]
-        }
-      ]
+      "public": true
     },
     "searchSellersDashboard": {
       "path": "/_v/dashboard/sellers/search",

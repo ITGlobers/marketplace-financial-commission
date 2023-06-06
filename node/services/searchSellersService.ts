@@ -14,6 +14,13 @@ export const searchSellersService = async (
     clients: { sellersDashboardClientMD, vbase },
   } = ctx
 
+  try {
+    await vbase.resetBucket(config.BUCKET_VBASE)
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error)
+  }
+
   let pagination = {
     page: 1,
     pageSize: 100,

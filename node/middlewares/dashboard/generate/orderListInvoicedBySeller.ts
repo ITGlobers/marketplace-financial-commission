@@ -21,13 +21,16 @@ export async function orderListInvoicedBySeller(
   const dateEnd = dateInvoiced.dateInvoiceEnd
   const page = 1
 
+  // eslint-disable-next-line no-console
+  console.log('dates', dateStart, dateEnd)
+
   const orderListIni = await ordersClient.listOrders({
     fStatus: 'invoice,invoiced',
-    fieldDate: 'invoicedDate',
+    fieldDate: 'creationDate',
     fieldDateStart: dateStart,
     fieldDateEnd: dateEnd,
     sellerName: sellersName,
-    orderBy: 'invoicedDate',
+    orderBy: 'creationDate',
     page,
   })
 
@@ -37,11 +40,11 @@ export async function orderListInvoicedBySeller(
     allOrders.push(
       ordersClient.listOrders({
         fStatus: 'invoice,invoiced',
-        fieldDate: 'invoicedDate',
+        fieldDate: 'creationDate',
         fieldDateStart: dateStart,
         fieldDateEnd: dateEnd,
         sellerName: sellersName,
-        orderBy: 'invoicedDate',
+        orderBy: 'creationDate',
         page: pages,
       })
     )

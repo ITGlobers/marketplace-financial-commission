@@ -23,8 +23,7 @@ export const searchStatisticsService = async (
   let responseSearchMD = await statisticsDashboardClientMD.searchRaw(
     pagination,
     ['dateCut,statistics'],
-    'createdIn',
-    where
+    'createdIn'
   )
 
   let statisticsArrayTemp = responseSearchMD.data as StatisticsDashboard[]

@@ -6,10 +6,14 @@ export async function calculateCommissionByOrder(
     clients: { ordersClient },
   } = ctx
 
-  const formatVtexNumber = (v: number) => v / 100
+  // eslint-disable-next-line no-console
+  console.log('first', calculateCommissionByOrder)
 
+  const formatVtexNumber = (v: number) => v / 100
   const commissionByOrder: OrderComission[] = await Promise.all(
     orderListBySeller[0].list.map(async (order) => {
+      // eslint-disable-next-line no-console
+      console.log('order', order.orderId)
       const orderData = await ordersClient.getOrder(order.orderId)
 
       const totalComission = orderData.items.reduce(
@@ -52,6 +56,9 @@ export async function calculateCommissionByOrder(
         // TODO: Calculete correctly
         totalOrderRate: null,
       }
+
+      // eslint-disable-next-line no-console
+      console.log('lines', lines)
 
       return lines
     })
