@@ -7,6 +7,7 @@ import GET_SETTINGS from './graphql/getSettings.gql'
 import SEARCH_ORDERS from './graphql/getSearchOrders.gql'
 import CREATE_INVOICE from './graphql/createInvoice.gql'
 import SELLER_INVOICES from './graphql/getInvoicesBySeller.gql'
+import GET_PAYOUT_REPORTS from './graphql/getPayoutReports.gql'
 
 function CommissionDetail() {
   const { data: dataSellers, loading } = useQuery(GET_SELLERS, {
@@ -25,6 +26,7 @@ function CommissionDetail() {
       invoiceMutation={CREATE_INVOICE}
       invoicesQuery={SELLER_INVOICES}
       settingsQuery={GET_SETTINGS}
+      payoutReportsQuery={GET_PAYOUT_REPORTS}
     />
   )
 }

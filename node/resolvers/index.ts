@@ -1,6 +1,7 @@
 import { createToken } from './createToken'
 import { editToken } from './editToken'
 import { invoicesBySeller, getInvoice, createInvoice } from './invoice'
+import { listPayoutReport } from './payoutReport'
 import { getSellers } from './getSellers'
 import { getToken } from './getToken'
 import { orders } from './orders'
@@ -21,6 +22,7 @@ export const queries = {
   getInvoice,
   getSettings,
   getTemplate,
+  listPayoutReport,
 }
 
 export const mutations = {
