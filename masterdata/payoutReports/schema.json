@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "title": "PayoutReport",
+  "type": "object",
+  "properties": {
+    "sellerId": {
+      "type": "string"
+    },
+    "paymentMethod": {
+      "type": "string"
+    },
+    "creationDate": {
+      "type": "string"
+    },
+    "timeZone": {
+      "type": "string"
+    },
+    "transactionType": {
+      "type": "string"
+    },
+    "grossCurrency": {
+      "type": "string"
+    },
+    "grossDebit": {
+      "type": ["number", "null"]
+    },
+    "grossCredit": {
+      "type": ["number", "null"]
+    },
+    "exchangeRate": {
+      "type": "number"
+    },
+    "netCurrency": {
+      "type": "string"
+    },
+    "netDebit": {
+      "type": ["number", "null"]
+    },
+    "netCredit": {
+      "type": ["number", "null"]
+    },
+    "commissionAmount": {
+      "type": "number"
+    },
+    "orderId": {
+      "type": "string"
+    },
+    "payId": {
+      "type": "string"
+    },
+    "invoiceId": {
+      "type": "string"
+    },
+    "chargebackType": {
+      "type": ["string", "null"]
+    },
+    "reserved1": {
+      "type": ["string", "null"]
+    },
+    "reserved2": {
+      "type": ["string", "null"]
+    }
+  },
+  "v-indexed": ["sellerId", "creationDate", "orderId", "payId", "invoiceId"],
+  "required": [
+    "sellerId",
+    "paymentMethod",
+    "creationDate",
+    "timeZone",
+    "transactionType",
+    "grossCurrency",
+    "exchangeRate",
+    "netCurrency",
+    "commissionAmount",
+    "orderId",
+    "payId",
+    "invoiceId"
+  ],
+  "v-cache": false,
+  "v-immediate-indexing": true
+}

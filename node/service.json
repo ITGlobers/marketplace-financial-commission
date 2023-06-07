@@ -171,6 +171,10 @@
           ]
         }
       ]
+    },
+    "payoutReport": {
+      "path": "/_v/payout/:sellerId/report/*id",
+      "public": true
     }
   }
 }

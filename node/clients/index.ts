@@ -8,6 +8,7 @@ import type {
 import { IOClients, LRUCache } from '@vtex/api'
 import { masterDataFor } from '@vtex/clients'
 
+import type { PayoutReport } from '../typings/payoutReport'
 import Mail from './mail'
 import { OrdersClient } from './orders'
 import SellersIO from './sellers'
@@ -57,6 +58,13 @@ export class Clients extends IOClients {
     return this.getOrSet(
       'externalinvoices',
       masterDataFor<ExternalInvoice>('externalinvoices')
+    )
+  }
+
+  public get payoutReports() {
+    return this.getOrSet(
+      'payoutreports',
+      masterDataFor<PayoutReport>('payoutreports')
     )
   }
 

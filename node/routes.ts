@@ -17,6 +17,8 @@ import {
   sellersResponse,
   sendMail,
   templateMethod,
+  listPayoutReport,
+  createPayoutReport,
 } from './middlewares'
 import { authentication } from './middlewares/authentication/authentication'
 import { authenticationMarketplace } from './middlewares/authentication/authenticationMarketplace'
@@ -112,6 +114,10 @@ const routes = {
   }),
   typeIntegration: method({
     GET: [getTypeIntegration],
+  }),
+  payoutReport: method({
+    POST: [seller, createPayoutReport],
+    GET: [seller, listPayoutReport],
   }),
 }
 
