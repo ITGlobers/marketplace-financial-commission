@@ -1,4 +1,4 @@
-query GET_PAYOUT_REPORTS() {
+query GET_PAYOUT_REPORTS {
   listPayoutReport {
     data {
       sellerId
