@@ -11,10 +11,10 @@ export async function createPayoutReport(
   const body = await json(ctx.req)
 
   try {
-    await payoutReports.save(body)
+    const response = await payoutReports.save(body)
 
     ctx.status = 200
-    ctx.body = body
+    ctx.body = { message: 'Payout report created', ...response }
   } catch (error) {
     console.error(error.message)
 

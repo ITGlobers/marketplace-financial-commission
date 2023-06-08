@@ -227,6 +227,7 @@ type SearchOrdersResponse {
 }
 
 type PayoutReportResponse {
+  id: String
   sellerId: String
   paymentMethod: String
   creationDate: String

@@ -1,4 +1,4 @@
-export async function listPayoutReport(ctx: Context, next: () => Promise<any>) {
+export async function searchPayoutReport(ctx: Context, next: () => Promise<any>) {
   const {
     clients: { payoutReports },
     vtex: {

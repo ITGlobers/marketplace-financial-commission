@@ -1,6 +1,7 @@
 query GET_PAYOUT_REPORTS {
-  listPayoutReport {
+  searchPayoutReport {
     data {
+      id
       sellerId
       paymentMethod
       creationDate

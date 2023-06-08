@@ -116,8 +116,8 @@ const routes = {
     GET: [getTypeIntegration],
   }),
   payoutReport: method({
+    GET: [seller, searchPayoutReport],
     POST: [seller, createPayoutReport],
-    GET: [seller, listPayoutReport],
   }),
 }
 
