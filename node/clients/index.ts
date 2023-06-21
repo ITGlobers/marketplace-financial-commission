@@ -4,16 +4,18 @@ import type {
   StatisticsDashboard,
   CommissionInvoice,
   ExternalInvoice,
-} from 'vtex.marketplace-financial-commission'
+} from 'itglobers.marketplace-financial-commission'
 import { IOClients, LRUCache } from '@vtex/api'
 import { masterDataFor } from '@vtex/clients'
 
+import type { PayoutReport } from '../typings/payoutReport'
 import Mail from './mail'
 import { OrdersClient } from './orders'
 import SellersIO from './sellers'
 import Template from './template'
 import AppTokenClient from './vtexLogin'
 import { Catalog } from './catalog'
+import Doxis from './doxis'
 
 export class Clients extends IOClients {
   public get mail() {
@@ -60,12 +62,23 @@ export class Clients extends IOClients {
     )
   }
 
+  public get payoutReports() {
+    return this.getOrSet(
+      'payoutreports',
+      masterDataFor<PayoutReport>('payoutreports')
+    )
+  }
+
   public get appTokenClient() {
     return this.getOrSet('appTokenClient', AppTokenClient)
   }
 
   public get catalog() {
     return this.getOrSet('catalog', Catalog)
+  }
+
+  public get doxis() {
+    return this.getOrSet('doxis', Doxis)
   }
 }
 

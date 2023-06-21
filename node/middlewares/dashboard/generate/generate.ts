@@ -2,7 +2,7 @@
 import type {
   SellersDashboard,
   StatisticsDashboard,
-} from 'vtex.marketplace-financial-commission'
+} from 'itglobers.marketplace-financial-commission'
 
 import { createKeyToken, getDatesInvoiced, numberOfDays } from '../../../utils'
 import { validationParams } from '../../validationParams'
@@ -24,6 +24,7 @@ export async function generate(ctx: Context, next: () => Promise<Dashboards>) {
   await validationParams('Generate', ctx.query)
 
   const numDays = numberOfDays(new Date(start), new Date(end))
+  console.log('numDays', numDays)
 
   const processGenerate = async () => {
     try {

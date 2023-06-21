@@ -1,5 +1,8 @@
+import { NotFoundError, UserInputError } from '@vtex/api'
+
 import { processInvoiceExternal } from './processInvoiceExternal'
 import { sendEmailInvoiceExternal } from './sendEmailInvoiceExternal'
+import { validateDateFormat } from '../validationParams'
 
 export async function createInvoiceExternal(
   ctx: Context,
@@ -9,7 +12,21 @@ export async function createInvoiceExternal(
     state: {
       body: { requestData },
     },
+    clients: { sellersIO },
   } = ctx
+
+
+  if (!validateDateFormat(requestData.invoiceCreatedDate)) {
+    throw new UserInputError(
+      'Invalid date format. The date format is yyyy-mm-dd.'
+    )
+  }
+
+  const responseSeller = await sellersIO.seller(requestData.seller.id)
+
+  if (!responseSeller) {
+    throw new NotFoundError('Seller not found')
+  }
 
   let status
   let body

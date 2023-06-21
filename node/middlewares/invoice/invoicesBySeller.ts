@@ -3,6 +3,7 @@ import { json } from 'co-body'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
+import { validateDateFormat } from '../validationParams'
 
 /**
  * @description Retrieves a REFERENCE list of invoices for a given seller.
@@ -39,9 +40,15 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     )
   }
 
+  if (!validateDateFormat(startDate) || !validateDateFormat(endDate)) {
+    throw new UserInputError(
+      'Invalid startDate or endDate format. The date format is yyyy-mm-dd.'
+    )
+  }
+
   const where = `seller.name="${seller.name}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
-  const fields = ['id', 'status', 'invoiceCreatedDate', 'totalizers']
+  const fields = ['id', 'status', 'invoiceCreatedDate', 'totalizers', 'files']
 
   let sellerInvoices
 
@@ -65,7 +72,7 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
 
   ctx.status = 200
   ctx.body = sellerInvoices
-  ctx.set('Cache-Control', 'no-cache ')
+  ctx.set('Cache-Control', 'no-cache')
 
   await next()
 }

@@ -3,6 +3,7 @@ import { json } from 'co-body'
 
 import { JOB_STATUS } from '../../constants'
 import { invoicingProcess } from '../../services/invoicingProcess'
+import { validateDateFormat } from '../validationParams'
 
 /**
  * @description Attempts to create an Invoice.
@@ -26,6 +27,15 @@ export async function createInvoice(ctx: Context) {
   if (!requestData.startDate || !requestData.endDate) {
     throw new UserInputError(
       'startDate and/or endDate not provided in the request'
+    )
+  }
+
+  if (
+    !validateDateFormat(requestData.startDate) ||
+    !validateDateFormat(requestData.endDate)
+  ) {
+    throw new UserInputError(
+      'Invalid startDate or endDate format. The date format is yyyy-mm-dd.'
     )
   }
 

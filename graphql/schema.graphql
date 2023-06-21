@@ -45,6 +45,10 @@ type Query {
   Retrieve template for order detail
   """
   getTemplate: String @cacheControl(scope: PRIVATE, maxAge: LONG)
+  """
+  Retrieve payout reports
+  """
+  searchPayoutReport(id: String): PayoutReportsResponse @cacheControl(scope: PRIVATE, maxAge: LONG)
 }
 
 type Mutation {

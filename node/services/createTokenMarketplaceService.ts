@@ -25,7 +25,7 @@ export const createTokenMarketplaceService = async (
       keyBucket
     )
   } catch (err) {
-    console.info('Token new')
+    console.error(err)
   }
 
   if (vbaseData) {

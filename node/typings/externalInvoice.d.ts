@@ -14,6 +14,7 @@ export interface InvoiceExternal {
 export interface SellerData {
   name: string
   id: string
+  sapSellerId: string
   contact: ContactData
 }
 

@@ -4,17 +4,17 @@ Marketplace Financial App is an application that is responsible for displaying, 
 
 ## **Install**:
 
-Install `vtex.marketplace-financial-app` and `vtex.marketplace-financial-commission-cron` in your account.
+Install `vtex.marketplace-financial-app` and `itglobers.marketplace-financial-commission-cron` in your account.
 
 ```powershell
 vtex install vtex.marketplace-financial-app@0.1.x
 ```
 
 ```powershell
-vtex install vtex.marketplace-financial-commission-cron@1.1.x
+vtex install itglobers.marketplace-financial-commission-cron@1.1.x
 ```
 
-> **Note**. For more information about the `vtex.marketplace-financial-commission-cron` app [click here](https://github.com/vtex-apps/marketplace-financial-commission-cron).
+> **Note**. For more information about the `itglobers.marketplace-financial-commission-cron` app [click here](https://github.com/vtex-apps/marketplace-financial-commission-cron).
 
 </br>
 
