@@ -1,4 +1,4 @@
-import type { CommissionInvoice } from 'vtex.marketplace-financial-commission'
+import type { CommissionInvoice } from 'itglobers.marketplace-financial-commission'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
@@ -64,13 +64,16 @@ export const getInvoice = async (
     if (externalInvoice.length === 0) {
       invoice = externalInvoice
     } else {
+      const jsonDataParsed = JSON.parse(externalInvoice[0].jsonData as string)
+      delete externalInvoice[0].jsonData
+      console.info("seller", externalInvoice[0].seller)
       invoice = [
         {
           id: externalInvoice[0].id,
           status: externalInvoice[0].status,
           invoiceCreatedDate: externalInvoice[0].invoiceCreatedDate,
           seller: externalInvoice[0].seller,
-          jsonData: JSON.parse(externalInvoice[0].jsonData as string),
+          jsonData: { ...externalInvoice[0], ...jsonDataParsed},
           comment: externalInvoice[0].comment,
         },
       ]
@@ -115,8 +118,6 @@ export const getInvoice = async (
   }
 
   if (invoice.length > 0) {
-    console.info('invoice', invoice[0])
-
     return invoice[0]
   }
 

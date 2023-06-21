@@ -38,7 +38,7 @@ const assembleWhere = async (query: any): Promise<string> => {
   return where
 }
 
-export async function getInvoiceExternal(
+export async function getInvoiceExternalFile(
   ctx: Context,
   next: () => Promise<any>
 ) {

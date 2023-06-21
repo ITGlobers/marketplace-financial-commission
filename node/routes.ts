@@ -80,9 +80,6 @@ const routes = {
   generateInvoices: method({
     GET: [errorHandler, eligibleSellers, generateInvoices],
   }),
-  generateInvoiceFile: method({
-    GET: [seller, generateFileByType],
-  }),
   orders: method({
     GET: [seller, authentication, orders],
   }),
@@ -111,6 +108,9 @@ const routes = {
       validateParamsExternal,
       updateInvoiceExternal,
     ],
+  }),
+  invoiceExternalFile: method({
+    GET: [authenticationMarketplace, getInvoiceExternalFile],
   }),
   typeIntegration: method({
     GET: [getTypeIntegration],

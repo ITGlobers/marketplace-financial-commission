@@ -50,7 +50,7 @@ curl --request GET \
 __________________________________________________
 
 ## Generate Dashboard
-![](https://img.shields.io/static/v1?label=&message=POST&color=brightgreen) `https://app.io.vtex.com/vtex.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
+![](https://img.shields.io/static/v1?label=&message=POST&color=brightgreen) `https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
 
 This endpoint is in charge of generating the commissions dashboard.
 
@@ -81,7 +81,7 @@ This endpoint is in charge of generating the commissions dashboard.
 
 ```bash
 curl --request POST \
-  --url 'https://app.io.vtex.com/vtex.marketplace-financial-commission/v0/example/master/dashboard/generate?dateStart=2022-04-25&dateEnd=2022-04-30' \
+  --url 'https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/example/master/dashboard/generate?dateStart=2022-04-25&dateEnd=2022-04-30' \
   --header 'VtexIdclientAutCookie: 12345' \
 ```
 <br />
@@ -363,7 +363,7 @@ curl --request POST \
 	"creationDate": "2022-05-31T19:56:26.291Z",
 	"resultVBase": [
 		{
-			"path": "/example/master/buckets/vtex.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
+			"path": "/example/master/buckets/itglobers.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
 			"hash": "F5C201AD90EBF1C5E7D8F9412334"
 		}
 	]
@@ -487,7 +487,7 @@ curl --request PUT \
 	"lastModificationDate": "2022-05-31T19:57:54.745Z",
 	"resultVBase": [
 		{
-			"path": "/example/master/buckets/vtex.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
+			"path": "/example/master/buckets/itglobers.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
 			"hash": "6ADD1F2B0F5614326400BA0F3132456"
 		}
 	]
@@ -636,7 +636,7 @@ curl --request GET \
 __________________________________________________
 
 ## Generate Invoice 
-![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://app.io.vtex.com/vtex.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
+![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
 
 This endpoint is responsible for generating the invoices, according to the cut-off cycle programmed in the marketplace or seller's configuration in the marketplace-financial-commission application.
 
@@ -660,7 +660,7 @@ This endpoint is responsible for generating the invoices, according to the cut-o
 
 ```bash
 curl --request GET \
-  --url 'https://app.io.vtex.com/vtex.marketplace-financial-commission/v0/example/master/invoice/generate ' \
+  --url 'https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/example/master/invoice/generate ' \
   --header 'VtexIdclientAutCookie: 12345' 
 ```
 <br />

@@ -1,5 +1,5 @@
 {
-  "vendor": "vtex",
+  "vendor": "itglobers",
   "name": "marketplace-financial-commission",
   "version": "0.3.23",
   "title": "Financial commission for Marketplace",
@@ -13,6 +13,14 @@
     "graphql": "1.x",
     "masterdata": "1.x"
   },
+  "billingOptions": {
+    "type": "free",
+    "support": {
+        "email": "support@com.br",
+        "url": "https://support.com/hc/requests"
+      },
+    "availableCountries" : ["*"]
+  },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
     "vtex.sellers-graphql": "8.x",
@@ -20,7 +28,7 @@
     "vtex.render-runtime": "8.x",
     "vtex.native-types": "0.x",
     "vtex.format-currency": "0.x",
-    "vtex.components-financial-commission": "0.x"
+    "itglobers.components-financial-commission": "0.x"
   },
   "registries": [
     "smartcheckout"
@@ -78,6 +86,13 @@
     },
     {
       "name": "vtex.catalog-api-proxy:authenticated-catalog-proxy"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "trx-proxy-vtex-doxis.stage-eks.dbs.obi.solutions",
+        "path": "*"
+      }
     }
   ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"

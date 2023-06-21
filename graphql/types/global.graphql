@@ -84,6 +84,7 @@ type Order {
 type SellerInvoiceData {
   id: String
   name: String
+  sapSellerId: String
   contact: SellerContact
 }
 

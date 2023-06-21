@@ -1,22 +1,28 @@
-export async function searchPayoutReport(ctx: Context, next: () => Promise<any>) {
+export async function searchPayoutReport(
+  ctx: Context,
+  next: () => Promise<any>
+) {
   const {
     clients: { payoutReports },
     vtex: {
       route: { params },
-    },
-    query,
+    }
   } = ctx
 
-  console.info('params', params)
-  console.info('query', query)
+  let where = ''
+
+  if (params.id !== '' && params.id !== undefined) {
+    where = `id=${params.id}`
+  }
 
   try {
     const payoutResports = await payoutReports.search(
       { page: 1, pageSize: 10 },
-      ['_all']
+      ['_all'],
+      'id DESC',
+      where
     )
 
-    console.info(payoutResports)
     ctx.status = 200
     ctx.body = payoutResports
   } catch (error) {

@@ -1,6 +1,6 @@
 {
   "name": "financial-commission",
-  "private": true,
+  "private": false,
   "license": "UNLICENSED",
   "scripts": {
     "lint": "eslint --ext js,jsx,ts,tsx .",

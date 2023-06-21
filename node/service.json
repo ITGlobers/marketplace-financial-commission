@@ -55,16 +55,7 @@
     },
     "generateDashboard": {
       "path": "/dashboard/generate",
-      "public": false,
-      "policies": [
-        {
-          "effect": "allow",
-          "actions": ["post"],
-          "principals": [
-            "vrn:apps:*:*:*:app/vtex.marketplace-financial-commission-cron@*"
-          ]
-        }
-      ]
+      "public": true
     },
     "searchSellersDashboard": {
       "path": "/_v/dashboard/sellers/search",
@@ -120,14 +111,10 @@
           "effect": "allow",
           "actions": ["get"],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.marketplace-financial-commission-cron@*"
+            "vrn:apps:*:*:*:app/itglobers.marketplace-financial-commission-cron@*"
           ]
         }
       ]
-    },
-    "generateInvoiceFile": {
-      "path": "/_v/financial-commission/:sellerId/invoice/:id/generate/:type",
-      "public": true
     },
     "orders": {
       "path": "/_v/private/orders",
@@ -156,6 +143,10 @@
       "path": "/_v/private/financial-commission/external/invoice/*id",
       "public": true
     },
+    "invoiceExternalFile": {
+      "path": "/_v/private/financial-commission/external/invoice/file/*id/type/*type",
+      "public": true
+    },
     "typeIntegration": {
       "path": "/_v/policy/financial-commission/typeIntegration",
       "public": false,
@@ -166,7 +157,7 @@
           "actions": ["get"],
           "principals": [
             "vrn:apps:*:*:*:app/vtex.seller-financial-commission@*",
-            "vrn:apps:*:*:*:app/vtex.marketplace-financial-commission-cron@*",
+            "vrn:apps:*:*:*:app/itglobers.marketplace-financial-commission-cron@*",
             "vrn:vtex.vtex-id:*:*:*:user/*@vtex.com.br"
           ]
         }

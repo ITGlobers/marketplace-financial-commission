@@ -5,6 +5,7 @@ query GET_INVOICE($id: String!) {
     seller {
       id
       name
+      sapSellerId
       contact {
         phone
         email

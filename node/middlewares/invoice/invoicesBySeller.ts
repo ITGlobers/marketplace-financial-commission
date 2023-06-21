@@ -48,7 +48,7 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
 
   const where = `seller.name="${seller.name}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
-  const fields = ['id', 'status', 'invoiceCreatedDate', 'totalizers']
+  const fields = ['id', 'status', 'invoiceCreatedDate', 'totalizers', 'files']
 
   let sellerInvoices
 
@@ -72,7 +72,7 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
 
   ctx.status = 200
   ctx.body = sellerInvoices
-  ctx.set('Cache-Control', 'no-cache ')
+  ctx.set('Cache-Control', 'no-cache')
 
   await next()
 }
