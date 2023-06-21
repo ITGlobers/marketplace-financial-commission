@@ -46,22 +46,11 @@ export default class Doxis extends ExternalClient {
     data.append(
       'documentParams',
       JSON.stringify({
-        mimeTypeName: `application/${type}}`,
+        mimeTypeName: `application/${type}`,
         fullFileName: `${id}.${type}`,
         fileExtension: type,
-        attributes: [
-          {
-            attributeDefinitionUUID: '10000002-0000-9000-3030-303131303635',
-            values: ['0816'],
-            attributeDataType: 'STRING',
-          },
-          {
-            attributeDefinitionUUID: '8de2f3b9-e34d-4599-a4a9-5c982c69d107',
-            values: [true],
-            attributeDataType: 'BOOL',
-          },
-        ],
-        documentTypeUUID: '68664dbb-bbf5-4cda-9b1c-d3e518cedecf',
+        attributes: [],
+        documentTypeUUID: '72c307f4-fee0-483f-a724-71ea6347c426',
       })
     )
 

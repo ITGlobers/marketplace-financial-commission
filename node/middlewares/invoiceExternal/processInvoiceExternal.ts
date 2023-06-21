@@ -69,6 +69,8 @@ export const processInvoiceExternal = async (
 
         const document: any = await doxis.createDocument(idInvoice, file, type)
 
+        console.log('document', document)
+
         bodyExternalInvoiceWithId = {
           ...bodyExternalInvoiceWithId,
           files: {
@@ -84,7 +86,8 @@ export const processInvoiceExternal = async (
       })
     )
   } catch (error) {
-    console.error('error', error)
+    // ts-ignore
+    console.error('error', error.message)
   }
 
   bodyExternalInvoiceWithId.files = {
