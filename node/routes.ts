@@ -1,36 +1,36 @@
 import { method } from '@vtex/api'
 
 import {
-  sendMail,
+  authenticationValidationVtex,
+  createInvoiceExternal,
+  eligibleSellers,
+  errorHandler,
+  generateInvoices,
+  getInvoiceExternal,
+  invoicesBySeller,
+  orders,
+  policy,
+  resolveInvoice,
   searchSellers,
   searchStatistics,
   sellers,
   sellersResponse,
-  orders,
-  resolveInvoice,
-  invoicesBySeller,
-  generateInvoices,
-  errorHandler,
-  eligibleSellers,
+  sendMail,
   templateMethod,
-  policy,
-  createInvoiceExternal,
-  getInvoiceExternal,
-  authenticationValidationVtex,
 } from './middlewares'
-import { createTokenAuth } from './middlewares/authentication/createTokenAuth'
-import { seller } from './middlewares/sellers/seller'
 import { authentication } from './middlewares/authentication/authentication'
-import { updateToken } from './middlewares/authentication/updateToken'
+import { authenticationMarketplace } from './middlewares/authentication/authenticationMarketplace'
+import { createTokenAuth } from './middlewares/authentication/createTokenAuth'
 import { getToken } from './middlewares/authentication/getToken'
+import { switchUser } from './middlewares/authentication/switchUser'
+import { updateToken } from './middlewares/authentication/updateToken'
 import { generate } from './middlewares/dashboard/generate/generate'
-import { validateParamsExternal } from './middlewares/invoiceExternal/validateParamsExternal'
-import { getTypeIntegration } from './middlewares/typeIntegration/getTypeIntegration'
+import { generateFileByType } from './middlewares/invoice/generateFile'
 import { deleteInvoiceExternal } from './middlewares/invoiceExternal/deleteInvoiceExternal'
 import { updateInvoiceExternal } from './middlewares/invoiceExternal/updateInvoiceExternal'
-import { switchUser } from './middlewares/authentication/switchUser'
-import { authenticationMarketplace } from './middlewares/authentication/authenticationMarketplace'
-import { generateFileByType } from './middlewares/invoice/generateFile'
+import { validateParamsExternal } from './middlewares/invoiceExternal/validateParamsExternal'
+import { seller } from './middlewares/sellers/seller'
+import { getTypeIntegration } from './middlewares/typeIntegration/getTypeIntegration'
 
 const template = templateMethod
 
