@@ -17,8 +17,9 @@ import {
   sellersResponse,
   sendMail,
   templateMethod,
-  listPayoutReport,
   createPayoutReport,
+  getInvoiceExternalFile,
+  searchPayoutReport,
 } from './middlewares'
 import { authentication } from './middlewares/authentication/authentication'
 import { authenticationMarketplace } from './middlewares/authentication/authenticationMarketplace'
@@ -27,7 +28,6 @@ import { getToken } from './middlewares/authentication/getToken'
 import { switchUser } from './middlewares/authentication/switchUser'
 import { updateToken } from './middlewares/authentication/updateToken'
 import { generate } from './middlewares/dashboard/generate/generate'
-import { generateFileByType } from './middlewares/invoice/generateFile'
 import { deleteInvoiceExternal } from './middlewares/invoiceExternal/deleteInvoiceExternal'
 import { updateInvoiceExternal } from './middlewares/invoiceExternal/updateInvoiceExternal'
 import { validateParamsExternal } from './middlewares/invoiceExternal/validateParamsExternal'

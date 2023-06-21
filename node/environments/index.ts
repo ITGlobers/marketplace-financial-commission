@@ -1,7 +1,0 @@
-export const DoxisCredentials: any = {
-  CUSTOMER_NAME: 'OBI',
-  USERNAME: 'REST_Vtex_ComReport',
-  PASSWORS: 'g5-Umn-27$y',
-  COMMISSION_REPORT: 'COMMISSION_REPORT',
-  PAYOUT_REPORT: 'KONTOAUSZUG_PARTNERING',
-}
