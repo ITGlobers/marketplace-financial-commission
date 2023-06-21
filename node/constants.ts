@@ -1,6 +1,6 @@
 export const config = {
   BUCKET_VBASE: 'FinancialDSH',
-  BUCKET_VBASE_TOKEN: 'TokenConfig',
+  BUCKET_VBASE_TOKEN: 'TC',
   PRIVATE_KEY: 'daMud5nb5ZEHipscucqAGu5pPM224HUM',
   SETTINGS_BUCKET: 'settings',
   RETRY_SELLERS_BUCKET: 'retry',

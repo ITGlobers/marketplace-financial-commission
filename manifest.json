@@ -1,7 +1,7 @@
 {
   "vendor": "itglobers",
   "name": "marketplace-financial-commission",
-  "version": "0.3.23",
+  "version": "1.0.1",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -16,10 +16,12 @@
   "billingOptions": {
     "type": "free",
     "support": {
-        "email": "support@com.br",
-        "url": "https://support.com/hc/requests"
-      },
-    "availableCountries" : ["*"]
+      "email": "support@com.br",
+      "url": "https://support.com/hc/requests"
+    },
+    "availableCountries": [
+      "*"
+    ]
   },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
