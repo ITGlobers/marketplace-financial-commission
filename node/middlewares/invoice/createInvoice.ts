@@ -3,6 +3,7 @@ import { json } from 'co-body'
 
 import { JOB_STATUS } from '../../constants'
 import { invoicingProcess } from '../../services/invoicingProcess'
+import { validateDateFormat } from '../validationParams'
 
 /**
  * @description Attempts to create an Invoice.
@@ -29,27 +30,9 @@ export async function createInvoice(ctx: Context) {
     )
   }
 
-  function isValidDate(dateString: string) {
-    const regexDate = /^\d{4}-\d{2}-\d{2}$/
-
-    if (!regexDate.test(dateString)) {
-      return false
-    }
-
-    const [year, month, day] = dateString.split('-').map(Number)
-
-    const date = new Date(year, month - 1, day)
-    const isValid =
-      date.getFullYear() === year &&
-      date.getMonth() === month - 1 &&
-      date.getDate() === day
-
-    return isValid
-  }
-
   if (
-    !isValidDate(requestData.startDate) ||
-    !isValidDate(requestData.endDate)
+    !validateDateFormat(requestData.startDate) ||
+    !validateDateFormat(requestData.endDate)
   ) {
     throw new UserInputError(
       'Invalid startDate or endDate format. The date format is yyyy-mm-dd.'

@@ -195,6 +195,24 @@ function isToday(dateEnd: string) {
   }
 }
 
+export function validateDateFormat(dateString: string) {
+  const regexDate = /^\d{4}-\d{2}-\d{2}$/
+
+  if (!regexDate.test(dateString)) {
+    return false
+  }
+
+  const [year, month, day] = dateString.split('-').map(Number)
+
+  const date = new Date(year, month - 1, day)
+  const isValid =
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+
+  return isValid
+}
+
 class CustomError extends Error {
   public field: any
   public type: any

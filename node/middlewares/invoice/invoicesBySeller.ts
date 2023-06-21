@@ -3,6 +3,7 @@ import { json } from 'co-body'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
+import { validateDateFormat } from '../validationParams'
 
 /**
  * @description Retrieves a REFERENCE list of invoices for a given seller.
@@ -26,24 +27,6 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     )
   }
 
-  function isValidDate(dateString: string) {
-    const regexDate = /^\d{4}-\d{2}-\d{2}$/
-
-    if (!regexDate.test(dateString)) {
-      return false
-    }
-
-    const [year, month, day] = dateString.split('-').map(Number)
-
-    const date = new Date(year, month - 1, day)
-    const isValid =
-      date.getFullYear() === year &&
-      date.getMonth() === month - 1 &&
-      date.getDate() === day
-
-    return isValid
-  }
-
   const {
     page = PAGE_DEFAULT,
     pageSize = PAGE_SIZE_DEFAULT,
@@ -57,7 +40,7 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     )
   }
 
-  if (!isValidDate(startDate) || !isValidDate(endDate)) {
+  if (!validateDateFormat(startDate) || !validateDateFormat(endDate)) {
     throw new UserInputError(
       'Invalid startDate or endDate format. The date format is yyyy-mm-dd.'
     )

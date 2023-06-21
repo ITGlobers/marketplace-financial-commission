@@ -2,6 +2,7 @@ import { NotFoundError, UserInputError } from '@vtex/api'
 
 import { processInvoiceExternal } from './processInvoiceExternal'
 import { sendEmailInvoiceExternal } from './sendEmailInvoiceExternal'
+import { validateDateFormat } from '../validationParams'
 
 export async function createInvoiceExternal(
   ctx: Context,
@@ -14,25 +15,8 @@ export async function createInvoiceExternal(
     clients: { sellersIO },
   } = ctx
 
-  function isValidDate(dateString: string) {
-    const regexDate = /^\d{4}-\d{2}-\d{2}$/
 
-    if (!regexDate.test(dateString)) {
-      return false
-    }
-
-    const [year, month, day] = dateString.split('-').map(Number)
-
-    const date = new Date(year, month - 1, day)
-    const isValid =
-      date.getFullYear() === year &&
-      date.getMonth() === month - 1 &&
-      date.getDate() === day
-
-    return isValid
-  }
-
-  if (!isValidDate(requestData.invoiceCreatedDate)) {
+  if (!validateDateFormat(requestData.invoiceCreatedDate)) {
     throw new UserInputError(
       'Invalid date format. The date format is yyyy-mm-dd.'
     )
