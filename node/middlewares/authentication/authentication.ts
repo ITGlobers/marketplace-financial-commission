@@ -47,7 +47,7 @@ export async function authentication(ctx: Context, next: () => Promise<any>) {
     if (bearerHeader) {
       const bearer = bearerHeader.split(' ')
 
-      if (autheticationToken !== bearer[0]) {
+      if (autheticationToken !== bearer[1]) {
         logger.warn({
           message: 'incoming-wrongApiKey',
         })
