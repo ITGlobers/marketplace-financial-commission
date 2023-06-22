@@ -144,7 +144,7 @@
       "public": true
     },
     "invoiceExternalFile": {
-      "path": "/_v/private/financial-commission/external/invoice/file/*id/type/*type",
+      "path": "/_v/private/financial-commission/external/invoice/file/:id/type/:type",
       "public": true
     },
     "typeIntegration": {

@@ -1,42 +1,5 @@
-const assembleWhere = async (query: any): Promise<string> => {
-  const sellerName = (query.sellerName ?? '') as string
-  const sellerId = (query.sellerId ?? '') as string
-  const status = (query.status ?? '') as string
-  const createdDateInitial = (query.createdDateInitial ?? '') as string
-  const createdDateEnd = (query.createdDateEnd ?? '') as string
-
-  let where = ''
-
-  if (sellerName !== '') {
-    where += `seller.name="${sellerName}"`
-  }
-
-  if (sellerId !== '') {
-    if (sellerName !== '') {
-      where += ` AND seller.id="${sellerId}"`
-    } else {
-      where += `seller.id="${sellerId}"`
-    }
-  }
-
-  if (status !== '') {
-    if (sellerName !== '' || sellerId !== '') {
-      where += ` AND status="${status}"`
-    } else {
-      where += `status="${status}"`
-    }
-  }
-
-  if (createdDateInitial !== '' && createdDateEnd !== '') {
-    if (sellerName !== '' || sellerId !== '' || status !== '') {
-      where += ` AND (invoiceCreatedDate between ${createdDateInitial} AND ${createdDateEnd})`
-    } else {
-      where += `(invoiceCreatedDate between ${createdDateInitial} AND ${createdDateEnd})`
-    }
-  }
-
-  return where
-}
+import { TYPES } from "../../constants"
+import { DoxisCredentials } from "../../environments"
 
 export async function getInvoiceExternalFile(
   ctx: Context,
@@ -45,22 +8,20 @@ export async function getInvoiceExternalFile(
   const {
     vtex: {
       route: {
-        params: { id },
+        params: { id, type },
       },
     },
-    query,
-    clients: { externalInvoices },
+    clients: { externalInvoices, doxis },
   } = ctx
 
-  let sellerInvoices
+  doxis.dmsRepositoryId = DoxisCredentials.COMMISSION_REPORT
 
-  if (id !== '' && id !== undefined) {
-    const pagination = {
-      page: 1,
-      pageSize: 100,
-    }
+  const pagination = {
+    page: 1,
+    pageSize: 100,
+  }
 
-    sellerInvoices = await externalInvoices.searchRaw(
+  let sellerInvoices: any = await externalInvoices.searchRaw(
       pagination,
       [
         'id,status,accountName,seller,invoiceCreatedDate,jsonData,comment,files',
@@ -68,44 +29,15 @@ export async function getInvoiceExternalFile(
       'createdIn',
       `id=${id}`
     )
-  } else {
-    const page = Number(
-      (ctx.query.page === '' || ctx.query.page === undefined
-        ? '1'
-        : ctx.query.page) as string
-    )
 
-    const pageSize = Number(
-      (ctx.query.pageSize === '' || ctx.query.pageSize === undefined
-        ? '100'
-        : ctx.query.pageSize) as string
-    )
-
-    const where = await assembleWhere(query)
-
-    const pagination = {
-      page,
-      pageSize,
-    }
-
-    if (where !== '') {
-      sellerInvoices = await externalInvoices.searchRaw(
-        pagination,
-        ['id,status,accountName,seller,invoiceCreatedDate,jsonData,comment'],
-        'createdIn',
-        where
-      )
-    } else {
-      sellerInvoices = await externalInvoices.searchRaw(
-        pagination,
-        ['id,status,accountName,seller,invoiceCreatedDate,jsonData,comment'],
-        'createdIn'
-      )
-    }
-  }
+  const fileData = JSON.parse(sellerInvoices.data[0].files[`${type}`])
+  const file = await doxis.getDocument(fileData)
+  const contentType = TYPES.find((t) => t.type === type)?.mimeTypeName as string
 
   ctx.status = 200
-  ctx.body = sellerInvoices
+  ctx.set('Content-Type', contentType)
+  ctx.set('Content-Disposition', `attachment; filename=${id}.${type}`)
+  ctx.body = file
   ctx.set('Cache-Control', 'no-cache ')
 
   await next()

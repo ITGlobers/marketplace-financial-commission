@@ -38,7 +38,7 @@ export default class Doxis extends ExternalClient {
   public createDocument = async (
     id: string,
     file: Buffer | string,
-    type: string
+    {mimeTypeName, type, fileExtension}: Type
   ) => {
     const data = new FormData()
 
@@ -46,9 +46,9 @@ export default class Doxis extends ExternalClient {
     data.append(
       'documentParams',
       JSON.stringify({
-        mimeTypeName: `application/${type}`,
+        mimeTypeName,
         fullFileName: `${id}.${type}`,
-        fileExtension: type,
+        fileExtension,
         attributes: [],
         documentTypeUUID: '72c307f4-fee0-483f-a724-71ea6347c426',
       })
@@ -61,7 +61,17 @@ export default class Doxis extends ExternalClient {
     })
   }
 
-  public getDocument = async () => this.http.get(this.routes.getDocument())
+  public getDocument = async ({
+    uuid,
+    versionNr,
+    representationId,
+    contentObjectId,
+  }: any) => this.get(this.routes.getDocument({
+    uuid,
+    versionNr,
+    representationId,
+    contentObjectId,
+  }))
 
   public logout = async () => this.http.post(this.routes.logout)
 
@@ -75,6 +85,8 @@ export default class Doxis extends ExternalClient {
         Authorization: jwtBearerAuth,
       },
     }
+
+    console.info('config', config)
 
     return this.http.get<T>(url, config).catch(statusToError)
   }
@@ -109,7 +121,7 @@ export default class Doxis extends ExternalClient {
         versionNr,
         representationId,
         contentObjectId,
-      }: any = {}) =>
+      }: any) =>
         `${base}/dmsRepositories/${this.dmsRepositoryId}/documents/${uuid}/versions/${versionNr}/representations/${representationId}/contentObjects/${contentObjectId}`,
       logout: `${base}/logout`,
     }

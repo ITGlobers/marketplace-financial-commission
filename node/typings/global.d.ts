@@ -153,6 +153,12 @@ declare global {
     sellers: ItemSeller[]
     pagination: Pagination
   }
+
+  interface Type {
+    type: 'csv' | 'xls',
+    mimeTypeName: string,
+    fileExtension: string
+  }
 }
 
 export {}

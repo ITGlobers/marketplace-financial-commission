@@ -1,7 +1,7 @@
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData'
 import type { ExternalInvoice } from 'itglobers.marketplace-financial-commission'
 
-import { config, JOB_STATUS } from '../../constants'
+import { config, JOB_STATUS, TYPES } from '../../constants'
 import type { InvoiceExternal } from '../../typings/externalInvoice'
 import { randomId } from '../../utils/randomId'
 import { generateFileByType } from '../../utils/generateFile'
@@ -62,21 +62,22 @@ export const processInvoiceExternal = async (
     ...bodyExternalInvoice,
   }
 
+
   try {
     await Promise.all(
-      ['csv', 'xls'].map(async (type: any) => {
-        const file = await generateFileByType(bodyExternalInvoiceWithId, type)
+      TYPES.map(async (type: Type) => {
+        const { type: typeFile } = type
 
-        const document: any = await doxis.createDocument(idInvoice, file, type)
+        const file = await generateFileByType(bodyExternalInvoiceWithId, typeFile as any)
 
-        console.log('document', document)
+        const { documentWsTO }: any = await doxis.createDocument(idInvoice, file, type)
 
         bodyExternalInvoiceWithId = {
           ...bodyExternalInvoiceWithId,
           files: {
             ...bodyExternalInvoiceWithId.files,
-            [type]: JSON.stringify({
-              uuid: document?.uuid,
+            [typeFile]: JSON.stringify({
+              uuid: documentWsTO?.uuid,
               versionNr: 'current',
               representationId: 'default',
               contentObjectId: 'primary',
@@ -87,12 +88,10 @@ export const processInvoiceExternal = async (
     )
   } catch (error) {
     // ts-ignore
-    console.error('error', error.message)
+    // console.error('error', error.message)
   }
+  console.log('bodyExternalInvoiceWithId', bodyExternalInvoiceWithId)
 
-  bodyExternalInvoiceWithId.files = {
-    csv: '{"uuid":"b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2","versionNr":"current","representationId":"default","contentObjectId":"primary"}',
-  } // while not used
   const document = await externalInvoices.save(bodyExternalInvoiceWithId)
 
   await vbase.saveJSON<JobHistory>(BUCKET, dataInvoice.seller.id, {

@@ -110,7 +110,7 @@ const routes = {
     ],
   }),
   invoiceExternalFile: method({
-    GET: [authenticationMarketplace, getInvoiceExternalFile],
+    GET: [getInvoiceExternalFile],
   }),
   typeIntegration: method({
     GET: [getTypeIntegration],

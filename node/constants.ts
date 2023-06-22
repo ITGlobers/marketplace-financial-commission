@@ -46,3 +46,16 @@ export const INVOICE_STATUS = {
 
 export const PAGE_DEFAULT = 1
 export const PAGE_SIZE_DEFAULT = 5
+
+export const TYPES: Type[] = [
+  {
+    type: 'csv',
+    mimeTypeName: 'text/plain',
+    fileExtension: 'csv',
+  },
+  {
+    type: 'xls',
+    mimeTypeName: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    fileExtension: 'xlsx',
+  }
+]
