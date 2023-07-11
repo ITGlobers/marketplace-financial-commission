@@ -55,7 +55,13 @@ export const TYPES: Type[] = [
   },
   {
     type: 'xls',
-    mimeTypeName: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    mimeTypeName:
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     fileExtension: 'xlsx',
-  }
+  },
+  {
+    type: 'pdf',
+    mimeTypeName: 'application/pdf',
+    fileExtension: 'pdf',
+  },
 ]

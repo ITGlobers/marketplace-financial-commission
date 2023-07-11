@@ -15,7 +15,6 @@ export async function createInvoiceExternal(
     clients: { sellersIO },
   } = ctx
 
-
   if (!validateDateFormat(requestData.invoiceCreatedDate)) {
     throw new UserInputError(
       'Invalid date format. The date format is yyyy-mm-dd.'

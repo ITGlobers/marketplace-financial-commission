@@ -38,7 +38,7 @@ export default class Doxis extends ExternalClient {
   public createDocument = async (
     id: string,
     file: Buffer | string,
-    {mimeTypeName, type, fileExtension}: Type
+    { mimeTypeName, type, fileExtension }: Type
   ) => {
     const data = new FormData()
 
@@ -66,12 +66,18 @@ export default class Doxis extends ExternalClient {
     versionNr,
     representationId,
     contentObjectId,
-  }: any) => this.get(this.routes.getDocument({
-    uuid,
-    versionNr,
-    representationId,
-    contentObjectId,
-  }))
+  }: any) =>
+    this.get(
+      this.routes.getDocument({
+        uuid,
+        versionNr,
+        representationId,
+        contentObjectId,
+      }),
+      {
+        responseType: 'arraybuffer',
+      }
+    )
 
   public logout = async () => this.http.post(this.routes.logout)
 
@@ -85,8 +91,6 @@ export default class Doxis extends ExternalClient {
         Authorization: jwtBearerAuth,
       },
     }
-
-    console.info('config', config)
 
     return this.http.get<T>(url, config).catch(statusToError)
   }

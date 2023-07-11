@@ -1,5 +1,5 @@
-import { TYPES } from "../../constants"
-import { DoxisCredentials } from "../../environments"
+import { TYPES } from '../../constants'
+import { DoxisCredentials } from '../../environments'
 
 export async function getInvoiceExternalFile(
   ctx: Context,
@@ -21,14 +21,12 @@ export async function getInvoiceExternalFile(
     pageSize: 100,
   }
 
-  let sellerInvoices: any = await externalInvoices.searchRaw(
-      pagination,
-      [
-        'id,status,accountName,seller,invoiceCreatedDate,jsonData,comment,files',
-      ],
-      'createdIn',
-      `id=${id}`
-    )
+  const sellerInvoices: any = await externalInvoices.searchRaw(
+    pagination,
+    ['id,status,accountName,seller,invoiceCreatedDate,jsonData,comment,files'],
+    'createdIn',
+    `id=${id}`
+  )
 
   const fileData = JSON.parse(sellerInvoices.data[0].files[`${type}`])
   const file = await doxis.getDocument(fileData)

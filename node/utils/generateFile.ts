@@ -1,3 +1,5 @@
+// import FormData from 'form-data'
+import Handlebars from 'handlebars'
 import Papa from 'papaparse'
 import XLSX from 'xlsx'
 
@@ -32,9 +34,21 @@ function generateCSV(data: any[]): string {
   return Papa.unparse(flattenedData)
 }
 
-type FileType = 'csv' | 'xls'
+async function generatePDF(data: any, ctx: Context): Promise<any> {
+  const {
+    clients: { template, pdf },
+  } = ctx
 
-type GenerateFileFunction = (invoice: any) => string
+  const response = await template.getTemplate()
+  const hbTemplate = Handlebars.compile(response.Templates.email.Message)
+  const htmlToPdf = hbTemplate({ id: data.id, ...JSON.parse(data.jsonData) })
+
+  return pdf.generatePdf(htmlToPdf)
+}
+
+type FileType = 'csv' | 'xls' | 'pdf'
+
+type GenerateFileFunction = (invoice: any, ctx: Context) => any
 
 type GenerateFileObject = {
   [key in FileType]: GenerateFileFunction
@@ -45,6 +59,7 @@ type GenerateFileObject = {
 const generateFile: GenerateFileObject = {
   csv: (invoice: any) => generateCSV([invoice]),
   xls: (invoice: any) => createXLSBuffer([invoice]),
+  pdf: (invoice: any, ctx: Context) => generatePDF(invoice, ctx),
   default: () => {
     throw new Error('Invalid file type')
   },
@@ -52,7 +67,8 @@ const generateFile: GenerateFileObject = {
 
 export async function generateFileByType(
   invoiceData: any,
-  type: FileType
+  type: FileType,
+  ctx: Context
 ): Promise<string | Buffer> {
   if (!invoiceData) {
     throw new Error('Invoice not found')
@@ -61,7 +77,7 @@ export async function generateFileByType(
   const genarator =
     generateFile[type as keyof GenerateFileObject] || generateFile.default
 
-  const file = genarator(invoiceData)
+  const file = genarator(invoiceData, ctx)
 
   return file
 }

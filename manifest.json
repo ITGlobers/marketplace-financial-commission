@@ -1,7 +1,7 @@
 {
   "vendor": "itglobers",
   "name": "marketplace-financial-commission",
-  "version": "1.0.4",
+  "version": "1.0.5-beta",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -19,9 +19,7 @@
       "email": "support@com.br",
       "url": "https://support.com/hc/requests"
     },
-    "availableCountries": [
-      "*"
-    ]
+    "availableCountries": ["*"]
   },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
@@ -30,11 +28,9 @@
     "vtex.render-runtime": "8.x",
     "vtex.native-types": "0.x",
     "vtex.format-currency": "0.x",
-    "itglobers.components-financial-commission": "1.x"
+    "itglobers.components-financial-commission": "0.0.16-beta"
   },
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "credentialType": "absolute",
   "policies": [
     {
@@ -93,6 +89,13 @@
       "name": "outbound-access",
       "attrs": {
         "host": "trx-proxy-vtex-doxis.stage-eks.dbs.obi.solutions",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "2pff1ku37k.execute-api.us-east-1.amazonaws.com",
         "path": "*"
       }
     }

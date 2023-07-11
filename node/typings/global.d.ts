@@ -155,8 +155,8 @@ declare global {
   }
 
   interface Type {
-    type: 'csv' | 'xls',
-    mimeTypeName: string,
+    type: 'csv' | 'xls' | 'pdf'
+    mimeTypeName: string
     fileExtension: string
   }
 }

@@ -62,15 +62,22 @@ export const processInvoiceExternal = async (
     ...bodyExternalInvoice,
   }
 
-
   try {
     await Promise.all(
       TYPES.map(async (type: Type) => {
         const { type: typeFile } = type
 
-        const file = await generateFileByType(bodyExternalInvoiceWithId, typeFile as any)
+        const file = await generateFileByType(
+          bodyExternalInvoiceWithId,
+          typeFile as any,
+          ctx
+        )
 
-        const { documentWsTO }: any = await doxis.createDocument(idInvoice, file, type)
+        const { documentWsTO }: any = await doxis.createDocument(
+          idInvoice,
+          file,
+          type
+        )
 
         bodyExternalInvoiceWithId = {
           ...bodyExternalInvoiceWithId,
@@ -90,7 +97,6 @@ export const processInvoiceExternal = async (
     // ts-ignore
     // console.error('error', error.message)
   }
-  console.log('bodyExternalInvoiceWithId', bodyExternalInvoiceWithId)
 
   const document = await externalInvoices.save(bodyExternalInvoiceWithId)
 
