@@ -6,7 +6,7 @@ export async function searchPayoutReport(
     clients: { payoutReports },
     vtex: {
       route: { params },
-    }
+    },
   } = ctx
 
   let where = ''

@@ -55,6 +55,20 @@
         }
       }
     },
+    "files": {
+      "type": "object",
+      "properties": {
+        "csv": {
+          "type": "string"
+        },
+        "pdf": {
+          "type": "string"
+        },
+        "xls": {
+          "type": "string"
+        }
+      }
+    },
     "totalizers": {
       "type": "object",
       "properties": {

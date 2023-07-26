@@ -1,5 +1,8 @@
-import { config, JOB_STATUS } from '../constants'
+import { config, JOB_STATUS, TYPES } from '../constants'
+import { DoxisCredentials } from '../environments'
 import { draftInvoice } from '../utils/draftInvoice'
+import { generateFileByType } from '../utils/generateFile'
+import { randomId } from '../utils/randomId'
 
 interface JobHistory {
   referenceId: string | null
@@ -32,7 +35,7 @@ export const invoicingProcess = async (
   automated?: boolean
 ): Promise<string> => {
   const {
-    clients: { vbase, commissionInvoices, mail },
+    clients: { vbase, commissionInvoices, mail, doxis },
     vtex: { account: marketplace },
   } = ctx
 
@@ -67,7 +70,51 @@ export const invoicingProcess = async (
     invoice = { ...invoice, comment: `Invoice manually created on ${today}` }
   }
 
-  const document = await commissionInvoices.save(invoice)
+  const idInvoice = randomId(sellerData.id)
+
+  let bodyInvoiceWithId = {
+    id: idInvoice,
+    jsonData: JSON.stringify(invoice),
+    ...invoice,
+  }
+
+  doxis.dmsRepositoryId = DoxisCredentials.COMMISSION_REPORT
+  await Promise.all(
+    TYPES.map(async (type: Type) => {
+      const { type: typeFile } = type
+
+      try {
+        const file = await generateFileByType(
+          bodyInvoiceWithId,
+          typeFile as any,
+          ctx
+        )
+
+        const { documentWsTO }: any = await doxis.createDocument(
+          idInvoice,
+          file,
+          type
+        )
+
+        bodyInvoiceWithId = {
+          ...bodyInvoiceWithId,
+          files: {
+            ...bodyInvoiceWithId.files,
+            [typeFile]: JSON.stringify({
+              uuid: documentWsTO?.uuid,
+              versionNr: 'current',
+              representationId: 'default',
+              contentObjectId: 'primary',
+            }),
+          },
+        }
+      } catch (error) {
+        console.error('Error generating file: ', type)
+        console.error('Error generating file: ', error?.response)
+      }
+    })
+  )
+  const document = await commissionInvoices.save(bodyInvoiceWithId)
 
   const idBucket = marketplace
   const configRes = await vbase.getJSON<any>(config.SETTINGS_BUCKET, idBucket)

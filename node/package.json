@@ -1,8 +1,9 @@
 {
   "dependencies": {
-    "@vtex/api": "6.45.15",
+    "@vtex/api": "6.45.19",
     "@vtex/clients": "^2.19.4",
     "co-body": "^6.0.0",
+    "date-fns": "^2.30.0",
     "form-data": "^4.0.0",
     "handlebars": "^4.7.7",
     "node-fetch": "^2.6.1",
@@ -21,7 +22,7 @@
     "@types/papaparse": "^5.3.7",
     "@types/ramda": "types/npm-ramda#dist",
     "@types/xlsx": "^0.0.36",
-    "@vtex/api": "6.45.15",
+    "@vtex/api": "6.45.19",
     "@vtex/test-tools": "^3.4.3",
     "@vtex/tsconfig": "^0.5.6",
     "tslint": "^5.0.0",

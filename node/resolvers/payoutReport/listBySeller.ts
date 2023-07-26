@@ -30,6 +30,6 @@ export async function searchPayoutReport(
   } catch (error) {
     console.error(error.message)
 
-    return { error: 'Error creating payout report'}
+    return { error: 'Error creating payout report' }
   }
 }

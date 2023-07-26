@@ -24,7 +24,6 @@ export async function generate(ctx: Context, next: () => Promise<Dashboards>) {
   await validationParams('Generate', ctx.query)
 
   const numDays = numberOfDays(new Date(start), new Date(end))
-  console.log('numDays', numDays)
 
   const processGenerate = async () => {
     try {

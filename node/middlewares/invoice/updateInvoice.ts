@@ -1,5 +1,6 @@
 import { UserInputError } from '@vtex/api'
 import { json } from 'co-body'
+
 import { validateDateFormat } from '../validationParams'
 
 /**
