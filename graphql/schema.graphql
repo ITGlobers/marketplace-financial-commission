@@ -48,7 +48,9 @@ type Query {
   """
   Retrieve payout reports
   """
-  searchPayoutReport(id: String): PayoutReportsResponse @cacheControl(scope: PRIVATE, maxAge: LONG)
+  searchPayoutReport(
+    searchPayoutReportParams: SearchPayoutReportParams
+  ): PayoutReportsResponse @cacheControl(scope: PRIVATE, maxAge: LONG)
 }
 
 type Mutation {

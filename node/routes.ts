@@ -33,6 +33,8 @@ import { updateInvoiceExternal } from './middlewares/invoiceExternal/updateInvoi
 import { validateParamsExternal } from './middlewares/invoiceExternal/validateParamsExternal'
 import { seller } from './middlewares/sellers/seller'
 import { getTypeIntegration } from './middlewares/typeIntegration/getTypeIntegration'
+import { getPayoutReportFile } from './middlewares/payoutReport/getFile'
+import { ping } from './middlewares/ping'
 
 const template = templateMethod
 
@@ -118,6 +120,12 @@ const routes = {
   payoutReport: method({
     GET: [seller, searchPayoutReport],
     POST: [seller, createPayoutReport],
+  }),
+  payoutReportFile: method({
+    GET: [getPayoutReportFile],
+  }),
+  ping: method({
+    POST: [ping],
   }),
 }
 

@@ -1,35 +1,60 @@
+import payoutReportService from '../../services/payoutReport/search'
+
 export async function searchPayoutReport(
   ctx: Context,
   next: () => Promise<any>
 ) {
   const {
-    clients: { payoutReports },
     vtex: {
       route: { params },
     },
+    query,
   } = ctx
 
-  let where = ''
+  const { _sellerName, _startDate, _endDate, _page, _pageSize } = query
 
-  if (params.id !== '' && params.id !== undefined) {
-    where = `id=${params.id}`
-  }
+  let response
 
   try {
-    const payoutResports = await payoutReports.search(
-      { page: 1, pageSize: 10 },
-      ['_all'],
-      'id DESC',
-      where
-    )
+    if (params.id !== '' && params.id !== undefined) {
+      response = await payoutReportService(ctx).get(params.id.toString())
+    } else {
+      const payoutResports = await payoutReportService(ctx).search({
+        sellerName: _sellerName,
+        dates: {
+          startDate: _startDate,
+          endDate: _endDate,
+        },
+        pagination: {
+          page: _page,
+          pageSize: _pageSize,
+        },
+      })
+
+      const payoutResportsResonse = payoutResports.data.map(
+        (payoutReport: any) => {
+          const jsonData = JSON.parse(payoutReport.jsonData)
+          const headline = jsonData.shift()
+
+          return {
+            ...payoutReport,
+            headline,
+            jsonData: JSON.stringify(jsonData),
+          }
+        }
+      )
+
+      response = {
+        data: payoutResportsResonse,
+        pagination: payoutResports.pagination,
+      }
+    }
 
     ctx.status = 200
-    ctx.body = payoutResports
+    ctx.body = response
   } catch (error) {
-    console.error(error.message)
-
     ctx.status = 404
-    ctx.body = { error: 'Error creating payout report' }
+    ctx.body = error
   }
 
   ctx.set('Cache-Control', 'no-cache ')

@@ -87,7 +87,8 @@ export const invoicingProcess = async (
         const file = await generateFileByType(
           bodyInvoiceWithId,
           typeFile as any,
-          ctx
+          ctx,
+          'commissionReport'
         )
 
         const { documentWsTO }: any = await doxis.createDocument(

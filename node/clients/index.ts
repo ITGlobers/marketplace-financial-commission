@@ -4,11 +4,11 @@ import type {
   StatisticsDashboard,
   CommissionInvoice,
   ExternalInvoice,
+  PayoutReport,
 } from 'itglobers.marketplace-financial-commission'
 import { IOClients, LRUCache } from '@vtex/api'
 import { masterDataFor } from '@vtex/clients'
 
-import type { PayoutReport } from '../typings/payoutReport'
 import Mail from './mail'
 import { OrdersClient } from './orders'
 import SellersIO from './sellers'

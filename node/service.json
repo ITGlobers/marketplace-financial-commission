@@ -166,6 +166,14 @@
     "payoutReport": {
       "path": "/_v/payout/:sellerId/report/*id",
       "public": true
+    },
+    "payoutReportFile": {
+      "path": "/_v/private/financial-commission/external/payout/file/:id/type/:type",
+      "public": true
+    },
+    "ping": {
+      "path": "/_v/ping",
+      "public": true
     }
   }
 }

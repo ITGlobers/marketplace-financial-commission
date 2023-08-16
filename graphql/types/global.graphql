@@ -227,32 +227,23 @@ type SearchOrdersResponse {
   paging: PagingOrders
 }
 
+input SearchPayoutReportParams {
+  sellerName: String!
+  dates: Dates!
+  pagination: Pagination!
+}
+
 type PayoutReportResponse {
   id: String
-  sellerId: String
-  paymentMethod: String
-  creationDate: String
-  timeZone: String
-  transactionType: String
-  grossCurrency: String
-  grossDebit: Int
-  grossCredit: Int
-  exchangeRate: Int
-  netCurrency: String
-  netDebit: Int
-  netCredit: Int
-  commissionAmount: Int
-  orderId: String
-  payId: String
-  invoiceId: String
-  chargebackType: String
-  reserved1: String
-  reserved2: String
+  reportCreatedDate: String
+  seller: SellerInvoiceData
+  payoutReportFileName: String
+  jsonData: String
 }
 
 type PayoutReportsResponse {
   data: [PayoutReportResponse]
-  paging: PagingOrders
+  pagination: PaginationInvoice
 }
 
 type CreateTokenResponse {

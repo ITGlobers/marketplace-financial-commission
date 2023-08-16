@@ -1,25 +1,45 @@
 import { json } from 'co-body'
 
+import createPayoutReportServices from '../../services/payoutReport/create'
+import schemaPayoutReport from '../../validations/payoutReport'
+
 export async function createPayoutReport(
   ctx: Context,
   next: () => Promise<any>
 ) {
   const {
-    clients: { payoutReports },
+    req,
+    state: {
+      body: {
+        seller: { id: sellerId, name: sellerName },
+      },
+    },
   } = ctx
 
-  const body = await json(ctx.req)
-
   try {
-    const response = await payoutReports.save(body)
+    const body = await json(req)
+
+    const payoutToValidate = {
+      ...body,
+      seller: {
+        sellerId,
+        sellerName,
+      },
+      jsonData: JSON.parse(body.jsonData).map((item: any) => ({
+        ...item,
+        sellerId,
+      })),
+    }
+
+    payoutToValidate.jsonData.shift()
+    await schemaPayoutReport.validateAsync(payoutToValidate)
+    const { DocumentId } = await createPayoutReportServices(ctx, body)
 
     ctx.status = 200
-    ctx.body = { message: 'Payout report created', ...response }
+    ctx.body = { message: 'Created payout report', DocumentId }
   } catch (error) {
-    console.error(error.message)
-
     ctx.status = 404
-    ctx.body = { error: 'Error creating payout report' }
+    ctx.body = { errors: error.details[0].message }
   }
 
   ctx.set('Cache-Control', 'no-cache ')

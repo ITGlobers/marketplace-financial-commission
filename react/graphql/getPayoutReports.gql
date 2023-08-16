@@ -1,32 +1,20 @@
-query GET_PAYOUT_REPORTS {
-  searchPayoutReport {
+query GET_PAYOUT_REPORTS($params: SearchPayoutReportParams) {
+  searchPayoutReport(searchPayoutReportParams: $params) {
     data {
       id
-      sellerId
-      paymentMethod
-      creationDate
-      timeZone
-      transactionType
-      grossCurrency
-      grossDebit
-      grossCredit
-      exchangeRate
-      netCurrency
-      netDebit
-      netCredit
-      commissionAmount
-      orderId
-      payId
-      invoiceId
-      chargebackType
-      reserved1
-      reserved2
+      reportCreatedDate
+      payoutReportFileName
+      jsonData
+      seller {
+        id
+        name
+        sapSellerId
+      }
     }
-    paging {
+    pagination {
       total
-      pages
-      currentPage
-      perPage
+      page
+      pageSize
     }
   }
 }

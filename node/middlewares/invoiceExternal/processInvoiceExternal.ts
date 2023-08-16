@@ -70,7 +70,8 @@ export const processInvoiceExternal = async (
         const file = await generateFileByType(
           bodyExternalInvoiceWithId,
           typeFile as any,
-          ctx
+          ctx,
+          'commissionReport'
         )
 
         const { documentWsTO }: any = await doxis.createDocument(

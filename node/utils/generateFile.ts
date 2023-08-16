@@ -1,37 +1,110 @@
-// import FormData from 'form-data'
 import Handlebars from 'handlebars'
 import Papa from 'papaparse'
 import XLSX from 'xlsx'
 
-function flattenObject(obj: any, prefix = ''): any {
-  return Object.entries(obj).reduce((acc: any, [key, value]) => {
-    const newKey = prefix ? `${prefix}.${key}` : key
+const createXLSBuffer = (data: any, origin: string) => {
+  if (origin === 'payoutReport') {
+    const jsonData = JSON.parse(data.jsonData)
+    const columns = jsonData[0]
 
-    if (typeof value === 'object' && value !== null) {
-      return { ...acc, ...flattenObject(value, newKey) }
-    }
+    jsonData.shift()
 
-    acc[newKey] = value
+    const dataRow = jsonData.map((obj: any) => ({
+      ...obj,
+      sellerId: data.seller.id,
+    }))
 
-    return acc
-  }, {})
-}
+    const columnNamesArray = Object.values(columns)
+    const dataMatrix = [
+      columnNamesArray,
+      ...dataRow.map((obj: any) => Object.values(obj)),
+    ]
 
-const createXLSBuffer = (data: any[]) => {
-  const flattenedData = data.map((item) => flattenObject(item))
+    const workbook = XLSX.utils.book_new()
+    const sheet = XLSX.utils.aoa_to_sheet(dataMatrix)
+
+    XLSX.utils.book_append_sheet(workbook, sheet, data.payoutReportFileName)
+
+    return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
+  }
+
+  const { id, seller, invoiceCreatedDate } = data
+  const { jsonData } = JSON.parse(data.jsonData)
+
+  const sellerInformationColumn = [
+    {
+      ID: id,
+      'Seller ID': seller.id,
+      'Seller Name': seller.name,
+      'SAP Seller ID': seller.sapSellerId,
+      'Invoiced Created': invoiceCreatedDate,
+      'SellerInvoiceID ': jsonData.sellerInvoiceId,
+    },
+  ]
+
+  const columnsData = jsonData.orders
+    .map((order: any) => {
+      const { positionID, orderId, paymentMethod, items } = order
+
+      return items.map((item: any) => {
+        return {
+          // ...item,
+          Pos: positionID,
+          'Order ID': orderId,
+          Zahlmethode: paymentMethod,
+          Artikelnr: item.itemId,
+          Artikelkategorie: item.articleCategory,
+          Menge: item.itemQuantity,
+          'Einzelpreis (brutto)': item.itemGrossPrice,
+          'Umsatzbrutto pro Position': item.positionGrossPrice,
+          'Gebühren in %': item.itemCommissionPercentage,
+          'Gebühren in €': item.itemCommissionAmount,
+        }
+      })
+    })
+    .flat()
 
   const workbook = XLSX.utils.book_new()
-  const worksheet = XLSX.utils.json_to_sheet(flattenedData)
+  const sellerInformation = XLSX.utils.json_to_sheet(sellerInformationColumn)
+  const orders = XLSX.utils.json_to_sheet(columnsData)
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'invoice')
+  XLSX.utils.book_append_sheet(
+    workbook,
+    sellerInformation,
+    'Seller Informatiom'
+  )
+  XLSX.utils.book_append_sheet(workbook, orders, 'Orders')
 
   return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
 }
 
-function generateCSV(data: any[]): string {
-  const flattenedData = data.map((item) => flattenObject(item))
+// TO DO: refactor this function
+function generateCSV(data: any): string {
+  const { jsonData } = JSON.parse(data.jsonData)
 
-  return Papa.unparse(flattenedData)
+  const columnsData = jsonData.orders
+    .map((order: any) => {
+      const { positionID, orderId, paymentMethod, items } = order
+
+      return items.map((item: any) => {
+        return {
+          // ...item,
+          Pos: positionID,
+          'Order ID': orderId,
+          Zahlmethode: paymentMethod,
+          Artikelnr: item.itemId,
+          Artikelkategorie: item.articleCategory,
+          Menge: item.itemQuantity,
+          'Einzelpreis (brutto)': item.itemGrossPrice,
+          'Umsatzbrutto pro Position': item.positionGrossPrice,
+          'Gebühren in %': item.itemCommissionPercentage,
+          'Gebühren in €': item.itemCommissionAmount,
+        }
+      })
+    })
+    .flat()
+
+  return Papa.unparse(columnsData)
 }
 
 async function generatePDF(data: any, ctx: Context): Promise<any> {
@@ -48,7 +121,7 @@ async function generatePDF(data: any, ctx: Context): Promise<any> {
 
 type FileType = 'csv' | 'xls' | 'pdf'
 
-type GenerateFileFunction = (invoice: any, ctx: Context) => any
+type GenerateFileFunction = (invoice: any, ctx: Context, origin: string) => any
 
 type GenerateFileObject = {
   [key in FileType]: GenerateFileFunction
@@ -57,8 +130,8 @@ type GenerateFileObject = {
 }
 
 const generateFile: GenerateFileObject = {
-  csv: (invoice: any) => generateCSV([invoice]),
-  xls: (invoice: any) => createXLSBuffer([invoice]),
+  csv: (invoice: any) => generateCSV(invoice),
+  xls: (invoice: any, _, origin: string) => createXLSBuffer(invoice, origin),
   pdf: (invoice: any, ctx: Context) => generatePDF(invoice, ctx),
   default: () => {
     throw new Error('Invalid file type')
@@ -68,7 +141,8 @@ const generateFile: GenerateFileObject = {
 export async function generateFileByType(
   invoiceData: any,
   type: FileType,
-  ctx: Context
+  ctx: Context,
+  origin: string
 ): Promise<string | Buffer> {
   if (!invoiceData) {
     throw new Error('Invoice not found')
@@ -77,7 +151,7 @@ export async function generateFileByType(
   const genarator =
     generateFile[type as keyof GenerateFileObject] || generateFile.default
 
-  const file = genarator(invoiceData, ctx)
+  const file = genarator(invoiceData, ctx, origin)
 
   return file
 }
