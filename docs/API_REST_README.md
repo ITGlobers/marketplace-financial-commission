@@ -1514,6 +1514,7 @@ Create a single external invoice.
 | status              | string      | Yes       | Status invoice. The allowed values are: paid, unpaid, partial.  |
 | invoiceCreatedDate  | string      | Yes       | Creation date of invoice in ```"yyyy-mm-dd"``` format    |
 | seller              | object      | Yes       | Seller Detail     |
+| sapSellerId         | string      | No        | Seller sapSellerId    |
 | name                | string      | Yes       | Seller name    |
 | id                  | string      | Yes       | Seller Id    |
 | contact             | object      | Yes       | Seller contact information    |
@@ -1527,6 +1528,7 @@ Create a single external invoice.
 	"status": "unpaid",
 	"invoiceCreatedDate": "2022-08-01",
 	"seller": {
+    "sapSellerId": "seller sapSellerId",
 		"name": "sellerName",
 		"id": "sellerId",
 		"contact": {
@@ -1548,6 +1550,7 @@ curl --location --request POST 'https://{{accountmarketplace}}.myvtex.com/_v/pri
 	"status": "unpaid",
 	"invoiceCreatedDate": "2022-08-01",
 	"seller": {
+    "sapSellerId": "seller sapSellerId",
 		"name": "sellerName",
 		"id": "sellerId",
 		"contact": {
