@@ -1,14 +1,16 @@
 {
   "dependencies": {
-    "@vtex/api": "6.45.19",
+    "@vtex/api": "6.45.20",
     "@vtex/clients": "^2.19.4",
     "co-body": "^6.0.0",
     "date-fns": "^2.30.0",
     "form-data": "^4.0.0",
     "handlebars": "^4.7.7",
+    "joi": "^17.9.2",
     "node-fetch": "^2.6.1",
     "papaparse": "^5.4.1",
     "polly-js": "^1.8.3",
+    "query-string": "^8.1.0",
     "ramda": "^0.25.0",
     "xlsx": "^0.18.5",
     "xmlbuilder": "^15.1.1"
@@ -22,17 +24,12 @@
     "@types/papaparse": "^5.3.7",
     "@types/ramda": "types/npm-ramda#dist",
     "@types/xlsx": "^0.0.36",
-    "@vtex/api": "6.45.19",
+    "@vtex/api": "6.45.20",
     "@vtex/test-tools": "^3.4.3",
     "@vtex/tsconfig": "^0.5.6",
     "tslint": "^5.0.0",
     "tslint-config-vtex": "^2.1.0",
-    "typescript": "3.9.7",
-    "vtex.format-currency": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency",
-    "vtex.native-types": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.8.0/public/@types/vtex.native-types",
-    "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime",
-    "vtex.sellers-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.sellers-graphql@8.5.4/public/@types/vtex.sellers-graphql",
-    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.1/public/@types/vtex.styleguide"
+    "typescript": "3.9.7"
   },
   "scripts": {
     "lint": "tsc --noEmit --pretty"

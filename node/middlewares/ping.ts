@@ -9,5 +9,5 @@ export async function ping(
 
   ctx.response.body = `Ping check`
 
-  return next()
+  await next()
 }

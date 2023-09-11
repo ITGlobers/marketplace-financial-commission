@@ -5,7 +5,7 @@ import XLSX from 'xlsx'
 const createXLSBuffer = (data: any, origin: string) => {
   if (origin === 'payoutReport') {
     const jsonData = JSON.parse(data.jsonData)
-    const columns = jsonData[0]
+    const [columns] = jsonData
 
     jsonData.shift()
 

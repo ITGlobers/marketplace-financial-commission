@@ -1,6 +1,6 @@
 import payoutReportService from '../../services/payoutReport/search'
 
-type SearchPayoutReportParams = {
+interface SearchPayoutReportParams {
   sellerName: string
   dates: {
     startDate: string

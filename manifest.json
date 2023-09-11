@@ -1,7 +1,7 @@
 {
   "vendor": "itglobers",
   "name": "marketplace-financial-commission",
-  "version": "1.0.5-beta",
+  "version": "1.0.9-beta",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -30,7 +30,7 @@
     "vtex.render-runtime": "8.x",
     "vtex.native-types": "0.x",
     "vtex.format-currency": "0.x",
-    "itglobers.components-financial-commission": "0.0.16-beta"
+    "itglobers.components-financial-commission": "0.0.19-beta.0"
   },
   "registries": [
     "smartcheckout"
