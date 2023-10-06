@@ -1,5 +1,5 @@
 import { TYPES } from '../../constants'
-import { DoxisCredentials } from '../../environments'
+import { DoxisCredentialsDev } from '../../environments'
 import { typeIntegration } from '../../utils/typeIntegration'
 
 export async function getInvoiceExternalFile(
@@ -15,7 +15,7 @@ export async function getInvoiceExternalFile(
     clients: { commissionInvoices, externalInvoices, doxis },
   } = ctx
 
-  doxis.dmsRepositoryId = DoxisCredentials.COMMISSION_REPORT
+  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
 
   const pagination = {
     page: 1,

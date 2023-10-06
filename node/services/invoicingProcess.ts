@@ -1,5 +1,5 @@
 import { config, JOB_STATUS, TYPES } from '../constants'
-import { DoxisCredentials } from '../environments'
+import { DoxisCredentialsDev } from '../environments'
 import { draftInvoice } from '../utils/draftInvoice'
 import { generateFileByType } from '../utils/generateFile'
 import { randomId } from '../utils/randomId'
@@ -78,7 +78,7 @@ export const invoicingProcess = async (
     ...invoice,
   }
 
-  doxis.dmsRepositoryId = DoxisCredentials.COMMISSION_REPORT
+  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
   await Promise.all(
     TYPES.map(async (type: Type) => {
       const { type: typeFile } = type

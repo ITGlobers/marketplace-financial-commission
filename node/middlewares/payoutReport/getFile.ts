@@ -1,5 +1,5 @@
 import { TYPES } from '../../constants'
-import { DoxisCredentials } from '../../environments'
+import { DoxisCredentialsDev } from '../../environments'
 
 export async function getPayoutReportFile(
   ctx: Context,
@@ -14,7 +14,7 @@ export async function getPayoutReportFile(
     clients: { payoutReports, doxis },
   } = ctx
 
-  doxis.dmsRepositoryId = DoxisCredentials.COMMISSION_REPORT
+  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
 
   const { files, payoutReportFileName }: any = await payoutReports.get(
     id.toString(),

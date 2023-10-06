@@ -23,6 +23,13 @@
     "@vtex/tsconfig": "^0.6.0",
     "apollo-cache-inmemory": "^1.6.5",
     "graphql": "^14.6.0",
-    "typescript": "3.9.7"
+    "obidev.marketplace-financial-commission": "http://obidev.vtexassets.com/_v/public/typings/v1/obidev.marketplace-financial-commission@0.0.3-beta.2/public/@types/obidev.marketplace-financial-commission",
+    "typescript": "3.9.7",
+    "vtex.catalog-api-proxy": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.catalog-api-proxy@0.10.4/public/_types/react",
+    "vtex.format-currency": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.format-currency@0.4.1/public/@types/vtex.format-currency",
+    "vtex.native-types": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.10.1/public/@types/vtex.native-types",
+    "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.134.2/public/@types/vtex.render-runtime",
+    "vtex.sellers-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.sellers-graphql@8.5.4/public/@types/vtex.sellers-graphql",
+    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.9/public/@types/vtex.styleguide"
   }
 }

@@ -1,11 +1,11 @@
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData'
-import type { ExternalInvoice } from 'itglobers.marketplace-financial-commission'
+import type { ExternalInvoice } from 'obidev.marketplace-financial-commission'
 
 import { config, JOB_STATUS, TYPES } from '../../constants'
 import type { InvoiceExternal } from '../../typings/externalInvoice'
 import { randomId } from '../../utils/randomId'
 import { generateFileByType } from '../../utils/generateFile'
-import { DoxisCredentials } from '../../environments'
+import { DoxisCredentialsDev } from '../../environments'
 
 interface JobHistory {
   referenceId: string | null
@@ -28,7 +28,7 @@ export const processInvoiceExternal = async (
 
   const BUCKET = config.APIREST_JOB_BUCKET
 
-  doxis.dmsRepositoryId = DoxisCredentials.COMMISSION_REPORT
+  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
 
   const HISTORY = {
     referenceId: null,

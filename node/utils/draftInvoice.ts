@@ -1,4 +1,4 @@
-import type { CommissionInvoice } from 'itglobers.marketplace-financial-commission'
+import type { CommissionInvoice } from 'obidev.marketplace-financial-commission'
 
 import { INVOICE_STATUS } from '../constants'
 import { calculateCommissionByOrder } from '../middlewares/dashboard/generate/calculateCommissionByOrder'

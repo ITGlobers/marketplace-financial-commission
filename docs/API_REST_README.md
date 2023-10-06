@@ -1,22 +1,25 @@
 # Financial commission for Marketplace
 
 # API REST
- > **Warning** 
- > Some endpoints exposed by this app are meant to be used in integrations. Pay attention to the Authorization header in each of the REST endpoints. If they require type: bearer it means that a token must be generated using this endpoint or via the admin panel.
+
+> **Warning**
+> Some endpoints exposed by this app are meant to be used in integrations. Pay attention to the Authorization header in each of the REST endpoints. If they require type: bearer it means that a token must be generated using this endpoint or via the admin panel.
 
  <br />
 
 # Dashboard
 
 ## List Sellers
+
 ![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://{{accountmarketplace}}.myvtex.com/_v/sellers/list`
 
 This endpoint lists all Sellers.
 
 ##### PATH PARAMS
-| accountmarketplace  |
-| ------------ |
-|  Name of the VTEX account of the marketplace. |
+
+| accountmarketplace                           |
+| -------------------------------------------- |
+| Name of the VTEX account of the marketplace. |
 
 ```bash
 curl --request GET \
@@ -47,106 +50,115 @@ curl --request GET \
 	}
 }
 ```
-__________________________________________________
+
+---
 
 ## Generate Dashboard
-![](https://img.shields.io/static/v1?label=&message=POST&color=brightgreen) `https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
+
+![](https://img.shields.io/static/v1?label=&message=POST&color=brightgreen) `https://app.io.vtex.com/obidev.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
 
 This endpoint is in charge of generating the commissions dashboard.
 
 <br />
 
 #### **Headers**
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| VtexIdclientAutCookie   | string      | Yes       |VTEX Infrastructure Authorization Token             |
+
+| Attribute             | Type   | Mandatory | Description                             |
+| --------------------- | ------ | --------- | --------------------------------------- |
+| VtexIdclientAutCookie | string | Yes       | VTEX Infrastructure Authorization Token |
 
 <br />
 
 #### **Path parameters**
 
-| accountmarketplace  |
-| ------------ |
-|  Name of the VTEX account of the marketplace. |
+| accountmarketplace                           |
+| -------------------------------------------- |
+| Name of the VTEX account of the marketplace. |
 
 <br />
 
 #### **Request parameters allowed**
-| Attribute   | Type        | Mandatory | Description |
-| ----------- | ----------- |---------- | ----------- |
-| dateStart   | string      | No        |Start date of generation in ```"yyyy-mm-dd"``` format          |
-| dateEnd     | string      | No        |End date of generation in ```"yyyy-mm-dd"``` format            | 
+
+| Attribute | Type   | Mandatory | Description                                       |
+| --------- | ------ | --------- | ------------------------------------------------- |
+| dateStart | string | No        | Start date of generation in `"yyyy-mm-dd"` format |
+| dateEnd   | string | No        | End date of generation in `"yyyy-mm-dd"` format   |
 
 <br />
 
 ```bash
 curl --request POST \
-  --url 'https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/example/master/dashboard/generate?dateStart=2022-04-25&dateEnd=2022-04-30' \
+  --url 'https://app.io.vtex.com/obidev.marketplace-financial-commission/v0/example/master/dashboard/generate?dateStart=2022-04-25&dateEnd=2022-04-30' \
   --header 'VtexIdclientAutCookie: 12345' \
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`\
 If the number of days is less than 5 days
 
 ```json
 {
-	"Sellers": [
-		{
-			"Id": "vtex_marketplace_financial_commission_sellersdashboards-DSH-example-2022-01-16",
-			"Href": "http://api.vtex.com/api/dataentities/vtex_marketplace_financial_commission_sellersdashboards/documents/DSH-example-2022-01-16?an=example&_schema=0.0.1",
-			"DocumentId": "DSH-example-2022-01-16"
-		}
-	],
-	"Statistics": [
-		{
-			"Id": "vtex_marketplace_financial_commission_statisticsdashboards-DSH-Statistics-example-2022-01-16",
-			"Href": "http://api.vtex.com/api/dataentities/vtex_marketplace_financial_commission_statisticsdashboards/documents/DSH-Statistics-example-2022-01-16?an=example&_schema=0.0.1",
-			"DocumentId": "DSH-Statistics-example-2022-01-16"
-		}
-	]
+  "Sellers": [
+    {
+      "Id": "vtex_marketplace_financial_commission_sellersdashboards-DSH-example-2022-01-16",
+      "Href": "http://api.vtex.com/api/dataentities/vtex_marketplace_financial_commission_sellersdashboards/documents/DSH-example-2022-01-16?an=example&_schema=0.0.1",
+      "DocumentId": "DSH-example-2022-01-16"
+    }
+  ],
+  "Statistics": [
+    {
+      "Id": "vtex_marketplace_financial_commission_statisticsdashboards-DSH-Statistics-example-2022-01-16",
+      "Href": "http://api.vtex.com/api/dataentities/vtex_marketplace_financial_commission_statisticsdashboards/documents/DSH-Statistics-example-2022-01-16?an=example&_schema=0.0.1",
+      "DocumentId": "DSH-Statistics-example-2022-01-16"
+    }
+  ]
 }
 ```
+
 \
 If the number of days is greater than 5 days
 
 ```json
 {
-	"message": "We are processing your request, please validate in 15 minutes."
+  "message": "We are processing your request, please validate in 15 minutes."
 }
 ```
+
 <br />
 
 > **Note** If the volume of information to be generated is large, it is recommended to do it for each day of the month.
 
-__________________________________________________
+---
 
 ## Search Sellers Dashboard
+
 ![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://{{accountmarketplace}}.myvtex.com/_v/dashboard/sellers/search`
 
-Retrieve commission information of the sellers,  for a specific date range, from the orders that are invoiced in VTEX.
+Retrieve commission information of the sellers, for a specific date range, from the orders that are invoiced in VTEX.
 
 <br />
 
 #### **Path parameters**
 
-| accountmarketplace  |
-| ------------ |
-|  Name of the VTEX account of the marketplace. |
+| accountmarketplace                           |
+| -------------------------------------------- |
+| Name of the VTEX account of the marketplace. |
 
 <br />
 
 #### **Request parameters allowed**
-| Attribute     | Type        | Mandatory | Description |
-| -----------   | ----------- |---------- | ----------- |
-| dateStart     | string      | Yes       | Start date of consulting  in ```"yyyy-mm-dd"``` format          |
-| dateEnd       | string      | Yes       | End date of consulting  in ```"yyyy-mm-dd"``` format            |
-| page          | number      | Yes       | Page Number                                                     |
-| pageSize      | number      | Yes       | Number of items per page                                        |
-| sellersId     | string      | No        | Sellers to be returned in the query. Separate the seller's Id with commas. For example ```sellersId=sellerId1,sellerId2,sellerId3```. You can also leave empty to get all sellers. | 
-| reIndex       | boolean     | No        | Performs reindex of the search by refreshing and updating the information. | 
+
+| Attribute | Type    | Mandatory | Description                                                                                                                                                                    |
+| --------- | ------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| dateStart | string  | Yes       | Start date of consulting in `"yyyy-mm-dd"` format                                                                                                                              |
+| dateEnd   | string  | Yes       | End date of consulting in `"yyyy-mm-dd"` format                                                                                                                                |
+| page      | number  | Yes       | Page Number                                                                                                                                                                    |
+| pageSize  | number  | Yes       | Number of items per page                                                                                                                                                       |
+| sellersId | string  | No        | Sellers to be returned in the query. Separate the seller's Id with commas. For example `sellersId=sellerId1,sellerId2,sellerId3`. You can also leave empty to get all sellers. |
+| reIndex   | boolean | No        | Performs reindex of the search by refreshing and updating the information.                                                                                                     |
 
 <br />
 
@@ -154,24 +166,24 @@ Retrieve commission information of the sellers,  for a specific date range, from
 curl --request GET \
   --url 'https://example.myvtex.com/_v/dashboard/sellers/search?dateStart=2022-04-01&dateEnd=2022-04-30&page=1&pageSize=20&reIndex=true' \
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
-| Attribute          | Type        | Description                                      |
-| --------------     | ----------- |------------------------------------------------- |
-| dateStart          | string      | Start date of consulting  in ```"yyyy-mm-dd"``` format  |
-| dateEnd            | string      | End date of consulting  in ```"yyyy-mm-dd"``` format    |
-| sellers            | object      | Array with sellers                                      |
-| id                 | string      | Seller id                                               |
-| account            | string      | Seller account                                          |
-| name               | string      | Seller name                                             |
-| statistics         | object      | Object with seller's totals                             |
-| ordersCount        | number      | Number of orders                                        |
-| totalComission     | number      | Total commission value                                  |
-| totalComission     | number      | Total order value                                       |
-| outstandingBalance | number      | Total invoiced value                                    |
-
+| Attribute          | Type   | Description                                       |
+| ------------------ | ------ | ------------------------------------------------- |
+| dateStart          | string | Start date of consulting in `"yyyy-mm-dd"` format |
+| dateEnd            | string | End date of consulting in `"yyyy-mm-dd"` format   |
+| sellers            | object | Array with sellers                                |
+| id                 | string | Seller id                                         |
+| account            | string | Seller account                                    |
+| name               | string | Seller name                                       |
+| statistics         | object | Object with seller's totals                       |
+| ordersCount        | number | Number of orders                                  |
+| totalComission     | number | Total commission value                            |
+| totalComission     | number | Total order value                                 |
+| outstandingBalance | number | Total invoiced value                              |
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`\
 If the number of days is less than 5 days
@@ -208,72 +220,75 @@ If the number of days is less than 5 days
 <br />
 
 ### Search for specific sellersId
-> When specifying one or more sellers in the search in the service it will additionally return the ```statistics``` object, returning the total statistics.
+
+> When specifying one or more sellers in the search in the service it will additionally return the `statistics` object, returning the total statistics.
 
 ```bash
 curl --request GET \
   --url 'https://example.myvtex.com/_v/dashboard/sellers/search?dateStart=2022-04-01&dateEnd=2022-04-30&page=1&pageSize=20&sellersId=sellerId1&reIndex=true' \
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`
 
 ```json
 {
-	"dateStart": "2022-04-01",
-	"dateEnd": "2022-04-30",
-	"sellers": [
-		{
-			"id": "sellerId1",
-			"account": "sellerId1",
-			"name": "sellerId1_Name",
-			"statistics": {
-				"ordersCount": 252,
-				"totalComission": 396.11,
-				"totalOrderValue": 3784,
-				"outstandingBalance": 0
-			}
-		}
-	],
-	"statistics": {
-		"ordersCount": 252,
-		"totalComission": 396.11,
-		"totalOrderValue": 3784
-	},
-	"pagination": {
-		"currentPage": 1,
-		"pageSize": 1,
-		"totalPage": 1
-	}
+  "dateStart": "2022-04-01",
+  "dateEnd": "2022-04-30",
+  "sellers": [
+    {
+      "id": "sellerId1",
+      "account": "sellerId1",
+      "name": "sellerId1_Name",
+      "statistics": {
+        "ordersCount": 252,
+        "totalComission": 396.11,
+        "totalOrderValue": 3784,
+        "outstandingBalance": 0
+      }
+    }
+  ],
+  "statistics": {
+    "ordersCount": 252,
+    "totalComission": 396.11,
+    "totalOrderValue": 3784
+  },
+  "pagination": {
+    "currentPage": 1,
+    "pageSize": 1,
+    "totalPage": 1
+  }
 }
-
 ```
 
 <br />
 __________________________________________________
 
 ## Search Statistics Dashboard
+
 ![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://{{accountmarketplace}}.myvtex.com/_v/dashboard/statistics/search`
 
-Retrieve totals information of the sellers,  for a specific date range, from the orders that are invoiced in VTEX.
+Retrieve totals information of the sellers, for a specific date range, from the orders that are invoiced in VTEX.
 
 <br />
 
 #### **Path parameters**
 
-| accountmarketplace  |
-| ------------ |
-|  Name of the VTEX account of the marketplace. |
+| accountmarketplace                           |
+| -------------------------------------------- |
+| Name of the VTEX account of the marketplace. |
 
 <br />
 
 #### **Request parameters allowed**
-| Attribute     | Type        | Mandatory | Description |
-| -----------   | ----------- |---------- | ----------- |
-| dateStart     | string      | Yes       | Start date of consulting  in ```"yyyy-mm-dd"``` format  |
-| dateEnd       | string      | Yes       | End date of consulting  in ```"yyyy-mm-dd"``` format    | 
+
+| Attribute | Type   | Mandatory | Description                                       |
+| --------- | ------ | --------- | ------------------------------------------------- |
+| dateStart | string | Yes       | Start date of consulting in `"yyyy-mm-dd"` format |
+| dateEnd   | string | Yes       | End date of consulting in `"yyyy-mm-dd"` format   |
 
 <br />
 
@@ -281,18 +296,19 @@ Retrieve totals information of the sellers,  for a specific date range, from the
 curl --request GET \
   --url 'https://example.myvtex.com/_v/dashboard/statistics/search?dateStart=2022-04-01&dateEnd=2022-04-30' \
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
-| Attribute          | Type        | Description                                      |
-| --------------     | ----------- |------------------------------------------------- |
-| dateStart          | string      | Start date of consulting  in ```"yyyy-mm-dd"``` format  |
-| dateEnd            | string      | End date of consulting  in ```"yyyy-mm-dd"``` format    |
-| statistics         | object      | Object with seller's totals                             |
-| ordersCount        | number      | Number of orders                                        |
-| totalComission     | number      | Total commission value                                  |
-| totalComission     | number      | Total order value                                       |
+| Attribute      | Type   | Description                                       |
+| -------------- | ------ | ------------------------------------------------- |
+| dateStart      | string | Start date of consulting in `"yyyy-mm-dd"` format |
+| dateEnd        | string | End date of consulting in `"yyyy-mm-dd"` format   |
+| statistics     | object | Object with seller's totals                       |
+| ordersCount    | number | Number of orders                                  |
+| totalComission | number | Total commission value                            |
+| totalComission | number | Total order value                                 |
 
 <br />
 
@@ -300,15 +316,14 @@ curl --request GET \
 
 ```json
 {
-	"dateStart": "2022-04-01",
-	"dateEnd": "2022-04-30",
-	"statistics": {
-		"ordersCount": 264,
-		"totalComission": 398.61,
-		"totalOrderValue": 4716.8
-	}
+  "dateStart": "2022-04-01",
+  "dateEnd": "2022-04-30",
+  "statistics": {
+    "ordersCount": 264,
+    "totalComission": 398.61,
+    "totalOrderValue": 4716.8
+  }
 }
-
 ```
 
 <br />
@@ -317,6 +332,7 @@ __________________________________________________
 # Token Authorization
 
 ## Create Token
+
 ![](https://img.shields.io/static/v1?label=&message=POST&color=brightgreen) `https://{{accountmarketplace}}myvtex.com/_v/financial-commission/token/{{sellerId}}`
 
 Create a security token for a specific seller.
@@ -324,20 +340,21 @@ Create a security token for a specific seller.
 <br />
 
 #### **Headers**
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| X-VTEX-API-AppKey       | string      | Yes       |The AppKey configured by the merchant             |
-| X-VTEX-API-AppToken     | string      | Yes       |The AppToken configured by the merchant           | 
-| originToken             | string      | Yes       | Destination of token to be processed. Values:`marketplace`,`seller`. |
+
+| Attribute           | Type   | Mandatory | Description                                                          |
+| ------------------- | ------ | --------- | -------------------------------------------------------------------- |
+| X-VTEX-API-AppKey   | string | Yes       | The AppKey configured by the merchant                                |
+| X-VTEX-API-AppToken | string | Yes       | The AppToken configured by the merchant                              |
+| originToken         | string | Yes       | Destination of token to be processed. Values:`marketplace`,`seller`. |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | No        | If the token is for the seller, the value is mandatory. Seller Id | 
+| Attribute          | Type   | Mandatory | Description                                                       |
+| ------------------ | ------ | --------- | ----------------------------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace.                      |
+| sellerId           | string | No        | If the token is for the seller, the value is mandatory. Seller Id |
 
 <br />
 
@@ -346,35 +363,36 @@ curl --request POST \
   --url https://example.myvtex.com/_v/financial-commission/token/sellerId1 \
    --header 'X-VTEX-API-AppKey: 12345' \
    --header 'X-VTEX-API-AppToken: 12345' \
-   --header 'originToken: seller' 
+   --header 'originToken: seller'
 
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`\
 
 ```json
 {
-	"message": "Successful token creation",
-	"sellerId": "sellerId1",
-	"autheticationToken": "abcdefghijk123456789",
-	"creationDate": "2022-05-31T19:56:26.291Z",
-	"resultVBase": [
-		{
-			"path": "/example/master/buckets/itglobers.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
-			"hash": "F5C201AD90EBF1C5E7D8F9412334"
-		}
-	]
+  "message": "Successful token creation",
+  "sellerId": "sellerId1",
+  "autheticationToken": "abcdefghijk123456789",
+  "creationDate": "2022-05-31T19:56:26.291Z",
+  "resultVBase": [
+    {
+      "path": "/example/master/buckets/obidev.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
+      "hash": "F5C201AD90EBF1C5E7D8F9412334"
+    }
+  ]
 }
-
 ```
 
 <br />
 __________________________________________________
 
 ## Get Token
+
 ![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://{{accountmarketplace}}myvtex.com/_v/financial-commission/token/{{sellerId}}`
 
 Retrieves the token information created for a specific seller.
@@ -382,20 +400,21 @@ Retrieves the token information created for a specific seller.
 <br />
 
 #### **Headers**
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| X-VTEX-API-AppKey       | string      | Yes       |The AppKey configured by the merchant             |
-| X-VTEX-API-AppToken     | string      | Yes       |The AppToken configured by the merchant           | 
-| originToken             | string      | Yes       | Destination of token to be processed. Values:`marketplace`,`seller`. | 
+
+| Attribute           | Type   | Mandatory | Description                                                          |
+| ------------------- | ------ | --------- | -------------------------------------------------------------------- |
+| X-VTEX-API-AppKey   | string | Yes       | The AppKey configured by the merchant                                |
+| X-VTEX-API-AppToken | string | Yes       | The AppToken configured by the merchant                              |
+| originToken         | string | Yes       | Destination of token to be processed. Values:`marketplace`,`seller`. |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | No        | If the token is for the seller, the value is mandatory. Seller Id | 
+| Attribute          | Type   | Mandatory | Description                                                       |
+| ------------------ | ------ | --------- | ----------------------------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace.                      |
+| sellerId           | string | No        | If the token is for the seller, the value is mandatory. Seller Id |
 
 <br />
 
@@ -404,29 +423,30 @@ curl --request GET \
   --url https://example.myvtex.com/_v/financial-commission/token/sellerId1 \
    --header 'X-VTEX-API-AppKey: 12345' \
    --header 'X-VTEX-API-AppToken: 12345' \
-   --header 'originToken: seller' 
+   --header 'originToken: seller'
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`\
 
 ```json
 {
-	"account": "sellerId1",
-	"autheticationToken": "abcdefghijk123456789",
-	"enabled": true,
-	"name": "sellerId1_name",
-	"id": "sellerId1"
+  "account": "sellerId1",
+  "autheticationToken": "abcdefghijk123456789",
+  "enabled": true,
+  "name": "sellerId1_name",
+  "id": "sellerId1"
 }
-
 ```
 
 <br />
 __________________________________________________
 
 ## Update Token
+
 ![](https://img.shields.io/static/v1?label=&message=PUT&color=orange) `https://{{accountmarketplace}}myvtex.com/_v/financial-commission/token/{{sellerId}}`
 
 Allows you to update the status of the token
@@ -434,20 +454,21 @@ Allows you to update the status of the token
 <br />
 
 #### **Headers**
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| X-VTEX-API-AppKey       | string      | Yes       |The AppKey configured by the merchant             |
-| X-VTEX-API-AppToken     | string      | Yes       |The AppToken configured by the merchant           | 
-| originToken             | string      | Yes       | Destination of token to be processed. Values:`marketplace`,`seller`. |
+
+| Attribute           | Type   | Mandatory | Description                                                          |
+| ------------------- | ------ | --------- | -------------------------------------------------------------------- |
+| X-VTEX-API-AppKey   | string | Yes       | The AppKey configured by the merchant                                |
+| X-VTEX-API-AppToken | string | Yes       | The AppToken configured by the merchant                              |
+| originToken         | string | Yes       | Destination of token to be processed. Values:`marketplace`,`seller`. |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | No        | If the token is for the seller, the value is mandatory. Seller Id |  
+| Attribute          | Type   | Mandatory | Description                                                       |
+| ------------------ | ------ | --------- | ----------------------------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace.                      |
+| sellerId           | string | No        | If the token is for the seller, the value is mandatory. Seller Id |
 
 <br />
 
@@ -456,102 +477,103 @@ curl --request PUT \
   --url https://example.myvtex.com/_v/financial-commission/token/sellerId1 \
    --header 'X-VTEX-API-AppKey: 12345' \
    --header 'X-VTEX-API-AppToken: 12345' \
-   --header 'originToken: seller'   
+   --header 'originToken: seller'
 ```
+
 <br />
 
-#### **Request Body Example** 
+#### **Request Body Example**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| enabled                     | boolean     | Indicates whether the token is enabled or disabled.     |
-
+| Attribute | Type    | Description                                         |
+| --------- | ------- | --------------------------------------------------- |
+| enabled   | boolean | Indicates whether the token is enabled or disabled. |
 
 ```json
 {
-	"enabled": true
+  "enabled": true
 }
-
 ```
 
 <br />
 
-#### **Response** 
+#### **Response**
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`\
 
 ```json
 {
-	"message": "Successful token update",
-	"sellerId": "sellerId1",
-	"lastModificationDate": "2022-05-31T19:57:54.745Z",
-	"resultVBase": [
-		{
-			"path": "/example/master/buckets/itglobers.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
-			"hash": "6ADD1F2B0F5614326400BA0F3132456"
-		}
-	]
+  "message": "Successful token update",
+  "sellerId": "sellerId1",
+  "lastModificationDate": "2022-05-31T19:57:54.745Z",
+  "resultVBase": [
+    {
+      "path": "/example/master/buckets/obidev.marketplace-financial-commission/TokenConfig/files/martketplaceSellerID1",
+      "hash": "6ADD1F2B0F5614326400BA0F3132456"
+    }
+  ]
 }
-
 ```
-__________________________________________________
+
+---
+
 <br />
 
 # Seller Invoice Detail
 
-
 ## Search Orders
+
 ![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://{{accountmarketplace}}.myvtex.com/_v/private/orders`
 
-Retrieve a list of orders according to the filters described below, for a specific date range, from the orders placed in VTEX. 
+Retrieve a list of orders according to the filters described below, for a specific date range, from the orders placed in VTEX.
 
 <br />
 
-> **Note** The date range is the creation date of the orders if the filtered status is ```Invoiced``` it will be filtered by invoice date in VTEX.
+> **Note** The date range is the creation date of the orders if the filtered status is `Invoiced` it will be filtered by invoice date in VTEX.
 
 <br />
 
 #### **Path parameters**
 
-| accountmarketplace  |
-| ------------ |
-|  Name of the VTEX account of the marketplace. |
+| accountmarketplace                           |
+| -------------------------------------------- |
+| Name of the VTEX account of the marketplace. |
 
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Request filters allowed**
-| Attribute     | Type        | Mandatory | Description |
-| -----------   | ----------- |---------- | ----------- |
-| dateStart     | string      | Yes       | Start date of consulting  in ```"yyyy-mm-dd"``` format  |
-| dateEnd       | string      | Yes       | End date of consulting  in ```"yyyy-mm-dd"``` format    |
-| page          | number      | Yes       | Page Number                                             |
-| perpage       | number      | Yes       | Number of items per page                                |
-| sellerId      | string      | Yes       | Seller ID                                               |
-| status        | string      | No        | Order Status Value                                      | 
+
+| Attribute | Type   | Mandatory | Description                                       |
+| --------- | ------ | --------- | ------------------------------------------------- |
+| dateStart | string | Yes       | Start date of consulting in `"yyyy-mm-dd"` format |
+| dateEnd   | string | Yes       | End date of consulting in `"yyyy-mm-dd"` format   |
+| page      | number | Yes       | Page Number                                       |
+| perpage   | number | Yes       | Number of items per page                          |
+| sellerId  | string | Yes       | Seller ID                                         |
+| status    | string | No        | Order Status Value                                |
 
 <br />
 
 ##### **Order Status avaible to filter**
 
-| Status                               | 
-| ----------------------------------   | 
-| waiting-for-sellers-confirmation     | 
-| payment-pending                      | 
-| payment-approved                     | 
-| ready-for-handling                   | 
-| handling                             | 
-| invoiced                             |
-| canceled                             |  
+| Status                           |
+| -------------------------------- |
+| waiting-for-sellers-confirmation |
+| payment-pending                  |
+| payment-approved                 |
+| ready-for-handling               |
+| handling                         |
+| invoiced                         |
+| canceled                         |
 
 <br />
 
@@ -560,38 +582,40 @@ curl --request GET \
   --url 'https://example.myvtex.com/_v/private/orders?dateStart=2022-04-01&dateEnd=2022-01-30&page=1&perpage=100&sellerId=sellerId1' \
   --header 'Authorization: Bearer abcdefghijk12345'
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| data                        | object      | Order detail                                            |
-| orderId                     | string      | Order Id                                                |
-| sellerOrderId               | string      | Order Seller Id                                         |
-| totalOrderValue             | number      | Payment value                                           |
-| totalComission              | number      | Commission on payment value                             |
-| status                      | string      | Order status                                            |
-| statusDescription           | string      | Status description                                      |
-| creationDate                | string      | Order creation date                                     |
-| rate                        | object      | Rate detail object                                      |
-| itemId                      | string      | Item id                                                 |
-| nameItem                    | string      | Item name                                               |
-| rate                        | object      | Array object to contain the rates configured by item    |
-| freightCommissionPercentage | number      | Freight commission percentage                           |
-| productCommissionPercentage | number      | Product commission percentage                           |
-| paging                      | object      | Paging details object                                   |
-| total                       | number      | Total number of items                                   |
-| pages                       | number      | Paging total pages                                      |
-| currentPage                 | number      | Current page                                            |
-| perPage                     | number      | Paging total per Page                                   |
+| Attribute                   | Type   | Description                                          |
+| --------------------------- | ------ | ---------------------------------------------------- |
+| data                        | object | Order detail                                         |
+| orderId                     | string | Order Id                                             |
+| sellerOrderId               | string | Order Seller Id                                      |
+| totalOrderValue             | number | Payment value                                        |
+| totalComission              | number | Commission on payment value                          |
+| status                      | string | Order status                                         |
+| statusDescription           | string | Status description                                   |
+| creationDate                | string | Order creation date                                  |
+| rate                        | object | Rate detail object                                   |
+| itemId                      | string | Item id                                              |
+| nameItem                    | string | Item name                                            |
+| rate                        | object | Array object to contain the rates configured by item |
+| freightCommissionPercentage | number | Freight commission percentage                        |
+| productCommissionPercentage | number | Product commission percentage                        |
+| paging                      | object | Paging details object                                |
+| total                       | number | Total number of items                                |
+| pages                       | number | Paging total pages                                   |
+| currentPage                 | number | Current page                                         |
+| perPage                     | number | Paging total per Page                                |
 
 <br />
 
 > **Warning**
->* Throttling: Each account can make up to 5000 requests per minute.
->* The maximum number of items per page is 100.
->* The maximum number of pages to process is 30, if the number of pages is more than 30, you must refine the filter.
+>
+> - Throttling: Each account can make up to 5000 requests per minute.
+> - The maximum number of items per page is 100.
+> - The maximum number of pages to process is 30, if the number of pages is more than 30, you must refine the filter.
 
 <br />
 
@@ -632,40 +656,43 @@ curl --request GET \
 }
 
 ```
+
 <br />
 __________________________________________________
 
-## Generate Invoice 
-![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
+## Generate Invoice
+
+![](https://img.shields.io/static/v1?label=&message=GET&color=blue) `https://app.io.vtex.com/obidev.marketplace-financial-commission/v0/{{accountmarketplace}}/master/dashboard/generate`
 
 This endpoint is responsible for generating the invoices, according to the cut-off cycle programmed in the marketplace or seller's configuration in the marketplace-financial-commission application.
 
 <br />
 
 #### **Headers**
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| VtexIdclientAutCookie   | string      | Yes       |VTEX Infrastructure Authorization Token             | 
+
+| Attribute             | Type   | Mandatory | Description                             |
+| --------------------- | ------ | --------- | --------------------------------------- |
+| VtexIdclientAutCookie | string | Yes       | VTEX Infrastructure Authorization Token |
 
 <br />
 
 #### **Path parameters**
 
-| accountmarketplace  |
-| ------------ |
-|  Name of the VTEX account of the marketplace. |
+| accountmarketplace                           |
+| -------------------------------------------- |
+| Name of the VTEX account of the marketplace. |
 
 <br />
-
 
 ```bash
 curl --request GET \
-  --url 'https://app.io.vtex.com/itglobers.marketplace-financial-commission/v0/example/master/invoice/generate ' \
-  --header 'VtexIdclientAutCookie: 12345' 
+  --url 'https://app.io.vtex.com/obidev.marketplace-financial-commission/v0/example/master/invoice/generate ' \
+  --header 'VtexIdclientAutCookie: 12345'
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`\
 
@@ -681,31 +708,32 @@ Retrieve a list of invoices for a specific seller in a date range.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | Yes       | Seller Id                                                | 
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| sellerId           | string | Yes       | Seller Id                                    |
 
 <br />
 
 #### **Request**
-| Attribute     | Type        | Mandatory | Description |
-| -----------   | ----------- |---------- | ----------- |
-| dateStart     | string      | Yes       | Start date of consulting  in ```"yyyy-mm-dd"``` format  |
-| dateEnd       | string      | Yes       | End date of consulting  in ```"yyyy-mm-dd"``` format    |
-| page          | number      | Yes       | Page Number                                             |
-| pageSize      | number      | Yes       | Number of items per page                                |
+
+| Attribute | Type   | Mandatory | Description                                       |
+| --------- | ------ | --------- | ------------------------------------------------- |
+| dateStart | string | Yes       | Start date of consulting in `"yyyy-mm-dd"` format |
+| dateEnd   | string | Yes       | End date of consulting in `"yyyy-mm-dd"` format   |
+| page      | number | Yes       | Page Number                                       |
+| pageSize  | number | Yes       | Number of items per page                          |
 
 <br />
 
@@ -721,35 +749,36 @@ curl --request POST \
 	"pageSize": 10
 }'
 ```
+
 <br />
 
 ```json
 {
-	"startDate": "2022-06-17",
-	"endDate": "2022-06-17",
-	"page": 1,
-	"pageSize": 10
+  "startDate": "2022-06-17",
+  "endDate": "2022-06-17",
+  "page": 1,
+  "pageSize": 10
 }
 ```
 
 <br />
 
-#### **Response** 
+#### **Response**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| data                        | object      | Array object to order invoice detail                    |
-| id                          | string      | Invoice Id                                              |
-| status                      | string      | Invoice status                                          |
-| invoiceCreatedDate          | string      | Invoice creation date                                   |
-| totalizers                  | object      | Totalizer object                                        |
-| subTotal                    | string      |                                                         |
-| fee                         | string      |                                                         |
-| total                       | object      | Total value                                             |
-| pagination                  | object      | Paging details object                                   |
-| total                       | number      | Total number of items                                   |
-| page                        | number      | Current page                                            |
-| pageSize                    | number      | Paging total per Page                                   |
+| Attribute          | Type   | Description                          |
+| ------------------ | ------ | ------------------------------------ |
+| data               | object | Array object to order invoice detail |
+| id                 | string | Invoice Id                           |
+| status             | string | Invoice status                       |
+| invoiceCreatedDate | string | Invoice creation date                |
+| totalizers         | object | Totalizer object                     |
+| subTotal           | string |                                      |
+| fee                | string |                                      |
+| total              | object | Total value                          |
+| pagination         | object | Paging details object                |
+| total              | number | Total number of items                |
+| page               | number | Current page                         |
+| pageSize           | number | Paging total per Page                |
 
 <br />
 
@@ -757,26 +786,26 @@ curl --request POST \
 
 ```json
 {
-	"data": [
-		{
-			"id": "sellerId1_2ca6e388933d",
-			"status": "unpaid",
-			"invoiceCreatedDate": "2022-06-17",
-			"totalizers": {
-				"subTotal": 6.37,
-				"fee": 0,
-				"total": 6.37
-			}
-		}
-	],
-	"pagination": {
-		"page": 1,
-		"pageSize": 10,
-		"total": 1
-	}
+  "data": [
+    {
+      "id": "sellerId1_2ca6e388933d",
+      "status": "unpaid",
+      "invoiceCreatedDate": "2022-06-17",
+      "totalizers": {
+        "subTotal": 6.37,
+        "fee": 0,
+        "total": 6.37
+      }
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 10,
+    "total": 1
+  }
 }
-
 ```
+
 <br />
 __________________________________________________
 
@@ -793,22 +822,22 @@ Retrieve a single invoice.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | Yes       | Seller Id                                                |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| sellerId           | string | Yes       | Seller Id                                    |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
@@ -817,33 +846,34 @@ curl --request GET \
   --url https://example.myvtex.com/_v/private/financial-commission/sellerId1/invoice/sellerId1_2ca6e388933d \
   --header 'Authorization: Bearer 123456'
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| id                          | string      | Invoice Id                                              |
-| status                      | string      | Invoice status                                          |
-| invoiceCreatedDate          | string      | Invoice creation date                                   |
-| seller                      | object      | Seller Detail                                           |
-| name                        | string      | Seller name                                             |
-| contact                     | object      | Seller's contact information                            |
-| phone                       | string      | Phone number                                            |
-| orders                      | object      | Array order invoice                                     |
-| orderId                     | string      | Order Id marketplace                                    |
-| sellerOrderId               | string      | Order Id of seller                                      |
-| totalComission              | number      | Commission on payment value                             |
-| totalOrderValue             | number      | Payment total value                                     |
-| totalDiscounts              | number      | Discounts value                                         |
-| totalOrdersItems            | number      | Value of items net of payment                           |
-| totalShipping               | number      | Shipping value                                          |
-| totalTax                    | number      | Tax value                                               |
-| totalOrderRate              | number      | Rate value                                              |
-| totalizers                  | object      | Totalizer object                                        |
-| subTotal                    | number      | Subtotal value of the order's invoice                   |
-| fee                         | number      |                                                         |
-| total                       | number      | Total value of the order's invoice                      |
+| Attribute          | Type   | Description                           |
+| ------------------ | ------ | ------------------------------------- |
+| id                 | string | Invoice Id                            |
+| status             | string | Invoice status                        |
+| invoiceCreatedDate | string | Invoice creation date                 |
+| seller             | object | Seller Detail                         |
+| name               | string | Seller name                           |
+| contact            | object | Seller's contact information          |
+| phone              | string | Phone number                          |
+| orders             | object | Array order invoice                   |
+| orderId            | string | Order Id marketplace                  |
+| sellerOrderId      | string | Order Id of seller                    |
+| totalComission     | number | Commission on payment value           |
+| totalOrderValue    | number | Payment total value                   |
+| totalDiscounts     | number | Discounts value                       |
+| totalOrdersItems   | number | Value of items net of payment         |
+| totalShipping      | number | Shipping value                        |
+| totalTax           | number | Tax value                             |
+| totalOrderRate     | number | Rate value                            |
+| totalizers         | object | Totalizer object                      |
+| subTotal           | number | Subtotal value of the order's invoice |
+| fee                | number |                                       |
+| total              | number | Total value of the order's invoice    |
 
 <br />
 
@@ -884,6 +914,7 @@ curl --request GET \
 }
 
 ```
+
 <br />
 __________________________________________________
 
@@ -898,42 +929,42 @@ Create a single invoice.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | Yes       | Seller Id                                                |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| sellerId           | string | Yes       | Seller Id                                    |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
 #### **Request**
-| Attribute     | Type        | Mandatory | Description |
-| -----------   | ----------- |---------- | ----------- |
-| startDate     | string      | Yes       | Start date of order invoice in VTEX in ```"yyyy-mm-dd"``` format  |
-| endDate       | string      | Yes       | End date of order invoice in VTEX in ```"yyyy-mm-dd"``` format    |
+
+| Attribute | Type   | Mandatory | Description                                                  |
+| --------- | ------ | --------- | ------------------------------------------------------------ |
+| startDate | string | Yes       | Start date of order invoice in VTEX in `"yyyy-mm-dd"` format |
+| endDate   | string | Yes       | End date of order invoice in VTEX in `"yyyy-mm-dd"` format   |
 
 <br />
 
 ```json
 {
-	"startDate": "2022-06-17",
-	"endDate": "2022-06-17",
+  "startDate": "2022-06-17",
+  "endDate": "2022-06-17"
 }
 ```
 
 <br />
-
 
 ```bash
 curl --request POST \
@@ -945,6 +976,7 @@ curl --request POST \
 	"endDate":"2022-05-30"
 }'
 ```
+
 <br />
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`
@@ -953,6 +985,7 @@ curl --request POST \
 Invoice sellerId1_2ca6e388933d created
 
 ```
+
 <br />
 __________________________________________________
 
@@ -967,49 +1000,49 @@ Update a single invoice.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | Yes       | Seller Id                                                |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| sellerId           | string | Yes       | Seller Id                                    |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
-#### **Request** 
+#### **Request**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| status                      | string      | Invoice status                                          |
-| invoiceCreatedDate          | string      | Invoice creation date                                   |
-| seller                      | object      | Seller Detail                                           |
-| name                        | string      | Seller name                                             |
-| contact                     | object      | Seller's contact information                            |
-| phone                       | string      | Phone number                                            |
-| orders                      | object      | Array order invoice                                     |
-| orderId                     | string      | Order Id marketplace                                    |
-| sellerOrderId               | string      | Order Id of seller                                      |
-| totalComission              | number      | Commission on payment value                             |
-| totalOrderValue             | number      | Payment total value                                     |
-| totalDiscounts              | number      | Discounts value                                         |
-| totalOrdersItems            | number      | Value of items net of payment                           |
-| totalShipping               | number      | Shipping value                                          |
-| totalTax                    | number      | Tax value                                               |
-| totalOrderRate              | number      | Rate value                                              |
-| totalizers                  | object      | Totalizer object                                        |
-| subTotal                    | number      | Subtotal value of the order's invoice                   |
-| fee                         | number      |                                                         |
-| total                       | number      | Total value of the order's invoice                      |
+| Attribute          | Type   | Description                           |
+| ------------------ | ------ | ------------------------------------- |
+| status             | string | Invoice status                        |
+| invoiceCreatedDate | string | Invoice creation date                 |
+| seller             | object | Seller Detail                         |
+| name               | string | Seller name                           |
+| contact            | object | Seller's contact information          |
+| phone              | string | Phone number                          |
+| orders             | object | Array order invoice                   |
+| orderId            | string | Order Id marketplace                  |
+| sellerOrderId      | string | Order Id of seller                    |
+| totalComission     | number | Commission on payment value           |
+| totalOrderValue    | number | Payment total value                   |
+| totalDiscounts     | number | Discounts value                       |
+| totalOrdersItems   | number | Value of items net of payment         |
+| totalShipping      | number | Shipping value                        |
+| totalTax           | number | Tax value                             |
+| totalOrderRate     | number | Rate value                            |
+| totalizers         | object | Totalizer object                      |
+| subTotal           | number | Subtotal value of the order's invoice |
+| fee                | number |                                       |
+| total              | number | Total value of the order's invoice    |
 
 <br />
 
@@ -1049,7 +1082,6 @@ Update a single invoice.
 
 <br />
 
-
 ```bash
 curl --request POST \
   --url https://example.myvtex.com/_v/private/financial-commission/sellerId1/invoice/sellerId1_2ca6e388933d \
@@ -1084,6 +1116,7 @@ curl --request POST \
 		}
 }'
 ```
+
 <br />
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`
@@ -1092,6 +1125,7 @@ curl --request POST \
 Invoice sellerId1_2ca6e388933d updated
 
 ```
+
 <br />
 __________________________________________________
 
@@ -1104,22 +1138,22 @@ Delete a single invoice.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| sellerId                | string      | Yes       | Seller Id                                                |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| sellerId           | string | Yes       | Seller Id                                    |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
@@ -1128,6 +1162,7 @@ curl --request POST \
   --url https://example.myvtex.com/_v/private/financial-commission/sellerId1/invoice/sellerId1_2ca6e388933d \
     --header 'Authorization: Bearer 132456'
 ```
+
 <br />
 
 ![](https://img.shields.io/static/v1?label=&message=200&color=green) `OK`
@@ -1136,6 +1171,7 @@ curl --request POST \
 Invoice sellerId1_2ca6e388933d  deleted
 
 ```
+
 <br />
 __________________________________________________
 
@@ -1151,9 +1187,9 @@ Retrieve template email.
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
 
 <br />
 
@@ -1161,11 +1197,12 @@ Retrieve template email.
 curl --request GET \
   --url https://example.myvtex.com/_v/segment/template
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
-```Message``` field contains the html template used in the mailing.
+`Message` field contains the html template used in the mailing.
 
 <br />
 
@@ -1173,52 +1210,52 @@ curl --request GET \
 
 ```json
 {
-	"template": {
-		"Name": "invoice-detail",
-		"FriendlyName": "Invoice Detail",
-		"Description": "Templeate used for invoice detail",
-		"IsDefaultTemplate": false,
-		"AccountId": null,
-		"AccountName": null,
-		"ApplicationId": null,
-		"IsPersisted": true,
-		"IsRemoved": false,
-		"Type": "",
-		"Templates": {
-			"email": {
-				"To": "{{message.to}}",
-				"CC": null,
-				"BCC": null,
-				"Subject": "Invoice Detail",
-				"Message": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html>\r\n  <head>\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <title>{{_accountInfo.TradingName}}</title>\r\n  </head>\r\n  <body style=\"background-color: #f1f1f1 !important\">\r\n    <center>\r\n      <table\r\n        style=\"\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          margin: 0px !important;\r\n          min-width: 800px;\r\n          background-color: #fff !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            background-color: #fff !important;\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n            min-width: 600px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 22px 30px;\r\n              \"\r\n            >\r\n              <a href=\"https://vtex.com\" style=\"color: #f71963; fill: #f71963\"\r\n                ><img\r\n                  alt\r\n                  border=\"0\"\r\n                  width=\"auto\"\r\n                  src=\"http://licensemanager.vtex.com.br/api/site/pub/accounts/e39d05f9-0c54-4469-a626-8bb5cff169f8/logos/show\"\r\n                  style=\"\r\n                    vertical-align: top;\r\n                    outline: none;\r\n                    text-decoration: none;\r\n                    -ms-interpolation-mode: bicubic;\r\n                    max-width: 100%;\r\n                    border: none;\r\n                    width: 15% !important;\r\n                  \"\r\n              /></a>\r\n            </td>\r\n            <td\r\n              align=\"right\"\r\n              valign=\"center\"\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 22px 30px;\r\n              \"\r\n            >\r\n              <h2 style=\"color: #717786; font-size: 16px !important\">\r\n                Invoice Detail\r\n              </h2>\r\n              <p style=\"color: #717786; font-size: 12px !important\">\r\n                Invoice: {{id}}<br />Date: {{invoiceCreatedDate}}\r\n              </p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 52px 30px 20px;\r\n                width: 50% !important;\r\n              \"\r\n            >\r\n              <p>\r\n                E-mail: {{seller.contact.email}}<br />\r\n                Phone: {{seller.contact.phone}}\r\n              </p>\r\n            </td>\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 15px 80px 20px 180px;\r\n                width: 50%;\r\n                text-align: end !important;\r\n              \"\r\n            >\r\n              <p><span>To:</span><br />{{seller.name}}<br /></p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 20px 30px 64px;\r\n              \"\r\n              align=\"center\"\r\n            >\r\n              <p>\r\n                <b><span>Comments or special instructions:</span></b>\r\n                <br />{{comment}}\r\n              </p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"font-size: 14px; width: 25% !important\">ID</th>\r\n            <th style=\"font-size: 14px; width: 25% !important\">TOTAL</th>\r\n            <th style=\"font-size: 14px; width: 25% !important\">COMMISSION</th>\r\n          </tr>\r\n          {{#each orders}}\r\n          <tr>\r\n            <td\r\n              style=\"\r\n                text-align: center;\r\n                background-color: #fff;\r\n                padding-bottom: 10px !important;\r\n              \"\r\n            >\r\n              {{this.sellerOrderId}}\r\n            </td>\r\n            <td\r\n              style=\"\r\n                text-align: center;\r\n                background-color: #fff;\r\n                padding-bottom:10px !important;\r\n              \"\r\n            >\r\n              {{this.totalOrderValue}}\r\n            </td>\r\n            <td\r\n              style=\"\r\n                text-align: center;\r\n                background-color: #fff;\r\n                padding-bottom: 10px !important;\r\n              \"\r\n            >\r\n              ${{this.totalComission}}\r\n            </td>\r\n          </tr>\r\n          {{/each}}\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"width: 25% padding-top: 40px !important;\"></th>\r\n            <th\r\n              style=\"\r\n                font-size: 14px;\r\n                width: 25%;\r\n                text-align: initial;\r\n                padding-top: 40px !important;\r\n              \"\r\n            >\r\n              SUBTOTAL:\r\n            </th>\r\n            <td\r\n              style=\"width: 25%; text-align: end; padding-top: 40px !important\"\r\n            >\r\n              {{totalizers.subtotal}}\r\n            </td>\r\n            <th style=\"width: 25%; padding-top: 40px !important\"></th>\r\n          </tr>\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"width: 25%\"></th>\r\n            <th\r\n              style=\"\r\n                font-size: 14px;\r\n                width: 25%;\r\n                text-align: initial !important;\r\n              \"\r\n            >\r\n              SERVICE FEE:\r\n            </th>\r\n            <td style=\"width: 25%; text-align: end !important\">\r\n              ${{totalizers.fee}}\r\n            </td>\r\n            <th style=\"width: 25%\"></th>\r\n          </tr>\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"width: 25%; padding-bottom: 40px !important\"></th>\r\n            <th\r\n              style=\"\r\n                font-size: 14px;\r\n                width: 25%;\r\n                text-align: initial;\r\n                padding-bottom: 40px !important;\r\n              \"\r\n            >\r\n              TOTAL DUE:\r\n            </th>\r\n            <td\r\n              style=\"\r\n                width: 25%;\r\n                text-align: end;\r\n                padding-bottom: 40px !important;\r\n              \"\r\n            >\r\n              ${{totalizers.total}}\r\n            </td>\r\n            <th style=\"width: 25%; padding-bottom: 40px !important\"></th>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 30px 30px 24px;\r\n              \"\r\n              align=\"left\"\r\n            >\r\n              <p>\r\n                <b>Thanks you for your business!</b>\r\n              </p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </center>\r\n  </body>\r\n</html>\r\n",
-				"Type": "E",
-				"ProviderId": "336932c2-1ea6-4e30-8d59-3359b0aca076",
-				"ProviderName": null,
-				"IsActive": true,
-				"withError": false
-			},
-			"sms": {
-				"Type": "S",
-				"ProviderId": null,
-				"ProviderName": null,
-				"IsActive": false,
-				"withError": false,
-				"Parameters": [
-					{
-						"Name": "Destination",
-						"Value": "Destination"
-					},
-					{
-						"Name": "MessageText",
-						"Value": "MessageText"
-					}
-				]
-			}
-		}
-	}
+  "template": {
+    "Name": "invoice-detail",
+    "FriendlyName": "Invoice Detail",
+    "Description": "Templeate used for invoice detail",
+    "IsDefaultTemplate": false,
+    "AccountId": null,
+    "AccountName": null,
+    "ApplicationId": null,
+    "IsPersisted": true,
+    "IsRemoved": false,
+    "Type": "",
+    "Templates": {
+      "email": {
+        "To": "{{message.to}}",
+        "CC": null,
+        "BCC": null,
+        "Subject": "Invoice Detail",
+        "Message": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html>\r\n  <head>\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <title>{{_accountInfo.TradingName}}</title>\r\n  </head>\r\n  <body style=\"background-color: #f1f1f1 !important\">\r\n    <center>\r\n      <table\r\n        style=\"\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          margin: 0px !important;\r\n          min-width: 800px;\r\n          background-color: #fff !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            background-color: #fff !important;\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n            min-width: 600px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 22px 30px;\r\n              \"\r\n            >\r\n              <a href=\"https://vtex.com\" style=\"color: #f71963; fill: #f71963\"\r\n                ><img\r\n                  alt\r\n                  border=\"0\"\r\n                  width=\"auto\"\r\n                  src=\"http://licensemanager.vtex.com.br/api/site/pub/accounts/e39d05f9-0c54-4469-a626-8bb5cff169f8/logos/show\"\r\n                  style=\"\r\n                    vertical-align: top;\r\n                    outline: none;\r\n                    text-decoration: none;\r\n                    -ms-interpolation-mode: bicubic;\r\n                    max-width: 100%;\r\n                    border: none;\r\n                    width: 15% !important;\r\n                  \"\r\n              /></a>\r\n            </td>\r\n            <td\r\n              align=\"right\"\r\n              valign=\"center\"\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 22px 30px;\r\n              \"\r\n            >\r\n              <h2 style=\"color: #717786; font-size: 16px !important\">\r\n                Invoice Detail\r\n              </h2>\r\n              <p style=\"color: #717786; font-size: 12px !important\">\r\n                Invoice: {{id}}<br />Date: {{invoiceCreatedDate}}\r\n              </p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 52px 30px 20px;\r\n                width: 50% !important;\r\n              \"\r\n            >\r\n              <p>\r\n                E-mail: {{seller.contact.email}}<br />\r\n                Phone: {{seller.contact.phone}}\r\n              </p>\r\n            </td>\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 15px 80px 20px 180px;\r\n                width: 50%;\r\n                text-align: end !important;\r\n              \"\r\n            >\r\n              <p><span>To:</span><br />{{seller.name}}<br /></p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 20px 30px 64px;\r\n              \"\r\n              align=\"center\"\r\n            >\r\n              <p>\r\n                <b><span>Comments or special instructions:</span></b>\r\n                <br />{{comment}}\r\n              </p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"font-size: 14px; width: 25% !important\">ID</th>\r\n            <th style=\"font-size: 14px; width: 25% !important\">TOTAL</th>\r\n            <th style=\"font-size: 14px; width: 25% !important\">COMMISSION</th>\r\n          </tr>\r\n          {{#each orders}}\r\n          <tr>\r\n            <td\r\n              style=\"\r\n                text-align: center;\r\n                background-color: #fff;\r\n                padding-bottom: 10px !important;\r\n              \"\r\n            >\r\n              {{this.sellerOrderId}}\r\n            </td>\r\n            <td\r\n              style=\"\r\n                text-align: center;\r\n                background-color: #fff;\r\n                padding-bottom:10px !important;\r\n              \"\r\n            >\r\n              {{this.totalOrderValue}}\r\n            </td>\r\n            <td\r\n              style=\"\r\n                text-align: center;\r\n                background-color: #fff;\r\n                padding-bottom: 10px !important;\r\n              \"\r\n            >\r\n              ${{this.totalComission}}\r\n            </td>\r\n          </tr>\r\n          {{/each}}\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          border-bottom-color: #e7e9ee !important;\r\n          border-bottom-style: solid !important;\r\n          border-bottom-width: 2px !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"width: 25% padding-top: 40px !important;\"></th>\r\n            <th\r\n              style=\"\r\n                font-size: 14px;\r\n                width: 25%;\r\n                text-align: initial;\r\n                padding-top: 40px !important;\r\n              \"\r\n            >\r\n              SUBTOTAL:\r\n            </th>\r\n            <td\r\n              style=\"width: 25%; text-align: end; padding-top: 40px !important\"\r\n            >\r\n              {{totalizers.subtotal}}\r\n            </td>\r\n            <th style=\"width: 25%; padding-top: 40px !important\"></th>\r\n          </tr>\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"width: 25%\"></th>\r\n            <th\r\n              style=\"\r\n                font-size: 14px;\r\n                width: 25%;\r\n                text-align: initial !important;\r\n              \"\r\n            >\r\n              SERVICE FEE:\r\n            </th>\r\n            <td style=\"width: 25%; text-align: end !important\">\r\n              ${{totalizers.fee}}\r\n            </td>\r\n            <th style=\"width: 25%\"></th>\r\n          </tr>\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <th style=\"width: 25%; padding-bottom: 40px !important\"></th>\r\n            <th\r\n              style=\"\r\n                font-size: 14px;\r\n                width: 25%;\r\n                text-align: initial;\r\n                padding-bottom: 40px !important;\r\n              \"\r\n            >\r\n              TOTAL DUE:\r\n            </th>\r\n            <td\r\n              style=\"\r\n                width: 25%;\r\n                text-align: end;\r\n                padding-bottom: 40px !important;\r\n              \"\r\n            >\r\n              ${{totalizers.total}}\r\n            </td>\r\n            <th style=\"width: 25%; padding-bottom: 40px !important\"></th>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n      <table\r\n        style=\"\r\n          font-family: Helvetica, Arial, sans-serif !important;\r\n          line-height: 150% !important;\r\n          margin: 0px !important;\r\n        \"\r\n        align=\"center\"\r\n        border=\"0\"\r\n        cellpading=\"0\"\r\n        cellspacing=\"0\"\r\n        width=\"800\"\r\n      >\r\n        <tbody\r\n          style=\"\r\n            font-family: Helvetica, Arial, sans-serif !important;\r\n            line-height: 150% !important;\r\n            margin: 0px !important;\r\n          \"\r\n        >\r\n          <tr\r\n            style=\"\r\n              background-color: #fff !important;\r\n              font-family: Helvetica, Arial, sans-serif !important;\r\n              line-height: 150% !important;\r\n              margin: 0px !important;\r\n            \"\r\n          >\r\n            <td\r\n              style=\"\r\n                font-family: Helvetica, Arial, sans-serif !important;\r\n                line-height: 150% !important;\r\n                margin: 0px !important;\r\n                padding: 30px 30px 24px;\r\n              \"\r\n              align=\"left\"\r\n            >\r\n              <p>\r\n                <b>Thanks you for your business!</b>\r\n              </p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </center>\r\n  </body>\r\n</html>\r\n",
+        "Type": "E",
+        "ProviderId": "336932c2-1ea6-4e30-8d59-3359b0aca076",
+        "ProviderName": null,
+        "IsActive": true,
+        "withError": false
+      },
+      "sms": {
+        "Type": "S",
+        "ProviderId": null,
+        "ProviderName": null,
+        "IsActive": false,
+        "withError": false,
+        "Parameters": [
+          {
+            "Name": "Destination",
+            "Value": "Destination"
+          },
+          {
+            "Name": "MessageText",
+            "Value": "MessageText"
+          }
+        ]
+      }
+    }
+  }
 }
-
 ```
+
 <br />
 __________________________________________________
 
@@ -1232,17 +1269,18 @@ Send email.
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
 
 <br />
 
 #### **Request**
-| Attribute     | Type        | Mandatory | Description |
-| -----------   | ----------- |---------- | ----------- |
-| email         | string      | Yes       | Mail of the recipient to send. |
-| jsonData      | string      | Yes       | Contains the json in string format of the invoiced data to be sent in the email according to the parameterized template.    |
+
+| Attribute | Type   | Mandatory | Description                                                                                                              |
+| --------- | ------ | --------- | ------------------------------------------------------------------------------------------------------------------------ |
+| email     | string | Yes       | Mail of the recipient to send.                                                                                           |
+| jsonData  | string | Yes       | Contains the json in string format of the invoiced data to be sent in the email according to the parameterized template. |
 
 ```bash
 curl --request POST \
@@ -1253,18 +1291,19 @@ curl --request POST \
 	"jsonData": "{\"id\":\"sellerId1_ebf209071ae7\",\"status\":\"unpaid\",\"invoiceCreatedDate\":\"2022-06-14\",\"seller\":{\"name\":\"sellerName\",\"id\":\"sellerId1\",\"contact\":{\"phone\":null}},\"orders\":[{\"orderId\":\"123456-01\",\"sellerOrderId\":\"GCB-123456-01\",\"totalComission\":0,\"totalOrderValue\":522.5,\"totalDiscounts\":0,\"totalOrdersItems\":522.5,\"totalShipping\":0,\"totalTax\":0,\"totalOrderRate\":null}],\"totalizers\":{\"subTotal\":0,\"fee\":0,\"total\":0},\"comment\":\"Invoicemanuallycreatedon2022-06-14\"}"
 }'
 ```
+
 <br />
 
 ```json
 {
-	"email": "destinataio@example.com",
-	"jsonData": "{\"id\":\"sellerId1_ebf209071ae7\",\"status\":\"unpaid\",\"invoiceCreatedDate\":\"2022-06-14\",\"seller\":{\"name\":\"sellerName\",\"id\":\"sellerId1\",\"contact\":{\"phone\":null}},\"orders\":[{\"orderId\":\"123456-01\",\"sellerOrderId\":\"GCB-123456-01\",\"totalComission\":0,\"totalOrderValue\":522.5,\"totalDiscounts\":0,\"totalOrdersItems\":522.5,\"totalShipping\":0,\"totalTax\":0,\"totalOrderRate\":null}],\"totalizers\":{\"subTotal\":0,\"fee\":0,\"total\":0},\"comment\":\"Invoicemanuallycreatedon2022-06-14\"}"
+  "email": "destinataio@example.com",
+  "jsonData": "{\"id\":\"sellerId1_ebf209071ae7\",\"status\":\"unpaid\",\"invoiceCreatedDate\":\"2022-06-14\",\"seller\":{\"name\":\"sellerName\",\"id\":\"sellerId1\",\"contact\":{\"phone\":null}},\"orders\":[{\"orderId\":\"123456-01\",\"sellerOrderId\":\"GCB-123456-01\",\"totalComission\":0,\"totalOrderValue\":522.5,\"totalDiscounts\":0,\"totalOrdersItems\":522.5,\"totalShipping\":0,\"totalTax\":0,\"totalOrderRate\":null}],\"totalizers\":{\"subTotal\":0,\"fee\":0,\"total\":0},\"comment\":\"Invoicemanuallycreatedon2022-06-14\"}"
 }
 ```
 
 <br />
 
-#### **Response** 
+#### **Response**
 
 <br />
 
@@ -1274,19 +1313,18 @@ curl --request POST \
 ok
 
 ```
+
 <br />
 __________________________________________________
 
-
 # External Invoice
 
-Endpoints that allow the creation of invoices externally. 
+Endpoints that allow the creation of invoices externally.
 
-> **Warning** 
- > Endpoints exposed by this app are meant to be used in integrations. Pay attention to the Authorization header in each of the REST endpoints. If they require type: bearer it means that a token must be generated using this endpoint or via the admin panel for marketplace.
+> **Warning**
+> Endpoints exposed by this app are meant to be used in integrations. Pay attention to the Authorization header in each of the REST endpoints. If they require type: bearer it means that a token must be generated using this endpoint or via the admin panel for marketplace.
 
  <br />
-
 
 ## List External Invoices
 
@@ -1297,34 +1335,35 @@ Retrieve list invoices.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
 #### **Request parameters allowed**
-| Attribute           | Type        | Mandatory | Description |
-| -----------         | ----------- |---------- | ----------- |
-| page                | number      | No        | Page Number                                                     |
-| pageSize            | number      | No        | Number of items per page                                        |
-| sellerName          | string      | No        | Seller name |
-| sellerId            | string      | No        | Seller Id to be returned in the query. You can also leave empty to get all sellers. |
-| createdDateInitial  | string      | No        | Start creation date of consulting  in ```"yyyy-mm-dd"``` format          |
-| createdDateEnd      | string      | No        | End creation date of consulting  in ```"yyyy-mm-dd"``` format            | 
-| status              | string      | No        | Invoice status             | 
+
+| Attribute          | Type   | Mandatory | Description                                                                         |
+| ------------------ | ------ | --------- | ----------------------------------------------------------------------------------- |
+| page               | number | No        | Page Number                                                                         |
+| pageSize           | number | No        | Number of items per page                                                            |
+| sellerName         | string | No        | Seller name                                                                         |
+| sellerId           | string | No        | Seller Id to be returned in the query. You can also leave empty to get all sellers. |
+| createdDateInitial | string | No        | Start creation date of consulting in `"yyyy-mm-dd"` format                          |
+| createdDateEnd     | string | No        | End creation date of consulting in `"yyyy-mm-dd"` format                            |
+| status             | string | No        | Invoice status                                                                      |
 
 <br />
 
@@ -1333,27 +1372,28 @@ curl --request GET \
   --url https://example.myvtex.com/_v/private/financial-commission/external/invoice?sellerId=sell21octandrei113 \
   --header 'Authorization: Bearer 123456'
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| data                        | Array object| Contains data of the invoice created.                   |
-| id                          | string      | Invoice Id                                              |
-| status                      | string      | Invoice status                                          |
-| invoiceCreatedDate          | string      | Invoice creation date                                   |
-| seller                      | object      | Seller Detail                                           |
-| id                          | string      | Seller Id                                               |
-| name                        | string      | Seller name                                             |
-| contact                     | object      | Seller's contact information                            |
-| email                       | string      | Seller Email                                            |
-| jsonData                    | JSON string | Contains detail order data of the invoice created.       |
-| comment                     | string      | Comment on the invoice created.                         |
-| pagination                  | object      | Paging details object                                   |
-| total                       | number      | Total number of items                                   |
-| page                        | number      | Current page                                            |
-| pageSize                    | number      | Paging total per Page                                   |
+| Attribute          | Type         | Description                                        |
+| ------------------ | ------------ | -------------------------------------------------- |
+| data               | Array object | Contains data of the invoice created.              |
+| id                 | string       | Invoice Id                                         |
+| status             | string       | Invoice status                                     |
+| invoiceCreatedDate | string       | Invoice creation date                              |
+| seller             | object       | Seller Detail                                      |
+| id                 | string       | Seller Id                                          |
+| name               | string       | Seller name                                        |
+| contact            | object       | Seller's contact information                       |
+| email              | string       | Seller Email                                       |
+| jsonData           | JSON string  | Contains detail order data of the invoice created. |
+| comment            | string       | Comment on the invoice created.                    |
+| pagination         | object       | Paging details object                              |
+| total              | number       | Total number of items                              |
+| page               | number       | Current page                                       |
+| pageSize           | number       | Paging total per Page                              |
 
 <br />
 
@@ -1389,6 +1429,7 @@ curl --request GET \
 }
 
 ```
+
 <br />
 __________________________________________________
 
@@ -1401,21 +1442,21 @@ Retrieve a single invoice.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
@@ -1424,27 +1465,28 @@ curl --request GET \
   --url https://example.myvtex.com/_v/private/financial-commission/external/invoice/12345655 \
   --header 'Authorization: Bearer 123456'
 ```
+
 <br />
 
-#### **Response** 
+#### **Response**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| data                        | Array object| Contains data of the invoice created.                   |
-| id                          | string      | Invoice Id                                              |
-| status                      | string      | Invoice status                                          |
-| invoiceCreatedDate          | string      | Invoice creation date                                   |
-| seller                      | object      | Seller Detail                                           |
-| id                          | string      | Seller Id                                               |
-| name                        | string      | Seller name                                             |
-| contact                     | object      | Seller's contact information                            |
-| email                       | string      | Seller Email                                            |
-| jsonData                    | JSON string | Contains detail data of the invoice created.            |
-| comment                     | string      | Comment on the invoice created.                         |
-| pagination                  | object      | Paging details object                                   |
-| total                       | number      | Total number of items                                   |
-| page                        | number      | Current page                                            |
-| pageSize                    | number      | Paging total per Page                                   |
+| Attribute          | Type         | Description                                  |
+| ------------------ | ------------ | -------------------------------------------- |
+| data               | Array object | Contains data of the invoice created.        |
+| id                 | string       | Invoice Id                                   |
+| status             | string       | Invoice status                               |
+| invoiceCreatedDate | string       | Invoice creation date                        |
+| seller             | object       | Seller Detail                                |
+| id                 | string       | Seller Id                                    |
+| name               | string       | Seller name                                  |
+| contact            | object       | Seller's contact information                 |
+| email              | string       | Seller Email                                 |
+| jsonData           | JSON string  | Contains detail data of the invoice created. |
+| comment            | string       | Comment on the invoice created.              |
+| pagination         | object       | Paging details object                        |
+| total              | number       | Total number of items                        |
+| page               | number       | Current page                                 |
+| pageSize           | number       | Paging total per Page                        |
 
 <br />
 
@@ -1452,31 +1494,31 @@ curl --request GET \
 
 ```json
 {
-    "data": [
-        {
-            "id": "seller1_644b6f1841cf",
-            "status": "unpaid",
-            "accountName": "marketplace",
-            "seller": {
-                "id": "seller1",
-                "name": "seller1_name",
-                "contact": {
-                    "email": "email@vtex.com.br"
-                }
-            },
-            "invoiceCreatedDate": "2022-07-01",
-            "jsonData": "{\"orders\":[{\"orderId\":\"123456789-01\",\"orderIdERP\":\"orderERP-123\",\"totalComission\":4.12,\"totalOrderValue\":38.5,\"totalDiscounts\":0,\"totalOrdersItems\":24,\"totalShipping\":14.5,\"totalTax\":0},{\"orderId\":\"456-01\",\"orderIdERP\":\"orderERP-456\",\"totalComission\":0,\"totalOrderValue\":20,\"totalDiscounts\":0,\"totalOrdersItems\":20,\"totalShipping\":0,\"totalTax\":0},{\"orderId\":\"789-01\",\"orderIdERP\":\"orderERP-789\",\"totalComission\":2.25,\"totalOrderValue\":14,\"totalDiscounts\":0,\"totalOrdersItems\":9,\"totalShipping\":5,\"totalTax\":0}],\"totalizers\":{\"subTotal\":6.37,\"fee\":0,\"total\":6.37}}",
-            "comment": "Invoice created by external API REST integration on 2022-07-07"
+  "data": [
+    {
+      "id": "seller1_644b6f1841cf",
+      "status": "unpaid",
+      "accountName": "marketplace",
+      "seller": {
+        "id": "seller1",
+        "name": "seller1_name",
+        "contact": {
+          "email": "email@vtex.com.br"
         }
-    ],
-    "pagination": {
-        "page": 1,
-        "pageSize": 100,
-        "total": 1
+      },
+      "invoiceCreatedDate": "2022-07-01",
+      "jsonData": "{\"orders\":[{\"orderId\":\"123456789-01\",\"orderIdERP\":\"orderERP-123\",\"totalComission\":4.12,\"totalOrderValue\":38.5,\"totalDiscounts\":0,\"totalOrdersItems\":24,\"totalShipping\":14.5,\"totalTax\":0},{\"orderId\":\"456-01\",\"orderIdERP\":\"orderERP-456\",\"totalComission\":0,\"totalOrderValue\":20,\"totalDiscounts\":0,\"totalOrdersItems\":20,\"totalShipping\":0,\"totalTax\":0},{\"orderId\":\"789-01\",\"orderIdERP\":\"orderERP-789\",\"totalComission\":2.25,\"totalOrderValue\":14,\"totalDiscounts\":0,\"totalOrdersItems\":9,\"totalShipping\":5,\"totalTax\":0}],\"totalizers\":{\"subTotal\":6.37,\"fee\":0,\"total\":6.37}}",
+      "comment": "Invoice created by external API REST integration on 2022-07-07"
     }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 100,
+    "total": 1
+  }
 }
-
 ```
+
 <br />
 __________________________________________________
 
@@ -1491,54 +1533,54 @@ Create a single external invoice.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
 
 <br />
 
 #### **Request**
-| Attribute           | Type        | Mandatory | Description |
-| --------------------| ----------- |---------- | ----------- |
-| status              | string      | Yes       | Status invoice. The allowed values are: paid, unpaid, partial.  |
-| invoiceCreatedDate  | string      | Yes       | Creation date of invoice in ```"yyyy-mm-dd"``` format    |
-| seller              | object      | Yes       | Seller Detail     |
-| name                | string      | Yes       | Seller name    |
-| id                  | string      | Yes       | Seller Id    |
-| contact             | object      | Yes       | Seller contact information    |
-| email               | string      | Yes       | Seller Email    |
-| jsonData            | JSON string | Yes       | Contains detail order data of the invoice created in JSON string format. The content of the string is customizable customer.  Take into account the fields sent as they must exist in the email template to report the created invoice.    |
+
+| Attribute          | Type        | Mandatory | Description                                                                                                                                                                                                                            |
+| ------------------ | ----------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| status             | string      | Yes       | Status invoice. The allowed values are: paid, unpaid, partial.                                                                                                                                                                         |
+| invoiceCreatedDate | string      | Yes       | Creation date of invoice in `"yyyy-mm-dd"` format                                                                                                                                                                                      |
+| seller             | object      | Yes       | Seller Detail                                                                                                                                                                                                                          |
+| name               | string      | Yes       | Seller name                                                                                                                                                                                                                            |
+| id                 | string      | Yes       | Seller Id                                                                                                                                                                                                                              |
+| contact            | object      | Yes       | Seller contact information                                                                                                                                                                                                             |
+| email              | string      | Yes       | Seller Email                                                                                                                                                                                                                           |
+| jsonData           | JSON string | Yes       | Contains detail order data of the invoice created in JSON string format. The content of the string is customizable customer. Take into account the fields sent as they must exist in the email template to report the created invoice. |
 
 <br />
 
 ```json
 {
-	"status": "unpaid",
-	"invoiceCreatedDate": "2022-08-01",
-	"seller": {
-		"name": "sellerName",
-		"id": "sellerId",
-		"contact": {
-			"email": "email@example.com"
-		}
-	},
-	"jsonData": "{\"orders\":[{\"orderId\":\"123-01\",\"orderIdERP\":\"orderERP-123\",\"totalComission\":4.12,\"totalOrderValue\":38.5,\"totalDiscounts\":0,\"totalOrdersItems\":24,\"totalShipping\":14.5,\"totalTax\":0},{\"orderId\":\"456-01\",\"orderIdERP\":\"orderERP-456\",\"totalComission\":0,\"totalOrderValue\":20,\"totalDiscounts\":0,\"totalOrdersItems\":20,\"totalShipping\":0,\"totalTax\":0},{\"orderId\":\"103333-01\",\"orderIdERP\":\"orderERP-789\",\"totalComission\":2.25,\"totalOrderValue\":14,\"totalDiscounts\":0,\"totalOrdersItems\":9,\"totalShipping\":5,\"totalTax\":0}],\"totalizers\":{\"subTotal\":6.37,\"fee\":0,\"total\":6.37}}"
+  "status": "unpaid",
+  "invoiceCreatedDate": "2022-08-01",
+  "seller": {
+    "name": "sellerName",
+    "id": "sellerId",
+    "contact": {
+      "email": "email@example.com"
+    }
+  },
+  "jsonData": "{\"orders\":[{\"orderId\":\"123-01\",\"orderIdERP\":\"orderERP-123\",\"totalComission\":4.12,\"totalOrderValue\":38.5,\"totalDiscounts\":0,\"totalOrdersItems\":24,\"totalShipping\":14.5,\"totalTax\":0},{\"orderId\":\"456-01\",\"orderIdERP\":\"orderERP-456\",\"totalComission\":0,\"totalOrderValue\":20,\"totalDiscounts\":0,\"totalOrdersItems\":20,\"totalShipping\":0,\"totalTax\":0},{\"orderId\":\"103333-01\",\"orderIdERP\":\"orderERP-789\",\"totalComission\":2.25,\"totalOrderValue\":14,\"totalDiscounts\":0,\"totalOrdersItems\":9,\"totalShipping\":5,\"totalTax\":0}],\"totalizers\":{\"subTotal\":6.37,\"fee\":0,\"total\":6.37}}"
 }
 ```
 
 <br />
-
 
 ```bash
 curl --location --request POST 'https://{{accountmarketplace}}.myvtex.com/_v/private/financial-commission/external/invoice/' \
@@ -1557,6 +1599,7 @@ curl --location --request POST 'https://{{accountmarketplace}}.myvtex.com/_v/pri
 	"jsonData": "{\"orders\":[{\"orderId\":\"123-01\",\"orderIdERP\":\"orderERP-123\",\"totalComission\":4.12,\"totalOrderValue\":38.5,\"totalDiscounts\":0,\"totalOrdersItems\":24,\"totalShipping\":14.5,\"totalTax\":0},{\"orderId\":\"456-01\",\"orderIdERP\":\"orderERP-456\",\"totalComission\":0,\"totalOrderValue\":20,\"totalDiscounts\":0,\"totalOrdersItems\":20,\"totalShipping\":0,\"totalTax\":0},{\"orderId\":\"103333-01\",\"orderIdERP\":\"orderERP-789\",\"totalComission\":2.25,\"totalOrderValue\":14,\"totalDiscounts\":0,\"totalOrdersItems\":9,\"totalShipping\":5,\"totalTax\":0}],\"totalizers\":{\"subTotal\":6.37,\"fee\":0,\"total\":6.37}}"
 }'
 ```
+
 <br />
 
 #### **Response**
@@ -1565,11 +1608,11 @@ curl --location --request POST 'https://{{accountmarketplace}}.myvtex.com/_v/pri
 
 ```json
 {
-    "message": "Invoice Created, Shortly you will receive an email with the invoice created to your email address. email@example.com",
-    "id": "Id_0c0d6c5e7f2c"
+  "message": "Invoice Created, Shortly you will receive an email with the invoice created to your email address. email@example.com",
+  "id": "Id_0c0d6c5e7f2c"
 }
-
 ```
+
 <br />
 __________________________________________________
 
@@ -1584,51 +1627,50 @@ Update a single external invoice.
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
-#### **Request** 
+#### **Request**
 
-| Attribute                   | Type        | Description                                             |
-| ----------------------------| ----------- |-------------------------------------------------------- |
-| status                      | string      | Invoice status                                          |
-| invoiceCreatedDate          | string      | Invoice creation date                                   |
-| seller                      | object      | Seller Detail                                           |
-| name                        | string      | Seller name                                             |
-| id                          | string      | Seller Id                                               |
-| contact                     | object      | Seller's contact information                            |
-| email                       | string      | Seller Email                                            |
-| jsonData                    | JSON string | Contains detail order data of the invoice created in JSON string format.|
+| Attribute          | Type        | Description                                                              |
+| ------------------ | ----------- | ------------------------------------------------------------------------ |
+| status             | string      | Invoice status                                                           |
+| invoiceCreatedDate | string      | Invoice creation date                                                    |
+| seller             | object      | Seller Detail                                                            |
+| name               | string      | Seller name                                                              |
+| id                 | string      | Seller Id                                                                |
+| contact            | object      | Seller's contact information                                             |
+| email              | string      | Seller Email                                                             |
+| jsonData           | JSON string | Contains detail order data of the invoice created in JSON string format. |
 
 <br />
 
 ```json
 {
-	"seller": {
-		"contact": {
-			"email": "emailName@domain.com"
-		}
-	}
+  "seller": {
+    "contact": {
+      "email": "emailName@domain.com"
+    }
+  }
 }
 ```
 
 <br />
-
 
 ```bash
 curl --location --request PATCH 'https://{{accountmarketplace}}.myvtex.com/_v/private/financial-commission/external/invoice/{{invoiceId}}' \
@@ -1642,6 +1684,7 @@ curl --location --request PATCH 'https://{{accountmarketplace}}.myvtex.com/_v/pr
 	}
 }'
 ```
+
 <br />
 
 #### **Response**
@@ -1650,11 +1693,11 @@ curl --location --request PATCH 'https://{{accountmarketplace}}.myvtex.com/_v/pr
 
 ```json
 {
-    "invoiceId": "Id_0c0d6c5e7f2c",
-    "message": "The invoice has been successfully update "
+  "invoiceId": "Id_0c0d6c5e7f2c",
+  "message": "The invoice has been successfully update "
 }
-
 ```
+
 <br />
 __________________________________________________
 
@@ -1662,28 +1705,28 @@ __________________________________________________
 
 ![](https://img.shields.io/static/v1?label=&message=DELETE&color=red) `https://{{accountmarketplace}}.myvtex.com/_v/private/financial-commission/external/invoice/{{invoiceId}}`
 
-Delete a single external invoice. 
+Delete a single external invoice.
 
-> **warning** This process is definitive. 
+> **warning** This process is definitive.
 
 <br />
 
 #### **Authorization**
-> **Type** ```Bearer Token```
 
-| Attribute | Type        | Mandatory | Description |
-| ----------| ----------- |---------- | ----------- |
-| Token     | string      | Yes       |The token configured by the marketplace in financial commission             |
+> **Type** `Bearer Token`
 
+| Attribute | Type   | Mandatory | Description                                                     |
+| --------- | ------ | --------- | --------------------------------------------------------------- |
+| Token     | string | Yes       | The token configured by the marketplace in financial commission |
 
 <br />
 
 #### **Path parameters**
 
-| Attribute               | Type        | Mandatory | Description |
-| ----------------------- | ----------- |---------- | ----------- |
-| accountmarketplace      | string      | Yes       | Name of the VTEX account of the marketplace.             |
-| invoiceId               | string      | Yes       | InvoiceId                                                |  
+| Attribute          | Type   | Mandatory | Description                                  |
+| ------------------ | ------ | --------- | -------------------------------------------- |
+| accountmarketplace | string | Yes       | Name of the VTEX account of the marketplace. |
+| invoiceId          | string | Yes       | InvoiceId                                    |
 
 <br />
 
@@ -1692,6 +1735,7 @@ curl --location --request DELETE 'https://{{accountmarketplace}}.myvtex.com/_v/p
 --header 'Authorization: Bearer 123456'
 
 ```
+
 <br />
 
 #### **Response**
@@ -1700,11 +1744,10 @@ curl --location --request DELETE 'https://{{accountmarketplace}}.myvtex.com/_v/p
 
 ```json
 {
-    "invoiceId": "Id_1234566",
-    "message": "The invoice has been successfully deleted "
+  "invoiceId": "Id_1234566",
+  "message": "The invoice has been successfully deleted "
 }
-
 ```
+
 <br />
 __________________________________________________
-

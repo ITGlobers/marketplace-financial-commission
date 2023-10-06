@@ -1,4 +1,4 @@
-import { DoxisCredentials } from '../../environments'
+import { DoxisCredentialsDev } from '../../environments'
 import { generateFileByType } from '../../utils/generateFile'
 import { randomId } from '../../utils/randomId'
 
@@ -10,7 +10,7 @@ async function createPayoutReportServices(
     clients: { doxis, payoutReports },
   } = ctx
 
-  doxis.dmsRepositoryId = DoxisCredentials.COMMISSION_REPORT
+  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
 
   let payoutToSave = data
 

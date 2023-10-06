@@ -1,5 +1,5 @@
 import React from 'react'
-import { settings as Settings } from 'itglobers.components-financial-commission'
+import { settings as Settings } from 'obidev.components-financial-commission'
 
 import {
   GET_SELLERS,

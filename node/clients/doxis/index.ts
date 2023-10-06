@@ -2,7 +2,7 @@ import FormData from 'form-data'
 import { ExternalClient } from '@vtex/api'
 import type { InstanceOptions, IOContext, RequestConfig } from '@vtex/api'
 
-import { DoxisCredentials } from '../../environments'
+import { DoxisCredentialsDev, DoxisCredentialsProd } from '../../environments'
 import { statusToError } from '../../utils/errors'
 
 export default class Doxis extends ExternalClient {
@@ -28,12 +28,31 @@ export default class Doxis extends ExternalClient {
     this._dmsRepositoryId = dmsRepositoryId
   }
 
-  private login = async () =>
-    this.http.post(this.routes.login, {
-      customerName: DoxisCredentials.CUSTOMER_NAME,
-      userName: DoxisCredentials.USERNAME,
-      password: DoxisCredentials.PASSWORS,
+  private login = async () => {
+    const isProduction =
+      this.context.production && this.context.workspace === 'master'
+
+    const credentials = isProduction
+      ? DoxisCredentialsProd
+      : DoxisCredentialsDev
+
+    let password
+    let userName
+
+    if (this.dmsRepositoryId === 'COMMISSION_REPORT') {
+      password = credentials.PASSWORS_COMMISSION_REPORT
+      userName = credentials.USERNAME_COMMISSION_REPORT
+    } else {
+      password = credentials.PASSWORS_PAYOUT_REPORT
+      userName = credentials.USERNAME_PAYOUT_REPORT
+    }
+
+    return this.http.post(this.routes.login, {
+      customerName: credentials.CUSTOMER_NAME,
+      userName,
+      password,
     })
+  }
 
   public createDocument = async (
     id: string,
@@ -101,6 +120,8 @@ export default class Doxis extends ExternalClient {
     config?: RequestConfig
   ) => {
     const jwtBearerAuth = await this.login()
+
+    console.info('jwtBearerAuth', jwtBearerAuth)
 
     config = {
       ...config,

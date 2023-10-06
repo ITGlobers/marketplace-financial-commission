@@ -2,7 +2,7 @@
 import type {
   SellersDashboard,
   StatisticsDashboard,
-} from 'itglobers.marketplace-financial-commission'
+} from 'obidev.marketplace-financial-commission'
 
 import { createKeyToken, getDatesInvoiced, numberOfDays } from '../../../utils'
 import { validationParams } from '../../validationParams'

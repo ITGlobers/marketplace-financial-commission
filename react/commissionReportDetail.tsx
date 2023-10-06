@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQuery } from 'react-apollo'
-import { detail as Detail } from 'itglobers.components-financial-commission'
+import { detail as Detail } from 'obidev.components-financial-commission'
 
 import GET_SELLERS from './graphql/getSellers.gql'
 import GET_SETTINGS from './graphql/getSettings.gql'

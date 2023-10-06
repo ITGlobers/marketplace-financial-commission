@@ -1,5 +1,5 @@
 import React from 'react'
-import { invoiceDetail as InvoiceDetail } from 'itglobers.components-financial-commission'
+import { invoiceDetail as InvoiceDetail } from 'obidev.components-financial-commission'
 
 import { GET_INVOICE, GET_TEMPLATE, SEND_EMAIL } from './graphql'
 

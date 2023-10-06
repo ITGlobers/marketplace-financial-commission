@@ -5,7 +5,7 @@ import type {
   CommissionInvoice,
   ExternalInvoice,
   PayoutReport,
-} from 'itglobers.marketplace-financial-commission'
+} from 'obidev.marketplace-financial-commission'
 import { IOClients, LRUCache } from '@vtex/api'
 import { masterDataFor } from '@vtex/clients'
 

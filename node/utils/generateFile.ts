@@ -29,7 +29,11 @@ const createXLSBuffer = (data: any, origin: string) => {
   }
 
   const { id, seller, invoiceCreatedDate } = data
-  const { jsonData } = JSON.parse(data.jsonData)
+  const jsonData = JSON.parse(data.jsonData)
+
+  const invoiceData = Object.keys(jsonData).includes('jsonData')
+    ? jsonData.jsonData
+    : jsonData
 
   const sellerInformationColumn = [
     {
@@ -38,11 +42,11 @@ const createXLSBuffer = (data: any, origin: string) => {
       'Seller Name': seller.name,
       'SAP Seller ID': seller.sapSellerId,
       'Invoiced Created': invoiceCreatedDate,
-      'SellerInvoiceID ': jsonData.sellerInvoiceId,
+      'SellerInvoiceID ': invoiceData.sellerInvoiceId,
     },
   ]
 
-  const columnsData = jsonData.orders
+  const columnsData = invoiceData.orders
     .map((order: any) => {
       const { positionID, orderId, paymentMethod, items } = order
 
@@ -80,9 +84,13 @@ const createXLSBuffer = (data: any, origin: string) => {
 
 // TO DO: refactor this function
 function generateCSV(data: any): string {
-  const { jsonData } = JSON.parse(data.jsonData)
+  const jsonData = JSON.parse(data.jsonData)
 
-  const columnsData = jsonData.orders
+  const invoiceData = Object.keys(jsonData).includes('jsonData')
+    ? jsonData.jsonData
+    : jsonData
+
+  const columnsData = invoiceData.orders
     .map((order: any) => {
       const { positionID, orderId, paymentMethod, items } = order
 
@@ -112,9 +120,17 @@ async function generatePDF(data: any, ctx: Context): Promise<any> {
     clients: { template, pdf },
   } = ctx
 
+  const jsonData = JSON.parse(data.jsonData)
+
+  const invoiceData = Object.keys(jsonData).includes('jsonData')
+    ? jsonData.jsonData
+    : jsonData
+
+  // console.info({ id: data.id, jsonData: invoiceData })
+
   const response = await template.getTemplate()
   const hbTemplate = Handlebars.compile(response.Templates.email.Message)
-  const htmlToPdf = hbTemplate({ id: data.id, ...JSON.parse(data.jsonData) })
+  const htmlToPdf = hbTemplate({ ...data, jsonData: invoiceData })
 
   return pdf.generatePdf(htmlToPdf)
 }

@@ -12,11 +12,14 @@ export const invoicesBySeller = async (
 
   const {
     sellerName,
+    sellerId,
     pagination: { page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT },
     dates: { startDate, endDate },
   } = params.sellerInvoiceParams
 
-  const where = `seller.name="${sellerName}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+  console.info('seller: ', sellerName, sellerId)
+
+  const where = `(seller.id="${sellerId}" OR seller.name="${sellerName}") AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
   const fields = ['id', 'status', 'invoiceCreatedDate', 'totalizers', 'seller']
 
@@ -27,7 +30,7 @@ export const invoicesBySeller = async (
   const integration = await typeIntegration(ctx)
 
   if (TypeIntegration.external === integration) {
-    const whereExternal = `seller.name="${sellerName}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+    const whereExternal = `(seller.id="${sellerId}" OR seller.name="${sellerName}") AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
     const fieldsExternal = [
       'id',

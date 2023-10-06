@@ -1,4 +1,4 @@
-import type { CommissionInvoice } from 'itglobers.marketplace-financial-commission'
+import type { CommissionInvoice } from 'obidev.marketplace-financial-commission'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'

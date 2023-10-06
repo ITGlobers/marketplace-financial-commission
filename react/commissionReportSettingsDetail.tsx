@@ -1,5 +1,5 @@
 import React from 'react'
-import { settingsDetail as SettingsDetail } from 'itglobers.components-financial-commission'
+import { settingsDetail as SettingsDetail } from 'obidev.components-financial-commission'
 
 import {
   CREATE_TOKEN,
