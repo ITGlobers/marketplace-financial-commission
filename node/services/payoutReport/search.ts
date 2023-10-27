@@ -11,8 +11,6 @@ const payoutReportService = (ctx: Context) => ({
       pagination: { page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT },
     } = params
 
-    console.info('params', params)
-
     const where = `seller.name="${sellerName}" AND (reportCreatedDate between ${startDate} AND ${endDate})`
 
     const fields = ['id', 'status', 'reportCreatedDate', 'seller', 'jsonData']

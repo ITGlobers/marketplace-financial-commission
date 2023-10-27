@@ -8,14 +8,20 @@ import { statusToError } from '../../utils/errors'
 export default class Doxis extends ExternalClient {
   private _dmsRepositoryId = ''
   constructor(context: IOContext, options?: InstanceOptions) {
-    super('http://trx-proxy-vtex-doxis.stage-eks.dbs.obi.solutions', context, {
-      ...(options ?? {}),
-      headers: {
-        ...(options?.headers ?? {}),
-        'Content-Type': 'application/json',
-        'X-Vtex-Use-Https': 'true',
-      },
-    })
+    super(
+      context.production
+        ? DoxisCredentialsProd.URL_BASE
+        : DoxisCredentialsDev.URL_BASE,
+      context,
+      {
+        ...(options ?? {}),
+        headers: {
+          ...(options?.headers ?? {}),
+          'Content-Type': 'application/json',
+          'X-Vtex-Use-Https': 'true',
+        },
+      }
+    )
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
@@ -120,8 +126,6 @@ export default class Doxis extends ExternalClient {
     config?: RequestConfig
   ) => {
     const jwtBearerAuth = await this.login()
-
-    console.info('jwtBearerAuth', jwtBearerAuth)
 
     config = {
       ...config,

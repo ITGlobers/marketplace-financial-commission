@@ -1,7 +1,7 @@
 {
   "vendor": "obidev",
   "name": "marketplace-financial-commission",
-  "version": "0.0.3-beta.3",
+  "version": "0.0.3-beta.6",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -19,7 +19,9 @@
       "email": "support@com.br",
       "url": "https://support.com/hc/requests"
     },
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
@@ -30,7 +32,9 @@
     "vtex.format-currency": "0.x",
     "obidev.components-financial-commission": "1.0.3-beta.1"
   },
-  "registries": ["smartcheckout"],
+  "registries": [
+    "smartcheckout"
+  ],
   "credentialType": "absolute",
   "policies": [
     {
@@ -89,6 +93,13 @@
       "name": "outbound-access",
       "attrs": {
         "host": "trx-proxy-vtex-doxis.stage-eks.dbs.obi.solutions",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "trx-proxy-vtex-doxis.prod-eks.dbs.obi.solutions",
         "path": "*"
       }
     },
