@@ -5,10 +5,6 @@
     "subSection": "commissionReport",
     "subSectionItems": [
       {
-        "labelId": "admin/navigation.dashboard-title",
-        "path": "/admin/commission-report"
-      },
-      {
         "labelId": "admin/navigation.detail-title",
         "path": "/admin/commission-report/detail"
       },
