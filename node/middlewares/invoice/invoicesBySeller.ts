@@ -46,7 +46,7 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     )
   }
 
-  const where = `(seller.id="${seller.id}" OR seller.name="${seller.name}") AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+  const where = `seller.id="${seller.id}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
   const fields = [
     'id',
@@ -65,7 +65,7 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     sellerInvoices = await externalInvoices.searchRaw(
       { page, pageSize },
       fields,
-      'invoiceCreatedDate',
+      'invoiceCreatedDate DESC',
       where
     )
   } else {

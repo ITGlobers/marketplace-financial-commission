@@ -144,6 +144,18 @@
       "path": "/_v/private/financial-commission/external/invoice/file/:id/type/:type",
       "public": true
     },
+    "_invoiceExternalFile": {
+      "path": "/_v/policy/external/financial-commission/invoice/file/:id/type/:type",
+      "public": false,
+      "access": "authenticated",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["get"],
+          "principals": ["*"]
+        }
+      ]
+    },
     "typeIntegration": {
       "path": "/_v/policy/financial-commission/typeIntegration",
       "public": false,
@@ -161,15 +173,39 @@
       ]
     },
     "payoutReport": {
-      "path": "/_v/payout/:sellerId/report/*id",
+      "path": "/_v/financial-commission/payout/:sellerId/report/*id",
       "public": true
+    },
+    "_payoutReport": {
+      "path": "/_v/policy/financial-commission/payout/:sellerId/report/*id",
+      "public": false,
+      "access": "authenticated",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["get"],
+          "principals": ["*"]
+        }
+      ]
     },
     "payoutReportFile": {
       "path": "/_v/private/financial-commission/external/payout/file/:id/type/:type",
       "public": true
     },
+    "_payoutReportFile": {
+      "path": "/_v/policy/external/financial-commission/payout/file/:id/type/:type",
+      "public": false,
+      "access": "authenticated",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": ["get"],
+          "principals": ["*"]
+        }
+      ]
+    },
     "ping": {
-      "path": "/_v/ping",
+      "path": "/_v/financial-commission/ping",
       "public": true
     }
   }

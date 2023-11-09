@@ -11,7 +11,7 @@ export async function searchPayoutReport(
     query,
   } = ctx
 
-  const { _sellerName, _startDate, _endDate, _page, _pageSize } = query
+  const { sellerId, startDate, endDate, page, pageSize } = query
 
   let response
 
@@ -20,14 +20,14 @@ export async function searchPayoutReport(
       response = await payoutReportService(ctx).get(params.id.toString())
     } else {
       const payoutResports = await payoutReportService(ctx).search({
-        sellerName: _sellerName,
+        sellerId,
         dates: {
-          startDate: _startDate,
-          endDate: _endDate,
+          startDate,
+          endDate,
         },
         pagination: {
-          page: _page,
-          pageSize: _pageSize,
+          page,
+          pageSize,
         },
       })
 

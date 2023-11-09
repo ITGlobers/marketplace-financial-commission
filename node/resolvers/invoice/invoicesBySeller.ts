@@ -28,7 +28,7 @@ export const invoicesBySeller = async (
   const integration = await typeIntegration(ctx)
 
   if (TypeIntegration.external === integration) {
-    const whereExternal = `(seller.id="${sellerId}" OR seller.name="${sellerName}") AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+    const whereExternal = `seller.id="${sellerId}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
     const fieldsExternal = [
       'id',

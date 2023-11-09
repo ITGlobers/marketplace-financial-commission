@@ -114,6 +114,9 @@ const routes = {
   invoiceExternalFile: method({
     GET: [getInvoiceExternalFile],
   }),
+  _invoiceExternalFile: method({
+    GET: [getInvoiceExternalFile],
+  }),
   typeIntegration: method({
     GET: [getTypeIntegration],
   }),
@@ -121,7 +124,14 @@ const routes = {
     GET: [seller, searchPayoutReport],
     POST: [seller, createPayoutReport],
   }),
+  _payoutReport: method({
+    GET: [seller, searchPayoutReport],
+    POST: [seller, createPayoutReport],
+  }),
   payoutReportFile: method({
+    GET: [getPayoutReportFile],
+  }),
+  _payoutReportFile: method({
     GET: [getPayoutReportFile],
   }),
   ping: method({

@@ -1,7 +1,6 @@
 import { AuthenticationError } from '@vtex/api'
 import type { CommissionInvoice } from 'obidev.marketplace-financial-commission'
 
-import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
 
 /**
@@ -27,43 +26,20 @@ export async function getInvoice(ctx: Context): Promise<any> {
     throw new AuthenticationError(`Cannot access invoices for ${seller.name}`)
   }
 
-  const where = `id=${id} AND seller.name="${sellerName}"`
-
   let invoice
 
   const integration = await typeIntegration(ctx)
 
   if (TypeIntegration.external === integration) {
-    const externalInvoice = await externalInvoices.search(
-      { page: PAGE_DEFAULT, pageSize: PAGE_SIZE_DEFAULT },
-      ['id,status,invoiceCreatedDate,seller,jsonData,comment'],
-      '',
-      where
-    )
-
-    if (externalInvoice.length === 0) {
-      invoice = externalInvoice
-    } else {
-      invoice = [
-        {
-          id: externalInvoice[0].id,
-          status: externalInvoice[0].status,
-          invoiceCreatedDate: externalInvoice[0].invoiceCreatedDate,
-          seller: externalInvoice[0].seller,
-          jsonData: JSON.parse(externalInvoice[0].jsonData as string),
-          comment: externalInvoice[0].comment,
-        },
-      ]
-    }
+    invoice = await externalInvoices.get(id as string, [
+      'id,status,invoiceCreatedDate,seller,jsonData,comment',
+    ])
   } else {
-    const internalInvoice = (await commissionInvoices.search(
-      { page: PAGE_DEFAULT, pageSize: PAGE_SIZE_DEFAULT },
-      ['id,status,invoiceCreatedDate,seller,orders,totalizers,comment'],
-      '',
-      where
-    )) as unknown as CommissionInvoice[]
+    const internalInvoice = (await commissionInvoices.get(id as string, [
+      'id,status,invoiceCreatedDate,seller,orders,totalizers,comment',
+    ])) as unknown as CommissionInvoice
 
-    const orders: any[] = internalInvoice[0].orders.map((order) => {
+    const orders: any[] = internalInvoice.orders.map((order) => {
       return {
         orderId: order.orderId as string,
         sellerOrderId: order.sellerOrderId as string,
@@ -75,28 +51,20 @@ export async function getInvoice(ctx: Context): Promise<any> {
 
     invoice = [
       {
-        id: internalInvoice[0].id as string,
-        status: internalInvoice[0].status as string,
-        invoiceCreatedDate: internalInvoice[0].invoiceCreatedDate as string,
-        seller: internalInvoice[0].seller,
+        id: internalInvoice.id as string,
+        status: internalInvoice.status as string,
+        invoiceCreatedDate: internalInvoice.invoiceCreatedDate as string,
+        seller: internalInvoice.seller,
         orders,
         totalizers: {
-          subTotal: internalInvoice[0].totalizers.subTotal?.toFixed(2),
-          fee: internalInvoice[0].totalizers.fee?.toFixed(2),
-          total: internalInvoice[0].totalizers.total?.toFixed(2),
+          subTotal: internalInvoice.totalizers.subTotal?.toFixed(2),
+          fee: internalInvoice.totalizers.fee?.toFixed(2),
+          total: internalInvoice.totalizers.total?.toFixed(2),
         },
-        comment: internalInvoice[0].comment,
+        comment: internalInvoice.comment,
       },
     ]
   }
 
-  if (invoice.length > 1) {
-    console.warn('Invoice duplication, seek resolution')
-  }
-
-  if (invoice.length > 0) {
-    return invoice[0]
-  }
-
-  return null
+  return invoice
 }

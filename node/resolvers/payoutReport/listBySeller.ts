@@ -1,7 +1,7 @@
 import payoutReportService from '../../services/payoutReport/search'
 
 interface SearchPayoutReportParams {
-  sellerName: string
+  sellerId: string
   dates: {
     startDate: string
     endDate: string
