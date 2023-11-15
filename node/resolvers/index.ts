@@ -11,8 +11,9 @@ import { createSettings } from './createSettings'
 import { getSettings } from './getSettings'
 import { getTemplate } from './getTemplate'
 import { sendEmail } from './sendEmail'
+import { resolversWrapper } from '../utils/resolversWrapper'
 
-export const queries = {
+export const queries = resolversWrapper({
   getSellers,
   searchSellersDashboard,
   searchStatisticsDashboard,
@@ -23,12 +24,12 @@ export const queries = {
   getSettings,
   getTemplate,
   searchPayoutReport,
-}
+})
 
-export const mutations = {
+export const mutations = resolversWrapper({
   createToken,
   editToken,
   createInvoice,
   createSettings,
   sendEmail,
-}
+})

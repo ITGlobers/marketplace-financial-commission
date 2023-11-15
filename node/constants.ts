@@ -65,3 +65,12 @@ export const TYPES: Type[] = [
     fileExtension: 'pdf',
   },
 ]
+
+export const SCHEMAS = {
+  DEFAULT: '0.0.3-beta.11',
+  EXTERNAL_INVOICES: '0.0.3-beta.11',
+  PAYOUT_REPORTS: '0.0.3-beta.11',
+  COMMISSION_INVOICES: '0.0.3-beta.11',
+  SELLERS_DASHBOARD_CLIENT_MD: '0.0.3-beta.11',
+  STATISTICS_DASHBOARD_CLIENT_MD: '0.0.3-beta.11',
+}
