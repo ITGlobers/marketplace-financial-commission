@@ -7,7 +7,7 @@ const schemaJSONData = Joi.object({
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .message('Format date invalid. "yyyy-mm-dd"')
     .required(),
-  timeZone: Joi.string(),
+  timeZone: Joi.string().allow(''),
   transactionType: Joi.string()
     .valid('settled', 'refunded', 'chargeback', 'adjustment')
     .required(),
