@@ -2,7 +2,7 @@ import Joi from 'joi'
 
 const schemaJSONData = Joi.object({
   sellerId: Joi.string().required(),
-  paymentMethod: Joi.string().valid('Internal Transfer').required(),
+  paymentMethod: Joi.string().valid('Internal Transfer', 'Klarna', 'CC', 'PayPal').required(),
   creationDate: Joi.string()
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .message('Format date invalid. "yyyy-mm-dd"')
