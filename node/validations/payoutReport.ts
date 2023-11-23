@@ -29,7 +29,7 @@ const schemaJSONData = Joi.object({
   commissionAmount: Joi.number().required(),
   orderId: Joi.string(),
   payId: Joi.string(),
-  invoiceId: Joi.string(),
+  invoiceId: Joi.string().allow(''),
   chargebackType: Joi.string()
     .valid('Retention', 'Resolution retention', null)
     .required(),
