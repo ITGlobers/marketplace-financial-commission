@@ -31,7 +31,7 @@ const schemaJSONData = Joi.object({
   payId: Joi.string(),
   invoiceId: Joi.string(),
   chargebackType: Joi.string()
-    .valid('Retention', 'Resolution retention')
+    .valid('Retention', 'Resolution retention', null)
     .required(),
   reserved1: Joi.string().valid(null),
   reserved2: Joi.string().valid(null),
