@@ -6,7 +6,6 @@ const createXLSBuffer = (data: any, origin: string) => {
   if (origin === 'payoutReport') {
     const [columns, ...jsonData] = JSON.parse(data.jsonData);
 
-    // Filtrar las columnas
     const filteredColumns = Object.entries(columns).reduce<{ [key: string]: any }>((acc, [key, value]) => {
       if (key !== 'timeZone' && key !== 'payId') {
         acc[key] = value;
@@ -14,7 +13,6 @@ const createXLSBuffer = (data: any, origin: string) => {
       return acc;
     }, {});
 
-    // Filtrar los datos de cada fila
     const dataRow = jsonData.map((obj: any) => {
       const { timeZone, payId, ...filteredObj } = obj;
       return {
