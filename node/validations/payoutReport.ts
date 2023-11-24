@@ -4,8 +4,8 @@ const schemaJSONData = Joi.object({
   sellerId: Joi.string().required(),
   paymentMethod: Joi.string().valid('Internal Transfer', 'Klarna', 'CC', 'PayPal').required(),
   creationDate: Joi.string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .message('Format date invalid. "yyyy-mm-dd"')
+    .regex(/^\d{2}-\d{2}-\d{4}$/)
+    .message('Format date invalid. "MM-DD-YYYY"')
     .required(),
   timeZone: Joi.string().allow(''),
   transactionType: Joi.string()
