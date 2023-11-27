@@ -41,8 +41,15 @@ async function createPayoutReportServices(
           type
         )
 
+        function convertDateFormat(dateString:string) {
+          const parts = dateString.split('/');
+          return `${parts[2]}-${parts[0]}-${parts[1]}`;
+        }
+
+        const covertedDate = convertDateFormat (payoutToSave.reportCreatedDate)
         payoutToSave = {
           ...payoutToSave,
+          reportCreatedDate: covertedDate,
           files: {
             ...payoutToSave.files,
             [typeFile]: JSON.stringify({
@@ -53,6 +60,7 @@ async function createPayoutReportServices(
             }),
           },
         }
+        console.log(payoutToSave)
       })
     )
   } catch (error) {

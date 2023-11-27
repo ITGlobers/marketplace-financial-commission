@@ -4,28 +4,35 @@ import XLSX from 'xlsx'
 
 const createXLSBuffer = (data: any, origin: string) => {
   if (origin === 'payoutReport') {
-    const jsonData = JSON.parse(data.jsonData)
-    const [columns] = jsonData
+    const [columns, ...jsonData] = JSON.parse(data.jsonData);
 
-    jsonData.shift()
+    const filteredColumns = Object.entries(columns).reduce<{ [key: string]: any }>((acc, [key, value]) => {
+      if (key !== 'timeZone' && key !== 'payId') {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
 
-    const dataRow = jsonData.map((obj: any) => ({
-      ...obj,
-      sellerId: data.seller.id,
-    }))
+    const dataRow = jsonData.map((obj: any) => {
+      const { timeZone, payId, ...filteredObj } = obj;
+      return {
+        sellerId: data.seller.id,
+        ...filteredObj,
+      };
+    });
 
-    const columnNamesArray = Object.values(columns)
+    const columnNamesArray = Object.values(filteredColumns);
     const dataMatrix = [
       columnNamesArray,
       ...dataRow.map((obj: any) => Object.values(obj)),
-    ]
+    ];
 
-    const workbook = XLSX.utils.book_new()
-    const sheet = XLSX.utils.aoa_to_sheet(dataMatrix)
+    const workbook = XLSX.utils.book_new();
+    const sheet = XLSX.utils.aoa_to_sheet(dataMatrix);
 
-    XLSX.utils.book_append_sheet(workbook, sheet, data.payoutReportFileName)
+    XLSX.utils.book_append_sheet(workbook, sheet, data.payoutReportFileName);
 
-    return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
+    return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' });
   }
 
   const { id, seller, invoiceCreatedDate } = data
