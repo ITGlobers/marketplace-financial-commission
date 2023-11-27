@@ -289,7 +289,6 @@ input ListSellersParams {
 
 input SellerInvoiceParams {
   sellerName: String!
-  sellerId: String!
   pagination: Pagination
   dates: Dates!
 }

@@ -50,20 +50,24 @@ const createXLSBuffer = (data: any, origin: string) => {
     .map((order: any) => {
       const { positionID, orderId, paymentMethod, items } = order
 
-      return items.map((item: any) => {
-        return {
-          // ...item,
-          Pos: positionID,
-          'Order ID': orderId,
-          Zahlmethode: paymentMethod,
-          Artikelnr: item.itemId,
-          Artikelkategorie: item.articleCategory,
-          Menge: item.itemQuantity,
-          'Einzelpreis (brutto)': item.itemGrossPrice,
-          'Umsatzbrutto pro Position': item.positionGrossPrice,
-          'Gebühren in %': item.itemCommissionPercentage,
-          'Gebühren in €': item.itemCommissionAmount,
+      return items.filter((item: any) => {
+        if (!item.isShipping) {
+          return {
+            // ...item,
+            Pos: positionID,
+            'Order ID': orderId,
+            Zahlmethode: paymentMethod,
+            Artikelnr: item.itemId,
+            Artikelkategorie: item.articleCategory,
+            Menge: item.itemQuantity,
+            'Einzelpreis (brutto)': item.itemGrossPrice,
+            'Umsatzbrutto pro Position': item.positionGrossPrice,
+            'Gebühren in %': item.itemCommissionPercentage,
+            'Gebühren in €': item.itemCommissionAmount,
+          }
         }
+
+        return false
       })
     })
     .flat()
@@ -125,8 +129,6 @@ async function generatePDF(data: any, ctx: Context): Promise<any> {
   const invoiceData = Object.keys(jsonData).includes('jsonData')
     ? jsonData.jsonData
     : jsonData
-
-  // console.info({ id: data.id, jsonData: invoiceData })
 
   const response = await template.getTemplate()
   const hbTemplate = Handlebars.compile(response.Templates.email.Message)

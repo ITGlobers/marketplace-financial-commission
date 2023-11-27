@@ -165,23 +165,24 @@
       <tbody>
         {{#each jsonData.orders}}
         {{#each this.items}}
+        {{#unless this.isShipping}}
         <tr>
-          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../positionID}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.positionID}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../orderId}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../paymentMethod}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemId}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemCategoryId}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemQuantity}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemGrossPrice}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.positionGrossPrice}}
           </td>
-          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemCommissionAmount}}
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemFreightCommissionPercentage}}
           </td>
-          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../totalizers.feeAmount}}
-          </td>
-          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../totalizers.orderAmount}}
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemFreightCommissionAmount}}
           </td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">ABCDEF12345ABCDEF12345</td>
         </tr>
+        {{/unless}}
         {{/each}}
         {{/each}}
       </tbody>

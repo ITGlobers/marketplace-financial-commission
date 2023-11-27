@@ -95,7 +95,15 @@ export const processInvoiceExternal = async (
       })
     )
   } catch (error) {
-    console.error('generate and upload file error: ', error)
+    console.info(
+      '🚀 ~ file: processInvoiceExternal.ts:98 ~ error:',
+      error?.response?.data?.message
+    )
+
+    throw new Error(
+      error?.response?.data?.message ??
+        "It wasn't possible to create the invoice."
+    )
   }
 
   const document = await externalInvoices.save(bodyExternalInvoiceWithId)
