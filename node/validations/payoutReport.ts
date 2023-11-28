@@ -2,7 +2,9 @@ import Joi from 'joi'
 
 const schemaJSONData = Joi.object({
   sellerId: Joi.string().required(),
-  paymentMethod: Joi.string().valid('Internal Transfer', 'Klarna', 'CC', 'PayPal').required(),
+  paymentMethod: Joi.string()
+    .valid('Internal Transfer', 'Klarna', 'CC', 'PayPal')
+    .required(),
   creationDate: Joi.string()
     .regex(/^\d{2}\/\d{2}\/\d{4}$/)
     .message('Format date invalid. "MM-DD-YYYY"')
@@ -37,13 +39,19 @@ const schemaJSONData = Joi.object({
   reserved2: Joi.string().valid(null),
 }).custom((value, helpers) => {
   if (value.grossDebit != null && value.grossCredit != null) {
-    return helpers.error('any.invalid', { message: 'grossDebit and grossCredit cannot both have values' });
+    return helpers.error('any.invalid', {
+      message: 'grossDebit and grossCredit cannot both have values',
+    })
   }
+
   if (value.netDebit != null && value.netCredit != null) {
-    return helpers.error('any.invalid', { message: 'netDebit and netCredit cannot both have values' });
+    return helpers.error('any.invalid', {
+      message: 'netDebit and netCredit cannot both have values',
+    })
   }
-  return value;
-}, 'Exclusive validation for grossDebit/grossCredit and netDebit/netCredit');
+
+  return value
+}, 'Exclusive validation for grossDebit/grossCredit and netDebit/netCredit')
 
 const schemaJSONDataArray = Joi.array().items(schemaJSONData)
 

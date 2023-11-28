@@ -25,6 +25,11 @@ async function createPayoutReportServices(
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           fileExtension: 'xlsx',
         },
+        {
+          type: 'csv',
+          mimeTypeName: 'text/plain',
+          fileExtension: 'csv',
+        },
       ].map(async (type: any) => {
         const { type: typeFile } = type
 
@@ -41,12 +46,14 @@ async function createPayoutReportServices(
           type
         )
 
-        function convertDateFormat(dateString:string) {
-          const parts = dateString.split('/');
-          return `${parts[2]}-${parts[0]}-${parts[1]}`;
+        function convertDateFormat(dateString: string) {
+          const parts = dateString.split('/')
+
+          return `${parts[2]}-${parts[0]}-${parts[1]}`
         }
 
-        const covertedDate = convertDateFormat (payoutToSave.reportCreatedDate)
+        const covertedDate = convertDateFormat(payoutToSave.reportCreatedDate)
+
         payoutToSave = {
           ...payoutToSave,
           reportCreatedDate: covertedDate,
@@ -60,7 +67,7 @@ async function createPayoutReportServices(
             }),
           },
         }
-        console.log(payoutToSave)
+        console.info(payoutToSave)
       })
     )
   } catch (error) {

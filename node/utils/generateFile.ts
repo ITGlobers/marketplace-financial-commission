@@ -2,37 +2,18 @@ import Handlebars from 'handlebars'
 import Papa from 'papaparse'
 import XLSX from 'xlsx'
 
+import { payoutMapper } from '../mappings/payoutMapper'
+
 const createXLSBuffer = (data: any, origin: string) => {
   if (origin === 'payoutReport') {
-    const [columns, ...jsonData] = JSON.parse(data.jsonData);
+    const dataMatrix = payoutMapper(data)
 
-    const filteredColumns = Object.entries(columns).reduce<{ [key: string]: any }>((acc, [key, value]) => {
-      if (key !== 'timeZone' && key !== 'payId') {
-        acc[key] = value;
-      }
-      return acc;
-    }, {});
+    const workbook = XLSX.utils.book_new()
+    const sheet = XLSX.utils.aoa_to_sheet(dataMatrix)
 
-    const dataRow = jsonData.map((obj: any) => {
-      const { timeZone, payId, ...filteredObj } = obj;
-      return {
-        sellerId: data.seller.id,
-        ...filteredObj,
-      };
-    });
+    XLSX.utils.book_append_sheet(workbook, sheet, data.payoutReportFileName)
 
-    const columnNamesArray = Object.values(filteredColumns);
-    const dataMatrix = [
-      columnNamesArray,
-      ...dataRow.map((obj: any) => Object.values(obj)),
-    ];
-
-    const workbook = XLSX.utils.book_new();
-    const sheet = XLSX.utils.aoa_to_sheet(dataMatrix);
-
-    XLSX.utils.book_append_sheet(workbook, sheet, data.payoutReportFileName);
-
-    return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' });
+    return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
   }
 
   const { id, seller, invoiceCreatedDate } = data
@@ -94,7 +75,13 @@ const createXLSBuffer = (data: any, origin: string) => {
 }
 
 // TO DO: refactor this function
-function generateCSV(data: any): string {
+function generateCSV(data: any, origin: string): string {
+  if (origin === 'payoutReport') {
+    const dataMatrix = payoutMapper(data)
+
+    return Papa.unparse(dataMatrix)
+  }
+
   const jsonData = JSON.parse(data.jsonData)
 
   const invoiceData = Object.keys(jsonData).includes('jsonData')
@@ -155,7 +142,7 @@ type GenerateFileObject = {
 }
 
 const generateFile: GenerateFileObject = {
-  csv: (invoice: any) => generateCSV(invoice),
+  csv: (invoice: any, _, origin: string) => generateCSV(invoice, origin),
   xls: (invoice: any, _, origin: string) => createXLSBuffer(invoice, origin),
   pdf: (invoice: any, ctx: Context) => generatePDF(invoice, ctx),
   default: () => {

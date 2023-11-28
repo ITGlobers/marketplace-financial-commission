@@ -9,7 +9,7 @@ export default class Doxis extends ExternalClient {
   private _dmsRepositoryId = ''
   constructor(context: IOContext, options?: InstanceOptions) {
     super(
-      context.production
+      !context.production
         ? DoxisCredentialsProd.URL_BASE
         : DoxisCredentialsDev.URL_BASE,
       context,
@@ -35,10 +35,9 @@ export default class Doxis extends ExternalClient {
   }
 
   private login = async () => {
-    const isProduction =
-      this.context.production && this.context.workspace === 'master'
+    const isProduction = this.context.production
 
-    const credentials = isProduction
+    const credentials = !isProduction
       ? DoxisCredentialsProd
       : DoxisCredentialsDev
 
