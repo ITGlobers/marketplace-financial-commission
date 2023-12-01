@@ -1,5 +1,5 @@
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData'
-import type { ExternalInvoice } from 'obidev.marketplace-financial-commission'
+import type { ExternalInvoice } from 'obi.marketplace-financial-commission'
 
 import { config, JOB_STATUS, TYPES } from '../../constants'
 import type { InvoiceExternal } from '../../typings/externalInvoice'

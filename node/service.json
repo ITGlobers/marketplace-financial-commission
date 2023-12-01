@@ -24,7 +24,7 @@
           "effect": "allow",
           "actions": ["post"],
           "principals": [
-            "vrn:apps:*:*:*:app/obidev.seller-financial-commission@*",
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
@@ -47,7 +47,7 @@
           "effect": "allow",
           "actions": ["get"],
           "principals": [
-            "vrn:apps:*:*:*:app/obidev.seller-financial-commission@*",
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
@@ -78,7 +78,7 @@
           "effect": "allow",
           "actions": ["get", "post"],
           "principals": [
-            "vrn:apps:*:*:*:app/obidev.seller-financial-commission@*",
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
@@ -108,7 +108,7 @@
           "effect": "allow",
           "actions": ["get"],
           "principals": [
-            "vrn:apps:*:*:*:app/obidev.marketplace-financial-commission-cron@*"
+            "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*"
           ]
         }
       ]
@@ -126,7 +126,7 @@
           "effect": "allow",
           "actions": ["get"],
           "principals": [
-            "vrn:apps:*:*:*:app/obidev.seller-financial-commission@*",
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
@@ -165,8 +165,8 @@
           "effect": "allow",
           "actions": ["get"],
           "principals": [
-            "vrn:apps:*:*:*:app/obidev.seller-financial-commission@*",
-            "vrn:apps:*:*:*:app/obidev.marketplace-financial-commission-cron@*",
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
+            "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }

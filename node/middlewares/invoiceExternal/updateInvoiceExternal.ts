@@ -1,4 +1,4 @@
-import type { ExternalInvoice } from 'obidev.marketplace-financial-commission'
+import type { ExternalInvoice } from 'obi.marketplace-financial-commission'
 
 export async function updateInvoiceExternal(
   ctx: Context,

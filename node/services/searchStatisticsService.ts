@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
-import type { StatisticsDashboard } from 'obidev.marketplace-financial-commission'
+import type { StatisticsDashboard } from 'obi.marketplace-financial-commission'
 
 export const searchStatisticsService = async (
   ctx: Context,

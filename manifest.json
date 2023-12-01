@@ -1,7 +1,7 @@
 {
-  "vendor": "obidev",
+  "vendor": "obi",
   "name": "marketplace-financial-commission",
-  "version": "0.0.4-beta.3",
+  "version": "0.0.4",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -30,7 +30,7 @@
     "vtex.render-runtime": "8.x",
     "vtex.native-types": "0.x",
     "vtex.format-currency": "0.x",
-    "obidev.components-financial-commission": "1.0.4-beta.0"
+    "obi.components-financial-commission": "1.x"
   },
   "registries": [
     "smartcheckout"

@@ -19,7 +19,14 @@ const payoutReportService = (ctx: Context) => ({
 
     const where = `seller.id="${sellerId}" AND (reportCreatedDate between ${startDate} AND ${endDate})`
 
-    const fields = ['id', 'status', 'reportCreatedDate', 'seller', 'jsonData']
+    const fields = [
+      'id',
+      'status',
+      'reportCreatedDate',
+      'seller',
+      'jsonData',
+      '_all',
+    ]
 
     return ctx.clients.payoutReports.searchRaw(
       { page, pageSize },

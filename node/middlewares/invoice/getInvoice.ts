@@ -1,5 +1,5 @@
 import { AuthenticationError } from '@vtex/api'
-import type { CommissionInvoice } from 'obidev.marketplace-financial-commission'
+import type { CommissionInvoice } from 'obi.marketplace-financial-commission'
 
 import { typeIntegration } from '../../utils/typeIntegration'
 

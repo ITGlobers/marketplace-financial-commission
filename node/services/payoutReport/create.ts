@@ -1,3 +1,5 @@
+import { format, parse } from 'date-fns'
+
 import { DoxisCredentialsDev } from '../../environments'
 import { generateFileByType } from '../../utils/generateFile'
 import { randomId } from '../../utils/randomId'
@@ -15,6 +17,14 @@ async function createPayoutReportServices(
   let payoutToSave = data
 
   const idPayoutReport = randomId(data.seller.id)
+
+  const parsedDate = parse(
+    payoutToSave.reportCreatedDate,
+    'dd/MM/yyyy',
+    new Date()
+  )
+
+  const formattedDate = format(parsedDate, 'yyyy-MM-dd')
 
   try {
     await Promise.all(
@@ -46,17 +56,9 @@ async function createPayoutReportServices(
           type
         )
 
-        function convertDateFormat(dateString: string) {
-          const parts = dateString.split('/')
-
-          return `${parts[2]}-${parts[0]}-${parts[1]}`
-        }
-
-        const covertedDate = convertDateFormat(payoutToSave.reportCreatedDate)
-
         payoutToSave = {
           ...payoutToSave,
-          reportCreatedDate: covertedDate,
+          reportCreatedDate: formattedDate,
           files: {
             ...payoutToSave.files,
             [typeFile]: JSON.stringify({
@@ -67,7 +69,6 @@ async function createPayoutReportServices(
             }),
           },
         }
-        console.info(payoutToSave)
       })
     )
   } catch (error) {
