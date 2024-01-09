@@ -21,8 +21,8 @@ export async function getPayoutReportFile(
     ['id,files,payoutReportFileName']
   )
 
-  const xls = JSON.parse(files.xls)
-  const file = await doxis.getDocument(xls)
+  const fileData = JSON.parse(files[`${type}`])
+  const file = await doxis.getDocument(fileData)
   const contentType = TYPES.find((t) => t.type === type)?.mimeTypeName as string
 
   ctx.status = 200

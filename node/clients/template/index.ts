@@ -19,6 +19,12 @@ export default class Template extends JanusClient {
     })
   }
 
+  public getPayoutTemplate() {
+    return this.http.get(`${TEMPLATE_RENDER_PATH}/payout-report`, {
+      metric: 'mail-get-template',
+    })
+  }
+
   public publishTemplate(template: TemplateType) {
     return this.http.post(TEMPLATE_RENDER_PATH, template, {
       metric: 'mail-post-template',

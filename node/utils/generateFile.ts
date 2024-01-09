@@ -2,67 +2,22 @@ import Handlebars from 'handlebars'
 import Papa from 'papaparse'
 import XLSX from 'xlsx'
 
-import { payoutMapper } from '../mappings/payoutMapper'
-
 const createXLSBuffer = (data: any, origin: string) => {
   if (origin === 'payoutReport') {
-    const dataMatrix = payoutMapper(data)
-
     const workbook = XLSX.utils.book_new()
-    const sheet = XLSX.utils.aoa_to_sheet(dataMatrix)
+    const sheet = XLSX.utils.aoa_to_sheet(
+      data.jsonData.map((column: any) => Object.values(column))
+    )
 
     XLSX.utils.book_append_sheet(workbook, sheet, data.payoutReportFileName)
 
     return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
   }
 
-  const { id, seller, invoiceCreatedDate } = data
-  const jsonData = JSON.parse(data.jsonData)
-
-  const invoiceData = Object.keys(jsonData).includes('jsonData')
-    ? jsonData.jsonData
-    : jsonData
-
-  const sellerInformationColumn = [
-    {
-      ID: id,
-      'Seller ID': seller.id,
-      'Seller Name': seller.name,
-      'SAP Seller ID': seller.sapSellerId,
-      'Invoiced Created': invoiceCreatedDate,
-      'SellerInvoiceID ': invoiceData.sellerInvoiceId,
-    },
-  ]
-
-  const columnsData = invoiceData.orders
-    .map((order: any) => {
-      const { positionID, orderId, paymentMethod, items } = order
-
-      return items.filter((item: any) => {
-        if (!item.isShipping) {
-          return {
-            // ...item,
-            Pos: positionID,
-            'Order ID': orderId,
-            Zahlmethode: paymentMethod,
-            Artikelnr: item.itemId,
-            Artikelkategorie: item.articleCategory,
-            Menge: item.itemQuantity,
-            'Einzelpreis (brutto)': item.itemGrossPrice,
-            'Umsatzbrutto pro Position': item.positionGrossPrice,
-            'Gebühren in %': item.itemCommissionPercentage,
-            'Gebühren in €': item.itemCommissionAmount,
-          }
-        }
-
-        return false
-      })
-    })
-    .flat()
-
   const workbook = XLSX.utils.book_new()
-  const sellerInformation = XLSX.utils.json_to_sheet(sellerInformationColumn)
-  const orders = XLSX.utils.json_to_sheet(columnsData)
+  const sellerInformation = XLSX.utils.json_to_sheet(data.sellerInformation)
+
+  const orders = XLSX.utils.json_to_sheet(data.jsonData)
 
   XLSX.utils.book_append_sheet(
     workbook,
@@ -74,43 +29,8 @@ const createXLSBuffer = (data: any, origin: string) => {
   return XLSX.write(workbook, { bookType: 'xls', type: 'buffer' })
 }
 
-// TO DO: refactor this function
-function generateCSV(data: any, origin: string): string {
-  if (origin === 'payoutReport') {
-    const dataMatrix = payoutMapper(data)
-
-    return Papa.unparse(dataMatrix)
-  }
-
-  const jsonData = JSON.parse(data.jsonData)
-
-  const invoiceData = Object.keys(jsonData).includes('jsonData')
-    ? jsonData.jsonData
-    : jsonData
-
-  const columnsData = invoiceData.orders
-    .map((order: any) => {
-      const { positionID, orderId, paymentMethod, items } = order
-
-      return items.map((item: any) => {
-        return {
-          // ...item,
-          Pos: positionID,
-          'Order ID': orderId,
-          Zahlmethode: paymentMethod,
-          Artikelnr: item.itemId,
-          Artikelkategorie: item.articleCategory,
-          Menge: item.itemQuantity,
-          'Einzelpreis (brutto)': item.itemGrossPrice,
-          'Umsatzbrutto pro Position': item.positionGrossPrice,
-          'Gebühren in %': item.itemCommissionPercentage,
-          'Gebühren in €': item.itemCommissionAmount,
-        }
-      })
-    })
-    .flat()
-
-  return Papa.unparse(columnsData)
+function generateCSV(data: any): string {
+  return Papa.unparse(data.jsonData)
 }
 
 async function generatePDF(data: any, ctx: Context): Promise<any> {
@@ -118,15 +38,11 @@ async function generatePDF(data: any, ctx: Context): Promise<any> {
     clients: { template, pdf },
   } = ctx
 
-  const jsonData = JSON.parse(data.jsonData)
-
-  const invoiceData = Object.keys(jsonData).includes('jsonData')
-    ? jsonData.jsonData
-    : jsonData
+  const jsonData = JSON.parse(data.original.jsonData)
 
   const response = await template.getTemplate()
   const hbTemplate = Handlebars.compile(response.Templates.email.Message)
-  const htmlToPdf = hbTemplate({ ...data, jsonData: invoiceData })
+  const htmlToPdf = hbTemplate({ ...data.original, jsonData })
 
   return pdf.generatePdf(htmlToPdf)
 }
@@ -142,7 +58,7 @@ type GenerateFileObject = {
 }
 
 const generateFile: GenerateFileObject = {
-  csv: (invoice: any, _, origin: string) => generateCSV(invoice, origin),
+  csv: (invoice: any) => generateCSV(invoice),
   xls: (invoice: any, _, origin: string) => createXLSBuffer(invoice, origin),
   pdf: (invoice: any, ctx: Context) => generatePDF(invoice, ctx),
   default: () => {

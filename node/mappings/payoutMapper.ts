@@ -1,32 +1,6 @@
-export const payoutMapper = (data: any) => {
-  const [columns, ...jsonData] = JSON.parse(
-    data.jsonData.replace(/(\d)\.(\d)/g, '$1$2')
-  )
+export const payoutMapper = (data: any) =>
+  data.map((column: any) => {
+    const { timeZone, payId, ...newColumn } = column
 
-  const filteredColumns = Object.entries(columns).reduce<{
-    [key: string]: any
-  }>((acc, [key, value]) => {
-    if (key !== 'timeZone' && key !== 'payId') {
-      acc[key] = value
-    }
-
-    return acc
-  }, {})
-
-  const dataRow = jsonData.map((obj: any) => {
-    const { timeZone, payId, ...filteredObj } = obj
-
-    return {
-      sellerId: data.seller.id,
-      ...filteredObj,
-    }
+    return Object.values(newColumn)
   })
-
-  const columnNamesArray = Object.values(filteredColumns)
-  const dataMatrix = [
-    columnNamesArray,
-    ...dataRow.map((obj: any) => Object.values(obj)),
-  ]
-
-  return dataMatrix
-}

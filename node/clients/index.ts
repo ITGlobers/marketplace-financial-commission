@@ -17,6 +17,7 @@ import AppTokenClient from './vtexLogin'
 import { Catalog } from './catalog'
 import Doxis from './doxis'
 import PdfBuilder from './pdf'
+import Scheduler from './scheduler'
 
 export class Clients extends IOClients {
   public get mail() {
@@ -84,6 +85,10 @@ export class Clients extends IOClients {
 
   public get pdf() {
     return this.getOrSet('pdf', PdfBuilder)
+  }
+
+  public get scheduler() {
+    return this.getOrSet('scheduler', Scheduler)
   }
 }
 

@@ -5,9 +5,13 @@ import clients from './clients'
 import type { Clients } from './clients'
 import { queries, mutations } from './resolvers'
 import { routes } from './routes'
+import { onAppsInstalled } from './middlewares/initialConfiguration'
 
 export default new Service<Clients, RecorderState, ParamsContext>({
   clients,
+  events: {
+    onAppsInstalled,
+  },
   routes,
   graphql: {
     resolvers: {

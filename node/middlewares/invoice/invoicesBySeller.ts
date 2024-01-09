@@ -55,6 +55,7 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     'invoiceCreatedDate',
     'totalizers',
     'files',
+    'jsonData',
   ]
 
   let sellerInvoices
@@ -65,14 +66,14 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     sellerInvoices = await externalInvoices.searchRaw(
       { page, pageSize },
       fields,
-      'invoiceCreatedDate DESC',
+      'createdIn DESC',
       where
     )
   } else {
     sellerInvoices = await commissionInvoices.searchRaw(
       { page, pageSize },
       fields,
-      'invoiceCreatedDate',
+      'createdIn DESC',
       where
     )
   }

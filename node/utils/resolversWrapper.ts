@@ -6,11 +6,25 @@ interface ContextFunction<T> {
 
 export const wrapperFunction = <T>(originalFunction: ContextFunction<T>) => {
   return async (_: any, params: any, ctx: Context): Promise<T> => {
-    ctx.clients.externalInvoices.schema = SCHEMAS.DEFAULT
-    ctx.clients.payoutReports.schema = SCHEMAS.DEFAULT
-    ctx.clients.commissionInvoices.schema = SCHEMAS.DEFAULT
-    ctx.clients.sellersDashboardClientMD.schema = SCHEMAS.DEFAULT
-    ctx.clients.statisticsDashboardClientMD.schema = SCHEMAS.DEFAULT
+    const {
+      vtex: { production, workspace },
+    } = ctx
+
+    ctx.clients.externalInvoices.schema = production
+      ? SCHEMAS.DEFAULT
+      : `${SCHEMAS.DEFAULT}-${workspace}`
+    ctx.clients.payoutReports.schema = production
+      ? SCHEMAS.DEFAULT
+      : `${SCHEMAS.DEFAULT}-${workspace}`
+    ctx.clients.commissionInvoices.schema = production
+      ? SCHEMAS.DEFAULT
+      : `${SCHEMAS.DEFAULT}-${workspace}`
+    ctx.clients.sellersDashboardClientMD.schema = production
+      ? SCHEMAS.DEFAULT
+      : `${SCHEMAS.DEFAULT}-${workspace}`
+    ctx.clients.statisticsDashboardClientMD.schema = production
+      ? SCHEMAS.DEFAULT
+      : `${SCHEMAS.DEFAULT}-${workspace}`
 
     const result = await originalFunction(_, params, ctx)
 

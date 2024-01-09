@@ -1,7 +1,7 @@
 {
   "vendor": "obi",
   "name": "marketplace-financial-commission",
-  "version": "0.0.4",
+  "version": "0.0.13",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -37,6 +37,12 @@
   ],
   "credentialType": "absolute",
   "policies": [
+    {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
+    },
     {
       "name": "template-criar"
     },

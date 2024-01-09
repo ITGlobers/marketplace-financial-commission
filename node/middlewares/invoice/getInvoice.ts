@@ -26,7 +26,7 @@ export async function getInvoice(ctx: Context): Promise<any> {
     throw new AuthenticationError(`Cannot access invoices for ${seller.name}`)
   }
 
-  let invoice
+  let invoice: any
 
   const integration = await typeIntegration(ctx)
 
@@ -34,6 +34,19 @@ export async function getInvoice(ctx: Context): Promise<any> {
     invoice = await externalInvoices.get(id as string, [
       'id,status,invoiceCreatedDate,seller,jsonData,comment',
     ])
+
+    const jsonDataParsed = JSON.parse(invoice.jsonData as string)
+
+    const isOutbound =
+      jsonDataParsed.orders[0].items[0].positionType === 'outbound'
+        ? 'Rechnung'
+        : 'Gutschrift'
+
+    invoice.id = `${
+      invoice.id.split('_')[0]
+    }_${invoice.invoiceCreatedDate.replace(/-/g, '')}_${
+      jsonDataParsed.sapCommissionId
+    }_${isOutbound}`
   } else {
     const internalInvoice = (await commissionInvoices.get(id as string, [
       'id,status,invoiceCreatedDate,seller,orders,totalizers,comment',

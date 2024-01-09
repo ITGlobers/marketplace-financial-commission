@@ -1,14 +1,19 @@
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 
 const payoutReportService = (ctx: Context) => ({
-  get(id: string): Promise<any> {
-    return ctx.clients.payoutReports.get(id, [
+  async get(id: string): Promise<any> {
+    const response: any = await ctx.clients.payoutReports.get(id, [
       'id',
       'status',
       'reportCreatedDate',
+      'payoutReportFileName',
       'seller',
       'jsonData',
     ])
+
+    const [columnsName, ...orders] = JSON.parse(response.jsonData)
+
+    return { ...response, columns: columnsName, orders }
   },
   search(params: any): Promise<any> {
     const {
@@ -31,7 +36,7 @@ const payoutReportService = (ctx: Context) => ({
     return ctx.clients.payoutReports.searchRaw(
       { page, pageSize },
       fields,
-      'reportCreatedDate DESC',
+      'createdIn DESC',
       where
     )
   },

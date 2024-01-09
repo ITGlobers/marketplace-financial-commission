@@ -1,3 +1,5 @@
+import Handlebars from 'handlebars'
+
 import payoutReportService from '../../services/payoutReport/search'
 
 export async function searchPayoutReport(
@@ -8,16 +10,28 @@ export async function searchPayoutReport(
     vtex: {
       route: { params },
     },
+    clients: { template },
     query,
   } = ctx
 
-  const { sellerId, startDate, endDate, page, pageSize } = query
+  const { sellerId, startDate, endDate, page, pageSize, _fields } = query
 
   let response
+  let html
 
   try {
     if (params.id !== '' && params.id !== undefined) {
       response = await payoutReportService(ctx).get(params.id.toString())
+
+      if (_fields === 'html') {
+        const templateEmail = await template.getPayoutTemplate()
+
+        const hbTemplate = Handlebars.compile(
+          templateEmail.Templates.email.Message
+        )
+
+        html = hbTemplate(response)
+      }
     } else {
       const payoutResports = await payoutReportService(ctx).search({
         sellerId,
@@ -51,7 +65,7 @@ export async function searchPayoutReport(
     }
 
     ctx.status = 200
-    ctx.body = response
+    ctx.body = { ...response, html }
   } catch (error) {
     ctx.status = 404
     ctx.body = error

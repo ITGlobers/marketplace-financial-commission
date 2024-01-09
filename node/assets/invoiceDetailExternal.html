@@ -175,11 +175,18 @@
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemGrossPrice}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.positionGrossPrice}}
           </td>
+          {{#if this.isShipping}}
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemFreightCommissionPercentage}}
+          </td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemFreightCommissionAmount}}
+          </td>
+          {{else}}
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemCommissionPercentage}}
           </td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemCommissionAmount}}
           </td>
-          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">ABCDEF12345ABCDEF12345</td>
+          {{/if}}
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../reference}}</td>
         </tr>
         {{/each}}
         {{/each}}

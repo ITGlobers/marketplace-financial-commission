@@ -17,6 +17,7 @@ import {
   sellersResponse,
   sendMail,
   templateMethod,
+  payoutTemplateMethod,
   createPayoutReport,
   getInvoiceExternalFile,
   searchPayoutReport,
@@ -51,6 +52,9 @@ const routes = {
   }),
   template: method({
     GET: [setSchemaVersion, template],
+  }),
+  payoutTemplate: method({
+    GET: [setSchemaVersion, payoutTemplateMethod],
   }),
   _template: method({
     GET: [setSchemaVersion, template],

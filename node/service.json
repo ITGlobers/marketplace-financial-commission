@@ -10,6 +10,10 @@
     "value": 80,
     "scalingPercentage": 95
   },
+  "onAppsInstalled": {
+    "sender": "apps",
+    "topics": ["setup"]
+  },
   "routes": {
     "mail": {
       "path": "/_v/mail",
@@ -36,6 +40,10 @@
     },
     "template": {
       "path": "/_v/segment/template",
+      "public": true
+    },
+    "payoutTemplate": {
+      "path": "/_v/segment/payout/template",
       "public": true
     },
     "_template": {

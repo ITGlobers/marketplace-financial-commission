@@ -14,5 +14,9 @@
   "admin.app.invoiceDetail": {
     "component": "invoiceMarketplaceDetail",
     "path": "/admin/app/commission-report/invoice/:id"
+  },
+  "admin.app.payoutDetail": {
+    "component": "payoutReportDetail",
+    "path": "/admin/app/commission-report/payout/:id"
   }
 }

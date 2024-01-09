@@ -6,6 +6,7 @@ import type { InvoiceExternal } from '../../typings/externalInvoice'
 import { randomId } from '../../utils/randomId'
 import { generateFileByType } from '../../utils/generateFile'
 import { DoxisCredentialsDev } from '../../environments'
+import { invoiceMapper } from '../../mappings/invoiceMapper'
 
 interface JobHistory {
   referenceId: string | null
@@ -62,13 +63,41 @@ export const processInvoiceExternal = async (
     ...bodyExternalInvoice,
   }
 
+  const jsonData = JSON.parse(dataInvoice.jsonData)
+
+  const isOutbound =
+    jsonData.orders[0].items[0].positionType === 'outbound'
+      ? 'Rechnung'
+      : 'Gutschrift'
+
+  bodyExternalInvoiceWithId.id = `${
+    bodyExternalInvoiceWithId.id.split('_')[0]
+  }_${bodyExternalInvoiceWithId.invoiceCreatedDate.replace(/-/g, '')}_${
+    jsonData.sapCommissionId
+  }_${isOutbound}`
+
+  const dataToFile = {
+    original: bodyExternalInvoiceWithId,
+    jsonData: invoiceMapper(jsonData),
+    sellerInformation: [
+      {
+        ID: idInvoice,
+        'Seller ID': dataInvoice.seller.id,
+        'Seller Name': dataInvoice.seller.name,
+        'SAP Seller ID': dataInvoice.seller.sapSellerId,
+        'Invoiced Created': dataInvoice.invoiceCreatedDate,
+        'SellerInvoiceID ': jsonData.sellerInvoiceId,
+      },
+    ],
+  }
+
   try {
     await Promise.all(
       TYPES.map(async (type: Type) => {
         const { type: typeFile } = type
 
         const file = await generateFileByType(
-          bodyExternalInvoiceWithId,
+          dataToFile,
           typeFile as any,
           ctx,
           'commissionReport'
@@ -95,11 +124,6 @@ export const processInvoiceExternal = async (
       })
     )
   } catch (error) {
-    console.info(
-      '🚀 ~ file: processInvoiceExternal.ts:98 ~ error:',
-      error?.response?.data?.message
-    )
-
     throw new Error(
       error?.response?.data?.message ??
         "It wasn't possible to create the invoice."

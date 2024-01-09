@@ -3,6 +3,7 @@ import { format, parse } from 'date-fns'
 import { DoxisCredentialsDev } from '../../environments'
 import { generateFileByType } from '../../utils/generateFile'
 import { randomId } from '../../utils/randomId'
+import { payoutMapper } from '../../mappings/payoutMapper'
 
 async function createPayoutReportServices(
   ctx: Context,
@@ -14,17 +15,17 @@ async function createPayoutReportServices(
 
   doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
 
-  let payoutToSave = data
-
   const idPayoutReport = randomId(data.seller.id)
 
-  const parsedDate = parse(
-    payoutToSave.reportCreatedDate,
-    'dd/MM/yyyy',
-    new Date()
-  )
+  const parsedDate = parse(data.reportCreatedDate, 'dd/MM/yyyy', new Date())
 
   const formattedDate = format(parsedDate, 'yyyy-MM-dd')
+
+  const jsonData = JSON.parse(data.jsonData)
+
+  const cleanupData = payoutMapper(jsonData)
+
+  data.jsonData = cleanupData
 
   try {
     await Promise.all(
@@ -44,7 +45,7 @@ async function createPayoutReportServices(
         const { type: typeFile } = type
 
         const file = await generateFileByType(
-          payoutToSave,
+          data,
           typeFile as any,
           ctx,
           'payoutReport'
@@ -56,11 +57,11 @@ async function createPayoutReportServices(
           type
         )
 
-        payoutToSave = {
-          ...payoutToSave,
+        data = {
+          ...data,
           reportCreatedDate: formattedDate,
           files: {
-            ...payoutToSave.files,
+            ...data.files,
             [typeFile]: JSON.stringify({
               uuid: documentWsTO?.uuid,
               versionNr: 'current',
@@ -75,7 +76,9 @@ async function createPayoutReportServices(
     console.error('generate and upload file error: ', error)
   }
 
-  return payoutReports.save(payoutToSave)
+  data.jsonData = JSON.stringify(jsonData)
+
+  return payoutReports.save(data)
 }
 
 export default createPayoutReportServices

@@ -51,6 +51,11 @@ type Query {
   searchPayoutReport(
     searchPayoutReportParams: SearchPayoutReportParams
   ): PayoutReportsResponse @cacheControl(scope: PRIVATE, maxAge: LONG)
+  """
+  Retrieves an Payout Report
+  """
+  getPayout(id: String!): PayoutReportResponse
+    @cacheControl(scope: PRIVATE, maxAge: SHORT)
 }
 
 type Mutation {

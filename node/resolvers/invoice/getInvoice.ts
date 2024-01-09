@@ -33,7 +33,7 @@ export const getInvoice = async (
   // }
 
   if (TypeIntegration.external === integration) {
-    const externalInvoice = await externalInvoices.search(
+    const externalInvoice: any = await externalInvoices.search(
       { page: PAGE_DEFAULT, pageSize: PAGE_SIZE_DEFAULT },
       ['id,status,invoiceCreatedDate,seller,jsonData,comment'],
       '',
@@ -66,10 +66,21 @@ export const getInvoice = async (
     } else {
       const jsonDataParsed = JSON.parse(externalInvoice[0].jsonData as string)
 
+      const isOutbound =
+        jsonDataParsed.orders[0].items[0].positionType === 'outbound'
+          ? 'Rechnung'
+          : 'Gutschrift'
+
+      jsonDataParsed.id = `${
+        id.split('_')[0]
+      }_${externalInvoice[0].invoiceCreatedDate.replace(/-/g, '')}_${
+        jsonDataParsed.sapCommissionId
+      }_${isOutbound}`
+
       delete externalInvoice[0].jsonData
       invoice = [
         {
-          id: externalInvoice[0].id,
+          id: jsonDataParsed.id,
           status: externalInvoice[0].status,
           invoiceCreatedDate: externalInvoice[0].invoiceCreatedDate,
           seller: externalInvoice[0].seller,
