@@ -15,7 +15,7 @@ export const invoiceMapper = (data: any) =>
           'Einzelpreis (brutto)': item.itemGrossPrice,
           'Umsatzbrutto pro Position': item.positionGrossPrice,
           'Gebühren in %': item.itemCommissionPercentage,
-          'Gebühren in €': item.isShipping
+          'Gebühren in € inkl. MwSt': item.isShipping
             ? item.itemFreightCommissionAmount
             : item.itemCommissionAmount,
         }
