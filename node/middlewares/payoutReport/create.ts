@@ -3,6 +3,7 @@ import { json } from 'co-body'
 import createPayoutReportServices from '../../services/payoutReport/create'
 import schemaPayoutReport from '../../validations/payoutReport'
 
+
 export async function createPayoutReport(
   ctx: Context,
   next: () => Promise<any>
@@ -64,7 +65,7 @@ export async function createPayoutReport(
     ctx.body = { message: 'Created payout report', DocumentId }
   } catch (error) {
     ctx.status = 404
-    ctx.body = { errors: error.details[0].message }
+    ctx.body = { errors: error.response.data ?? error.message }
   }
 
   ctx.set('Cache-Control', 'no-cache ')
