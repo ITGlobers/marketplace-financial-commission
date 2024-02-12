@@ -77,8 +77,9 @@ async function createPayoutReportServices(
   }
 
   data.jsonData = JSON.stringify(jsonData)
-
-  return payoutReports.save(data)
+  data.id =  `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
+  const document = payoutReports.save(data)
+  return document
 }
 
 export default createPayoutReportServices
