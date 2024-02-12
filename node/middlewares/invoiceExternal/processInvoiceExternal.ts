@@ -7,6 +7,7 @@ import { randomId } from '../../utils/randomId'
 import { generateFileByType } from '../../utils/generateFile'
 import { DoxisCredentialsDev } from '../../environments'
 import { invoiceMapper } from '../../mappings/invoiceMapper'
+import { jsonDataMapper } from '../../mappings/jsonDataMapper'
 
 interface JobHistory {
   referenceId: string | null
@@ -75,7 +76,7 @@ export const processInvoiceExternal = async (
   }_${bodyExternalInvoiceWithId.invoiceCreatedDate.replace(/-/g, '')}_${
     jsonData.sapCommissionId
   }_${isOutbound}`
-
+  bodyExternalInvoiceWithId.jsonData = jsonDataMapper(dataInvoice.jsonData)
   const dataToFile = {
     original: bodyExternalInvoiceWithId,
     jsonData: invoiceMapper(jsonData),
@@ -90,6 +91,7 @@ export const processInvoiceExternal = async (
       },
     ],
   }
+  console.log(dataToFile)
 
   try {
     await Promise.all(
