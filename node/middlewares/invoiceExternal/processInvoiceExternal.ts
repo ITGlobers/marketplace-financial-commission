@@ -87,11 +87,10 @@ export const processInvoiceExternal = async (
         'Seller Name': dataInvoice.seller.name,
         'SAP Seller ID': dataInvoice.seller.sapSellerId,
         'Invoiced Created': dataInvoice.invoiceCreatedDate,
-        'SellerInvoiceID ': jsonData.sellerInvoiceId,
+        'SellerInvoiceID ': jsonData.sapCommissionId,
       },
     ],
   }
-  console.log(dataToFile)
 
   try {
     await Promise.all(

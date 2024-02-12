@@ -2,8 +2,10 @@ export const invoiceMapper = (data: any) =>
   data.orders
     .map((order: any) => {
       const { orderId, paymentMethod, items } = order
+
       return items.map((item: any) => {
-        let itemGrossPrice = parseFloat(item.itemGrossPrice).toFixed(2)
+        const itemGrossPrice = parseFloat(item.itemGrossPrice).toFixed(2)
+
         return {
           // ...item,
           Pos: item.positionID,
@@ -14,7 +16,9 @@ export const invoiceMapper = (data: any) =>
           Menge: item.itemQuantity,
           'Einzelpreis (brutto)': itemGrossPrice,
           'Umsatzbrutto pro Position': item.positionGrossPrice,
-          'Gebühren in %': item.itemCommissionPercentage,
+          'Gebühren in %': item.isShipping
+            ? item.itemFreightCommissionRate
+            : item.itemCommissionRate,
           'Gebühren in € inkl. MwSt': item.isShipping
             ? item.itemFreightCommissionAmount
             : item.itemCommissionAmount,
