@@ -38,6 +38,9 @@
   "credentialType": "absolute",
   "policies": [
     {
+      "name": "install-apps"
+    },
+    {
       "name": "colossus-fire-event"
     },
     {

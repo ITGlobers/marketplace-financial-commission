@@ -5,7 +5,7 @@ import clients from './clients'
 import type { Clients } from './clients'
 import { queries, mutations } from './resolvers'
 import { routes } from './routes'
-import { onAppsInstalled } from './middlewares/initialConfiguration'
+import { onAppsInstalled } from './events/initialConfiguration'
 
 export default new Service<Clients, RecorderState, ParamsContext>({
   clients,
