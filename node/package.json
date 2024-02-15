@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@types/uuid": "^9.0.8",
-    "@vtex/api": "6.46.0",
+    "@vtex/api": "6.46.1",
     "@vtex/clients": "^2.19.4",
     "co-body": "^6.0.0",
     "date-fns": "^2.30.0",
@@ -26,7 +26,7 @@
     "@types/papaparse": "^5.3.7",
     "@types/ramda": "types/npm-ramda#dist",
     "@types/xlsx": "^0.0.36",
-    "@vtex/api": "6.46.0",
+    "@vtex/api": "6.46.1",
     "@vtex/test-tools": "^3.4.3",
     "@vtex/tsconfig": "^0.5.6",
     "obi.components-financial-commission": "http://obi.vtexassets.com/_v/public/typings/v1/obi.components-financial-commission@1.0.6/public/@types/obi.components-financial-commission",
