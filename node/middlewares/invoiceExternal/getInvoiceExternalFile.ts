@@ -20,10 +20,8 @@ export async function getInvoiceExternalFile(
 
   const integration = await typeIntegration(ctx)
 
-  let sellerInvoices: any
-
   if (TypeIntegration.external === integration) {
-    sellerInvoices = await externalInvoices.searchRaw(
+    await externalInvoices.searchRaw(
       pagination,
       [
         'id,status,accountName,seller,invoiceCreatedDate,jsonData,comment,files',
@@ -32,7 +30,7 @@ export async function getInvoiceExternalFile(
       `id=${id}`
     )
   } else {
-    sellerInvoices = await commissionInvoices.searchRaw(
+    await commissionInvoices.searchRaw(
       pagination,
       [
         'id,status,accountName,seller,invoiceCreatedDate,jsonData,comment,files',
