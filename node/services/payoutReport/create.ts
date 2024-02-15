@@ -1,8 +1,5 @@
 import { format, parse } from 'date-fns'
-
-import { DoxisCredentialsDev } from '../../environments'
-import { generateFileByType } from '../../utils/generateFile'
-import { randomId } from '../../utils/randomId'
+import { v4 as uuidv4 } from 'uuid';
 import { payoutMapper } from '../../mappings/payoutMapper'
 
 async function createPayoutReportServices(
@@ -10,12 +7,8 @@ async function createPayoutReportServices(
   data?: any
 ): Promise<any> {
   const {
-    clients: { doxis, payoutReports },
+    clients: { payoutReports },
   } = ctx
-
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
-
-  const idPayoutReport = randomId(data.seller.id)
 
   const parsedDate = parse(data.reportCreatedDate, 'dd/MM/yyyy', new Date())
 
@@ -44,26 +37,13 @@ async function createPayoutReportServices(
       ].map(async (type: any) => {
         const { type: typeFile } = type
 
-        const file = await generateFileByType(
-          data,
-          typeFile as any,
-          ctx,
-          'payoutReport'
-        )
-
-        const { documentWsTO }: any = await doxis.createDocument(
-          idPayoutReport,
-          file,
-          type
-        )
-
         data = {
           ...data,
           reportCreatedDate: formattedDate,
           files: {
             ...data.files,
             [typeFile]: JSON.stringify({
-              uuid: documentWsTO?.uuid,
+              uuid: uuidv4(),
               versionNr: 'current',
               representationId: 'default',
               contentObjectId: 'primary',

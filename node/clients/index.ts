@@ -15,7 +15,6 @@ import SellersIO from './sellers'
 import Template from './template'
 import AppTokenClient from './vtexLogin'
 import { Catalog } from './catalog'
-import Doxis from './doxis'
 import PdfBuilder from './pdf'
 import Scheduler from './scheduler'
 
@@ -78,11 +77,7 @@ export class Clients extends IOClients {
   public get catalog() {
     return this.getOrSet('catalog', Catalog)
   }
-
-  public get doxis() {
-    return this.getOrSet('doxis', Doxis)
-  }
-
+  
   public get pdf() {
     return this.getOrSet('pdf', PdfBuilder)
   }

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@types/uuid": "^9.0.8",
     "@vtex/api": "6.46.0",
     "@vtex/clients": "^2.19.4",
     "co-body": "^6.0.0",
@@ -12,6 +13,7 @@
     "polly-js": "^1.8.3",
     "query-string": "^8.1.0",
     "ramda": "^0.25.0",
+    "uuid": "^9.0.1",
     "xlsx": "^0.18.5",
     "xmlbuilder": "^15.1.1"
   },

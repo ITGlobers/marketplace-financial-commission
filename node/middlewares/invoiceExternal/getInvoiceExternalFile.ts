@@ -1,5 +1,3 @@
-import { TYPES } from '../../constants'
-import { DoxisCredentialsDev } from '../../environments'
 import { typeIntegration } from '../../utils/typeIntegration'
 
 export async function getInvoiceExternalFile(
@@ -9,13 +7,11 @@ export async function getInvoiceExternalFile(
   const {
     vtex: {
       route: {
-        params: { id, type },
+        params: { id },
       },
     },
-    clients: { commissionInvoices, externalInvoices, doxis },
+    clients: { commissionInvoices, externalInvoices },
   } = ctx
-
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
 
   const pagination = {
     page: 1,
@@ -46,14 +42,7 @@ export async function getInvoiceExternalFile(
     )
   }
 
-  const fileData = JSON.parse(sellerInvoices.data[0].files[`${type}`])
-  const file = await doxis.getDocument(fileData)
-  const contentType = TYPES.find((t) => t.type === type)?.mimeTypeName as string
-
-  ctx.status = 200
-  ctx.set('Content-Type', contentType)
-  ctx.set('Content-Disposition', `attachment; filename=${id}.${type}`)
-  ctx.body = file
+  ctx.status = 404
   ctx.set('Cache-Control', 'no-cache ')
 
   await next()

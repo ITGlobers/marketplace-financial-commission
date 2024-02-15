@@ -1,12 +1,10 @@
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData'
 import type { ExternalInvoice } from 'obi.marketplace-financial-commission'
+import { v4 as uuidv4 } from 'uuid';
 
 import { config, JOB_STATUS, TYPES } from '../../constants'
 import type { InvoiceExternal } from '../../typings/externalInvoice'
 import { randomId } from '../../utils/randomId'
-import { generateFileByType } from '../../utils/generateFile'
-import { DoxisCredentialsDev } from '../../environments'
-import { invoiceMapper } from '../../mappings/invoiceMapper'
 import { jsonDataMapper } from '../../mappings/jsonDataMapper'
 
 interface JobHistory {
@@ -23,14 +21,12 @@ export const processInvoiceExternal = async (
   dataInvoice: InvoiceExternal
 ): Promise<DocumentResponse> => {
   const {
-    clients: { vbase, externalInvoices, doxis },
+    clients: { vbase, externalInvoices },
   } = ctx
 
   const [today] = new Date().toISOString().split('T')
 
   const BUCKET = config.APIREST_JOB_BUCKET
-
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
 
   const HISTORY = {
     referenceId: null,
@@ -77,45 +73,18 @@ export const processInvoiceExternal = async (
     jsonData.sapCommissionId
   }_${isOutbound}`
   bodyExternalInvoiceWithId.jsonData = jsonDataMapper(dataInvoice.jsonData)
-  const dataToFile = {
-    original: bodyExternalInvoiceWithId,
-    jsonData: invoiceMapper(jsonData),
-    sellerInformation: [
-      {
-        ID: idInvoice,
-        'Seller ID': dataInvoice.seller.id,
-        'Seller Name': dataInvoice.seller.name,
-        'SAP Seller ID': dataInvoice.seller.sapSellerId,
-        'Invoiced Created': dataInvoice.invoiceCreatedDate,
-        'SellerInvoiceID ': jsonData.sapCommissionId,
-      },
-    ],
-  }
 
   try {
     await Promise.all(
       TYPES.map(async (type: Type) => {
         const { type: typeFile } = type
 
-        const file = await generateFileByType(
-          dataToFile,
-          typeFile as any,
-          ctx,
-          'commissionReport'
-        )
-
-        const { documentWsTO }: any = await doxis.createDocument(
-          idInvoice,
-          file,
-          type
-        )
-
         bodyExternalInvoiceWithId = {
           ...bodyExternalInvoiceWithId,
           files: {
             ...bodyExternalInvoiceWithId.files,
             [typeFile]: JSON.stringify({
-              uuid: documentWsTO?.uuid,
+              uuid: uuidv4(),
               versionNr: 'current',
               representationId: 'default',
               contentObjectId: 'primary',

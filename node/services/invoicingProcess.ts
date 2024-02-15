@@ -1,8 +1,7 @@
 import { config, JOB_STATUS, TYPES } from '../constants'
-import { DoxisCredentialsDev } from '../environments'
 import { draftInvoice } from '../utils/draftInvoice'
-import { generateFileByType } from '../utils/generateFile'
 import { randomId } from '../utils/randomId'
+import { v4 as uuidv4 } from 'uuid';
 
 interface JobHistory {
   referenceId: string | null
@@ -35,7 +34,7 @@ export const invoicingProcess = async (
   automated?: boolean
 ): Promise<string> => {
   const {
-    clients: { vbase, commissionInvoices, mail, doxis },
+    clients: { vbase, commissionInvoices, mail },
     vtex: { account: marketplace },
   } = ctx
 
@@ -78,31 +77,17 @@ export const invoicingProcess = async (
     ...invoice,
   }
 
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
   await Promise.all(
     TYPES.map(async (type: Type) => {
       const { type: typeFile } = type
 
       try {
-        const file = await generateFileByType(
-          bodyInvoiceWithId,
-          typeFile as any,
-          ctx,
-          'commissionReport'
-        )
-
-        const { documentWsTO }: any = await doxis.createDocument(
-          idInvoice,
-          file,
-          type
-        )
-
         bodyInvoiceWithId = {
           ...bodyInvoiceWithId,
           files: {
             ...bodyInvoiceWithId.files,
             [typeFile]: JSON.stringify({
-              uuid: documentWsTO?.uuid,
+              uuid: uuidv4(),
               versionNr: 'current',
               representationId: 'default',
               contentObjectId: 'primary',

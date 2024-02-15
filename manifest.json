@@ -98,20 +98,6 @@
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "trx-proxy-vtex-doxis.stage-eks.dbs.obi.solutions",
-        "path": "*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "trx-proxy-vtex-doxis.prod-eks.dbs.obi.solutions",
-        "path": "*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
         "host": "2pff1ku37k.execute-api.us-east-1.amazonaws.com",
         "path": "*"
       }
