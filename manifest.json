@@ -1,7 +1,7 @@
 {
-  "vendor": "obi",
+  "vendor": "marketplace20demo",
   "name": "marketplace-financial-commission",
-  "version": "0.0.13",
+  "version": "0.0.1",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
