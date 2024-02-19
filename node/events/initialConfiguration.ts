@@ -1,6 +1,7 @@
 import type { EventContext } from '@vtex/api'
 
 import type { Clients } from '../clients'
+import { createTemplate } from '../utils/createTemplate'
 
 export async function onAppsInstalled (ctx: EventContext<Clients>)  {
   const {
@@ -44,6 +45,18 @@ export async function onAppsInstalled (ctx: EventContext<Clients>)  {
     })
   }
 
+  try {
+    await createTemplate(ctx.clients)
+    logger.error({
+      message: 'create-template-commission',
+    })
+  } catch (error) {
+    logger.error({
+      message: 'error-create-template-commission',
+      error,
+      data: JSON.stringify(error)
+    })
+  }
   return true
 }
 
