@@ -10,9 +10,11 @@
     "value": 80,
     "scalingPercentage": 95
   },
-  "onAppsInstalled": {
-    "sender": "apps",
-    "topics": ["setup"]
+  "events": {
+    "onAppsInstalled": {
+      "sender": "apps",
+      "keys": ["linked","setup"]
+    }
   },
   "routes": {
     "mail": {
