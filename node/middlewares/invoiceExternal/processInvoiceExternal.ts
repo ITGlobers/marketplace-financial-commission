@@ -92,18 +92,24 @@ export const processInvoiceExternal = async (
     ],
   }
 
-  try {
-    await Promise.all(
-      TYPES.map(async (type: Type) => {
-        const { type: typeFile } = type
-
-        const file = await generateFileByType(
+  await Promise.all(
+    TYPES.map(async (type: Type) => {
+      const { type: typeFile } = type
+      let file
+      try {
+        file = await generateFileByType(
           dataToFile,
           typeFile as any,
           ctx,
           'commissionReport'
         )
-
+      } catch (error) {
+        throw new Error(
+          error?.response?.data?.message ??
+            "It wasn't possible to generate file by type."
+        )
+      }
+      try {
         const { documentWsTO }: any = await doxis.createDocument(
           idInvoice,
           file,
@@ -122,14 +128,15 @@ export const processInvoiceExternal = async (
             }),
           },
         }
-      })
-    )
-  } catch (error) {
-    throw new Error(
-      error?.response?.data?.message ??
-        "It wasn't possible to create the invoice."
-    )
-  }
+      } catch (error) {
+        throw new Error(
+          error?.response?.data?.message ??
+            "It wasn't possible to create document in doxis."
+        )
+      }
+    })
+  )
+
 
   const document = await externalInvoices.save(bodyExternalInvoiceWithId)
 
