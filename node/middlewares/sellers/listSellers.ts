@@ -9,7 +9,7 @@ export async function listSellers(ctx: Context): Promise<Sellers> {
   let to = 100
   let total = 0
 
-  while (total !== to) {
+  while (from !== to) {
     let sellersParams: SellerListParams = {
       pagination: {
         from,
