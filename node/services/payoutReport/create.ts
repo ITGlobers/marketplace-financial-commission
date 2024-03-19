@@ -2,7 +2,6 @@ import { format, parse } from 'date-fns'
 
 import { DoxisCredentialsDev } from '../../environments'
 import { generateFileByType } from '../../utils/generateFile'
-import { randomId } from '../../utils/randomId'
 import { payoutMapper } from '../../mappings/payoutMapper'
 
 async function createPayoutReportServices(
@@ -15,8 +14,6 @@ async function createPayoutReportServices(
 
   doxis.dmsRepositoryId = DoxisCredentialsDev.PAYOUT_REPORT
 
-  const idPayoutReport = randomId(data.seller.id)
-
   const parsedDate = parse(data.reportCreatedDate, 'dd/MM/yyyy', new Date())
 
   const formattedDate = format(parsedDate, 'yyyy-MM-dd')
@@ -24,6 +21,17 @@ async function createPayoutReportServices(
   const jsonData = JSON.parse(data.jsonData)
 
   const cleanupData = payoutMapper(jsonData)
+
+  data.id = `${data.seller.id}_${data.reportCreatedDate
+    .split('/')
+    .join('_')}_${data.payoutReportFileName.split('-').join('_')}`
+
+  const existingDocument = await payoutReports.get(data.id, ['id'])
+
+  console.info('existingDocument', existingDocument)
+  if (existingDocument) {
+    throw new Error('Document already exists')
+  }
 
   data.jsonData = cleanupData
 
@@ -105,7 +113,7 @@ async function createPayoutReportServices(
         // ]
 
         const { documentWsTO }: any = await doxis.createDocument(
-          idPayoutReport,
+          data.payoutReportFileName,
           file,
           type
         )
@@ -130,8 +138,9 @@ async function createPayoutReportServices(
   }
 
   data.jsonData = JSON.stringify(jsonData)
-  data.id = `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
-  const document = payoutReports.save(data)
+
+  console.info('data', data)
+  const document = await payoutReports.save(data)
 
   return document
 }

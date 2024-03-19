@@ -14,7 +14,7 @@ export async function getPayoutReportFile(
     clients: { payoutReports, doxis },
   } = ctx
 
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
+  doxis.dmsRepositoryId = DoxisCredentialsDev.PAYOUT_REPORT
 
   const { files, payoutReportFileName }: any = await payoutReports.get(
     id.toString(),
