@@ -2,7 +2,11 @@ import FormData from 'form-data'
 import { ExternalClient } from '@vtex/api'
 import type { InstanceOptions, IOContext, RequestConfig } from '@vtex/api'
 
-import { DoxisCredentialsDev, DoxisCredentialsProd } from '../../environments'
+import {
+  DoxisCredentialsDev,
+  DoxisCredentialsProd,
+  DoxisCredentialsBase,
+} from '../../environments'
 import { statusToError } from '../../utils/errors'
 
 export default class Doxis extends ExternalClient {
@@ -62,9 +66,14 @@ export default class Doxis extends ExternalClient {
   public createDocument = async (
     id: string,
     file: Buffer | string,
-    { mimeTypeName, type, fileExtension }: Type
+    { mimeTypeName, type, fileExtension, attributes = [] }: Type
   ) => {
     const data = new FormData()
+
+    const documentTypeUUID =
+      this.dmsRepositoryId === 'COMMISSION_REPORT'
+        ? DoxisCredentialsBase.DOCUMENT_TYPE_UUID_COMMISSION_REPORT
+        : DoxisCredentialsBase.DOCUMENT_TYPE_UUID_PAYOUT_REPORT
 
     data.append('inputStream', file)
     data.append(
@@ -73,8 +82,8 @@ export default class Doxis extends ExternalClient {
         mimeTypeName,
         fullFileName: `${id}.${type}`,
         fileExtension,
-        attributes: [],
-        documentTypeUUID: '72c307f4-fee0-483f-a724-71ea6347c426',
+        attributes,
+        documentTypeUUID,
       })
     )
 

@@ -158,6 +158,7 @@ declare global {
     type: 'csv' | 'xls' | 'pdf'
     mimeTypeName: string
     fileExtension: string
+    attributes?: any[]
   }
 }
 

@@ -13,7 +13,7 @@ async function createPayoutReportServices(
     clients: { doxis, payoutReports },
   } = ctx
 
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
+  doxis.dmsRepositoryId = DoxisCredentialsDev.PAYOUT_REPORT
 
   const idPayoutReport = randomId(data.seller.id)
 
@@ -51,6 +51,59 @@ async function createPayoutReportServices(
           'payoutReport'
         )
 
+        // type.attributes = [
+        //   {
+        //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303231', // Document type
+        //     values: [type.type],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131313033', // Company code
+        //     values: [],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303830', // Country code
+        //     values: ['DE'],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303236', // Date
+        //     values: [formattedDate],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: 'a1f099fc-07cd-4891-bd2f-b7d3ee674688', // Report Number
+        //     values: [],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303839', // Report Date
+        //     values: [],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: '763aee9a-d75b-4f23-a222-3c39bc8b726b', // IBAN
+        //     values: [],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131313035', // Account number
+        //     values: [],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: '306d2ac9-7bec-4462-8a5e-b7293b635b64', // bank code
+        //     values: [],
+        //     attributeDataType: 'STRING',
+        //   },
+        //   {
+        //     attributeDefinitionUUID: 'a4ef5e30-c31d-42c6-9bd3-399befa0677f', // Filename
+        //     values: [data.payoutReportFileName],
+        //     attributeDataType: 'STRING',
+        //   },
+        // ]
+
         const { documentWsTO }: any = await doxis.createDocument(
           idPayoutReport,
           file,
@@ -77,8 +130,9 @@ async function createPayoutReportServices(
   }
 
   data.jsonData = JSON.stringify(jsonData)
-  data.id =  `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
+  data.id = `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
   const document = payoutReports.save(data)
+
   return document
 }
 

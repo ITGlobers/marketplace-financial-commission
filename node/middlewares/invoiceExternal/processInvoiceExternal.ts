@@ -3,7 +3,6 @@ import type { ExternalInvoice } from 'obi.marketplace-financial-commission'
 
 import { config, JOB_STATUS, TYPES } from '../../constants'
 import type { InvoiceExternal } from '../../typings/externalInvoice'
-import { randomId } from '../../utils/randomId'
 import { generateFileByType } from '../../utils/generateFile'
 import { DoxisCredentialsDev } from '../../environments'
 import { invoiceMapper } from '../../mappings/invoiceMapper'
@@ -57,13 +56,6 @@ export const processInvoiceExternal = async (
     comment: `Invoice created by external API REST integration on ${today}`,
   }
 
-  const idInvoice = randomId(dataInvoice.seller.id)
-
-  let bodyExternalInvoiceWithId = {
-    id: idInvoice,
-    ...bodyExternalInvoice,
-  }
-
   const jsonData = JSON.parse(dataInvoice.jsonData)
 
   const isOutbound =
@@ -71,11 +63,17 @@ export const processInvoiceExternal = async (
       ? 'Rechnung'
       : 'Gutschrift'
 
-  bodyExternalInvoiceWithId.id = `${
-    bodyExternalInvoiceWithId.id.split('_')[0]
-  }_${bodyExternalInvoiceWithId.invoiceCreatedDate.replace(/-/g, '')}_${
+  const idInvoice = `${
+    dataInvoice.seller.id
+  }_${bodyExternalInvoice.invoiceCreatedDate.replace(/-/g, '')}_${
     jsonData.sapCommissionId
   }_${isOutbound}`
+
+  let bodyExternalInvoiceWithId = {
+    id: idInvoice,
+    ...bodyExternalInvoice,
+  }
+
   bodyExternalInvoiceWithId.jsonData = jsonDataMapper(dataInvoice.jsonData)
   const dataToFile = {
     original: bodyExternalInvoiceWithId,
@@ -96,6 +94,7 @@ export const processInvoiceExternal = async (
     TYPES.map(async (type: Type) => {
       const { type: typeFile } = type
       let file
+
       try {
         file = await generateFileByType(
           dataToFile,
@@ -104,11 +103,46 @@ export const processInvoiceExternal = async (
           'commissionReport'
         )
       } catch (error) {
+        console.info('Error generating file', error)
         throw new Error(
           error?.response?.data?.message ??
             "It wasn't possible to generate file by type."
         )
       }
+
+      // type.attributes = [
+      //   {
+      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303839', // Report Date (yyyy.mm.dd)
+      //     values: [dataInvoice.invoiceCreatedDate],
+      //     attributeDataType: 'STRING',
+      //   },
+      //   {
+      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303236', // Date (yyyyMMdd)
+      //     values: [dataInvoice.invoiceCreatedDate],
+      //     attributeDataType: 'STRING',
+      //   },
+      //   {
+      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303231', // Document type
+      //     values: [type.type],
+      //     attributeDataType: 'STRING',
+      //   },
+      //   {
+      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303830', // Country code
+      //     values: ['DE'],
+      //     attributeDataType: 'STRING',
+      //   },
+      //   {
+      //     attributeDefinitionUUID: '22c73bc8-6c1a-4a21-ae61-cbbb203b594d', // Seller ID
+      //     values: [dataInvoice.seller.id],
+      //     attributeDataType: 'STRING',
+      //   },
+      //   {
+      //     attributeDefinitionUUID: 'd180776f-fedf-420e-8b28-252074e3fda4', // invoice ID
+      //     values: [bodyExternalInvoiceWithId.id],
+      //     attributeDataType: 'STRING',
+      //   },
+      // ]
+
       try {
         const { documentWsTO }: any = await doxis.createDocument(
           idInvoice,
@@ -136,7 +170,6 @@ export const processInvoiceExternal = async (
       }
     })
   )
-
 
   const document = await externalInvoices.save(bodyExternalInvoiceWithId)
 

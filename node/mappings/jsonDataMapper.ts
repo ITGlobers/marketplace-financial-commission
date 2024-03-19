@@ -1,12 +1,30 @@
-export const jsonDataMapper = (jsonString: any) => {
-  let jsonObject = JSON.parse(jsonString);
+import formatNumberToCustomString from '../utils/formatNumberToCustomString'
 
-  for (let order of jsonObject.orders) {
-      for (let item of order.items) {
-          item.itemGrossPrice = parseFloat(item.itemGrossPrice).toFixed(2);
-      }
+export const jsonDataMapper = (jsonString: any) => {
+  const jsonObject = JSON.parse(jsonString)
+
+  for (const order of jsonObject.orders) {
+    for (const item of order.items) {
+      item.itemGrossPrice = formatNumberToCustomString(item.itemGrossPrice)
+      item.positionGrossPrice = formatNumberToCustomString(
+        item.positionGrossPrice
+      )
+      item.itemFreightCommissionPercentage = formatNumberToCustomString(
+        item.itemFreightCommissionPercentage
+      )
+      item.itemCommissionPercentage = formatNumberToCustomString(
+        item.itemCommissionPercentage
+      )
+      item.itemFreightCommissionAmount = formatNumberToCustomString(
+        item.itemFreightCommissionAmount
+      )
+      item.itemCommissionAmount = formatNumberToCustomString(
+        item.itemCommissionAmount
+      )
+    }
   }
 
-  let jsonModifiedString = JSON.stringify(jsonObject);
-  return(jsonModifiedString);
+  const jsonModifiedString = JSON.stringify(jsonObject)
+
+  return jsonModifiedString
 }

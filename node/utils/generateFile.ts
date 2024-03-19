@@ -30,7 +30,7 @@ const createXLSBuffer = (data: any, origin: string) => {
 }
 
 function generateCSV(data: any): string {
-  return Papa.unparse(data.jsonData)
+  return `\uFEFF${Papa.unparse(data.jsonData)}`
 }
 
 async function generatePDF(data: any, ctx: Context): Promise<any> {
