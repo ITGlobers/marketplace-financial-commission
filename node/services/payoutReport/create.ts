@@ -3,6 +3,7 @@ import { format, parse } from 'date-fns'
 import { DoxisCredentialsDev } from '../../environments'
 import { generateFileByType } from '../../utils/generateFile'
 import { payoutMapper } from '../../mappings/payoutMapper'
+import { jsonStorageService } from '../jsonService'
 
 async function createPayoutReportServices(
   ctx: Context,
@@ -28,7 +29,6 @@ async function createPayoutReportServices(
 
   const existingDocument = await payoutReports.get(data.id, ['id'])
 
-  console.info('existingDocument', existingDocument)
   if (existingDocument) {
     throw new Error('Document already exists')
   }
@@ -139,7 +139,14 @@ async function createPayoutReportServices(
 
   data.jsonData = JSON.stringify(jsonData)
 
-  console.info('data', data)
+  if (jsonData.length > 1000) {
+    await jsonStorageService(ctx, 'PR').save({
+      id: data.id,
+      jsonData: data.jsonData,
+    })
+    data.jsonData = ''
+  }
+
   const document = await payoutReports.save(data)
 
   return document

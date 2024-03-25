@@ -1,3 +1,5 @@
+import { jsonStorageService } from '../../services/jsonService'
+
 const assembleWhere = async (query: any): Promise<string> => {
   const sellerName = (query.sellerName ?? '') as string
   const sellerId = (query.sellerId ?? '') as string
@@ -55,19 +57,15 @@ export async function getInvoiceExternal(
   let sellerInvoices
 
   if (id !== '' && id !== undefined) {
-    const pagination = {
-      page: 1,
-      pageSize: 100,
-    }
+    sellerInvoices = (await externalInvoices.get(id as string, [
+      'id,status,accountName,seller,invoiceCreatedDate,jsonData,comment,files',
+    ])) as any
 
-    sellerInvoices = await externalInvoices.searchRaw(
-      pagination,
-      [
-        'id,status,accountName,seller,invoiceCreatedDate,jsonData,comment,files',
-      ],
-      'createdIn',
-      `id=${id}`
-    )
+    const jsonData = JSON.parse(sellerInvoices.jsonData)
+
+    if (!jsonData.orders) {
+      sellerInvoices.jsonData = await jsonStorageService(ctx, 'CR').get(id)
+    }
   } else {
     const page = Number(
       (ctx.query.page === '' || ctx.query.page === undefined

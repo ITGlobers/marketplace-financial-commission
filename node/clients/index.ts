@@ -18,6 +18,7 @@ import { Catalog } from './catalog'
 import Doxis from './doxis'
 import PdfBuilder from './pdf'
 import Scheduler from './scheduler'
+import { MasterData } from './masterdata'
 
 export class Clients extends IOClients {
   public get mail() {
@@ -89,6 +90,10 @@ export class Clients extends IOClients {
 
   public get scheduler() {
     return this.getOrSet('scheduler', Scheduler)
+  }
+
+  public get masterdataV1() {
+    return this.getOrSet('masterdataV1', MasterData)
   }
 }
 

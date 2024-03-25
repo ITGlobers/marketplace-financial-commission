@@ -19,7 +19,7 @@ export async function validateParamsExternal(
     },
   } = ctx
 
-  const requestData = await json(req) // as InvoiceExternal
+  const requestData = await json(req, { limit: '50mb' }) // as InvoiceExternal
 
   switch (method) {
     case 'PATCH': {

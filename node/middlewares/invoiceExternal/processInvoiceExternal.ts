@@ -7,6 +7,7 @@ import { generateFileByType } from '../../utils/generateFile'
 import { DoxisCredentialsDev } from '../../environments'
 import { invoiceMapper } from '../../mappings/invoiceMapper'
 import { jsonDataMapper } from '../../mappings/jsonDataMapper'
+import { jsonStorageService } from '../../services/jsonService'
 
 interface JobHistory {
   referenceId: string | null
@@ -170,6 +171,14 @@ export const processInvoiceExternal = async (
       }
     })
   )
+
+  const jsonOrders = JSON.parse(bodyExternalInvoiceWithId.jsonData)
+
+  if (jsonOrders.orders.length > 1000) {
+    await jsonStorageService(ctx, 'CR').save(bodyExternalInvoiceWithId)
+    delete jsonOrders.orders
+    bodyExternalInvoiceWithId.jsonData = JSON.stringify(jsonOrders)
+  }
 
   const document = await externalInvoices.save(bodyExternalInvoiceWithId)
 

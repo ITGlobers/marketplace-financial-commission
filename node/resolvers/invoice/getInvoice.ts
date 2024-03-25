@@ -2,6 +2,7 @@ import type { CommissionInvoice } from 'obi.marketplace-financial-commission'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
+import { jsonStorageService } from '../../services/jsonService'
 
 export const getInvoice = async (
   _: unknown,
@@ -17,77 +18,28 @@ export const getInvoice = async (
   const where = `id=${id}`
 
   let invoice
-  // const items: any[] = []
 
   const integration = await typeIntegration(ctx)
 
-  // const setSymbol = (
-  //   { CurrencySymbol, CurrencyFormatInfo: { StartsWithCurrencySymbol } }: any,
-  //   value: number
-  // ) => {
-  //   if (StartsWithCurrencySymbol) {
-  //     return `${CurrencySymbol} ${value}`
-  //   }
-
-  //   return `${value.toFixed(2)} ${CurrencySymbol}`
-  // }
-
   if (TypeIntegration.external === integration) {
-    const externalInvoice: any = await externalInvoices.search(
-      { page: PAGE_DEFAULT, pageSize: PAGE_SIZE_DEFAULT },
-      ['id,status,invoiceCreatedDate,seller,jsonData,comment'],
-      '',
-      where
-    )
+    const externalInvoice: any = await externalInvoices.get(id, [
+      'id,status,invoiceCreatedDate,seller,jsonData,comment',
+    ])
 
-    // const sellerInfo = await sellersIO.seller(externalInvoice[0].seller?.id)
-    // const culture = await catalog.salesChannelById(sellerInfo?.salesChannel)
-    // const objectData = JSON.parse(externalInvoice[0].jsonData)
+    let jsonDataParsed = JSON.parse(externalInvoice.jsonData)
 
-    // objectData.orders = objectData.orders.map((order: any) => {
-    //   order.items = order.items.map((item: any) => {
-    //     const { itemGrossPrice, itemTotalValue, itemCommissionAmount} = item
-    //     return {
-    //       ...item,
-    //       orderId: order.orderId,
-    //       itemGrossPrice: setSymbol(culture, itemGrossPrice),
-    //       itemTotalValue: setSymbol(culture, itemTotalValue),
-    //       itemCommissionAmount: setSymbol(culture, itemCommissionAmount),
-    //     }
-    //   })
-    //   items.push(...order.items)
-    //   return order
-    // })
-    // objectData.items = items
-    // externalInvoice[0].jsonData = JSON.stringify(objectData);
+    if (!jsonDataParsed.orders) {
+      jsonDataParsed = await jsonStorageService(ctx, 'CR').get(id)
+    }
 
-    if (externalInvoice.length === 0) {
-      invoice = externalInvoice
-    } else {
-      const jsonDataParsed = JSON.parse(externalInvoice[0].jsonData as string)
-
-      const isOutbound =
-        jsonDataParsed.orders[0].items[0].positionType === 'outbound'
-          ? 'Rechnung'
-          : 'Gutschrift'
-
-      jsonDataParsed.id = `${
-        id.split('_')[0]
-      }_${externalInvoice[0].invoiceCreatedDate.replace(/-/g, '')}_${
-        jsonDataParsed.sapCommissionId
-      }_${isOutbound}`
-
-      delete externalInvoice[0].jsonData
-      invoice = [
-        {
-          id: jsonDataParsed.id,
-          status: externalInvoice[0].status,
-          invoiceCreatedDate: externalInvoice[0].invoiceCreatedDate,
-          seller: externalInvoice[0].seller,
-          jsonData: { ...externalInvoice[0], ...jsonDataParsed },
-          comment: externalInvoice[0].comment,
-        },
-      ]
+    delete externalInvoice.jsonData
+    invoice = {
+      id: externalInvoice.id,
+      status: externalInvoice.status,
+      invoiceCreatedDate: externalInvoice.invoiceCreatedDate,
+      seller: externalInvoice.seller,
+      jsonData: { ...externalInvoice, ...jsonDataParsed },
+      comment: externalInvoice.comment,
     }
   } else {
     const internalInvoice = (await commissionInvoices.search(
@@ -124,13 +76,5 @@ export const getInvoice = async (
     ]
   }
 
-  if (invoice.length > 1) {
-    console.warn('Invoice duplication, seek resolution')
-  }
-
-  if (invoice.length > 0) {
-    return invoice[0]
-  }
-
-  return null
+  return invoice
 }

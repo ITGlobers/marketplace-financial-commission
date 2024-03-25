@@ -1,4 +1,5 @@
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
+import { jsonStorageService } from '../jsonService'
 
 const payoutReportService = (ctx: Context) => ({
   async get(id: string): Promise<any> {
@@ -10,6 +11,14 @@ const payoutReportService = (ctx: Context) => ({
       'seller',
       'jsonData',
     ])
+
+    if (response.jsonData === '') {
+      const [columnsName, ...orders] = await jsonStorageService(ctx, 'PR').get(
+        id
+      )
+
+      return { ...response, columns: columnsName, orders }
+    }
 
     const [columnsName, ...orders] = JSON.parse(response.jsonData)
 

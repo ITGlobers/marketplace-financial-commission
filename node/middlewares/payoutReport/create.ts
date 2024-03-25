@@ -17,7 +17,7 @@ export async function createPayoutReport(
   } = ctx
 
   try {
-    const body = await json(req)
+    const body = await json(req, { limit: '50mb' })
 
     const jsonData = JSON.parse(body.jsonData)
 
