@@ -10,14 +10,12 @@ export async function listSellers(ctx: Context): Promise<Sellers> {
   let total = 0
 
   while (total !== to) {
-    let sellersParams: SellerListParams = {
+    const respsellers = await sellersIO.getSellers({
       pagination: {
         from,
         to,
       },
-    }
-
-    const respsellers = await sellersIO.getSellers(sellersParams)
+    })
 
     respsellers.items.forEach((seller) => {
       ArraySellers.push(seller)
@@ -33,13 +31,6 @@ export async function listSellers(ctx: Context): Promise<Sellers> {
 
     from = to
     to = total > totalProcessPending ? from + 100 : totalProcessPending
-
-    sellersParams = {
-      pagination: {
-        from,
-        to,
-      },
-    }
   }
 
   const sellers: Sellers = {

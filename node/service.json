@@ -12,12 +12,16 @@
   },
   "onAppsInstalled": {
     "sender": "apps",
-    "topics": ["setup"]
+    "topics": [
+      "setup"
+    ],
+    "settingsType": "workspace"
   },
   "routes": {
     "mail": {
       "path": "/_v/mail",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_mail": {
       "path": "/_v/policy/financial-commission/mail",
@@ -26,25 +30,31 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post"],
+          "actions": [
+            "post"
+          ],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "sellers": {
       "path": "/_v/sellers/list",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "template": {
       "path": "/_v/segment/template",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "payoutTemplate": {
       "path": "/_v/segment/payout/template",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_template": {
       "path": "/_v/policy/financial-commission/template",
@@ -53,29 +63,36 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "generateDashboard": {
       "path": "/dashboard/generate",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "searchSellersDashboard": {
       "path": "/_v/dashboard/sellers/search",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "searchStatisticsDashboard": {
       "path": "/_v/dashboard/statistics/search",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "singleInvoice": {
       "path": "/_v/private/financial-commission/:sellerId/invoice/*id",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_singleInvoice": {
       "path": "/_v/policy/financial-commission/:sellerId/invoice/*id",
@@ -84,17 +101,22 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get", "post"],
+          "actions": [
+            "get",
+            "post"
+          ],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "invoicesBySeller": {
       "path": "/_v/financial-commission/:sellerId/invoices",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_invoicesBySeller": {
       "path": "/_v/policy/financial-commission/:sellerId/invoices",
@@ -103,10 +125,15 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post"],
-          "principals": ["*"]
+          "actions": [
+            "post"
+          ],
+          "principals": [
+            "*"
+          ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "generateInvoices": {
       "path": "/invoice/generate",
@@ -114,16 +141,20 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
             "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*"
           ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "orders": {
       "path": "/_v/private/orders",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_orders": {
       "path": "/_v/policy/private/orders",
@@ -132,25 +163,31 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "token": {
       "path": "/_v/financial-commission/token/*sellerId",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "invoiceExternal": {
       "path": "/_v/private/financial-commission/external/invoice/*id",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "invoiceExternalFile": {
       "path": "/_v/private/financial-commission/external/invoice/file/:id/type/:type",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_invoiceExternalFile": {
       "path": "/_v/policy/external/financial-commission/invoice/file/:id/type/:type",
@@ -159,10 +196,15 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
-          "principals": ["*"]
+          "actions": [
+            "get"
+          ],
+          "principals": [
+            "*"
+          ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "typeIntegration": {
       "path": "/_v/policy/financial-commission/typeIntegration",
@@ -171,18 +213,22 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "payoutReport": {
       "path": "/_v/financial-commission/payout/:sellerId/report/*id",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_payoutReport": {
       "path": "/_v/policy/financial-commission/payout/:sellerId/report/*id",
@@ -191,14 +237,20 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
-          "principals": ["*"]
+          "actions": [
+            "get"
+          ],
+          "principals": [
+            "*"
+          ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "payoutReportFile": {
       "path": "/_v/private/financial-commission/external/payout/file/:id/type/:type",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     },
     "_payoutReportFile": {
       "path": "/_v/policy/external/financial-commission/payout/file/:id/type/:type",
@@ -207,14 +259,20 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
-          "principals": ["*"]
+          "actions": [
+            "get"
+          ],
+          "principals": [
+            "*"
+          ]
         }
-      ]
+      ],
+      "settingsType": "workspace"
     },
     "ping": {
       "path": "/_v/financial-commission/ping",
-      "public": true
+      "public": true,
+      "settingsType": "workspace"
     }
   }
 }

@@ -1,10 +1,14 @@
 import { SCHEMAS } from '../constants'
 
+type ResolverCallback = (...args: unknown[]) => Promise<unknown>
 interface ContextFunction<T> {
   (_: any, params: any, ctx: Context): Promise<T>
 }
+type WrappedFunction<T> = (_: any, params: any, ctx: Context) => Promise<T>
 
-export const wrapperFunction = <T>(originalFunction: ContextFunction<T>) => {
+export const wrapperFunction = <T>(
+  originalFunction: ContextFunction<T>
+): WrappedFunction<T> => {
   return async (_: any, params: any, ctx: Context): Promise<T> => {
     const {
       vtex: { production, workspace },
@@ -32,11 +36,12 @@ export const wrapperFunction = <T>(originalFunction: ContextFunction<T>) => {
   }
 }
 
-export const resolversWrapper = (items: {
-  [key: string]: (...args: any[]) => any
-}) =>
-  Object.fromEntries(
-    Object.entries(items).map(([name, originalFunction]) => {
-      return [name, wrapperFunction(originalFunction)]
-    })
-  )
+export const resolversWrapper = (items: Record<string, ResolverCallback>) => {
+  const mappedResolvers: Record<string, WrappedFunction<unknown>> = {}
+
+  for (const key in items) {
+    mappedResolvers[key] = wrapperFunction(items[key])
+  }
+
+  return mappedResolvers
+}

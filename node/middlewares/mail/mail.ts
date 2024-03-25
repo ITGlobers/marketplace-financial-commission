@@ -1,5 +1,7 @@
 import { json } from 'co-body'
 
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
+
 function validateEmail(email: string) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -9,6 +11,7 @@ function validateEmail(email: string) {
 export async function sendMail(ctx: Context, next: () => Promise<any>) {
   const {
     clients: { mail },
+    state: { logs },
   } = ctx
 
   const body = await json(ctx.req)
@@ -18,6 +21,11 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
   if (!email) {
     ctx.status = 400
     ctx.body = 'Specify an email address'
+    logs.push({
+      message: String(ctx.body),
+      middleware: 'Mail',
+      severity: ExternalLogSeverity.ERROR,
+    })
 
     return
   }
@@ -25,6 +33,11 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
   if (!validateEmail(email)) {
     ctx.status = 400
     ctx.body = 'Invalid email address'
+    logs.push({
+      message: String(ctx.body),
+      middleware: 'Mail',
+      severity: ExternalLogSeverity.ERROR,
+    })
 
     return
   }
@@ -34,6 +47,11 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
   if (!body.jsonData) {
     ctx.status = 400
     ctx.body = 'Specify a jsonData attribute for invoice payload'
+    logs.push({
+      message: String(ctx.body),
+      middleware: 'Mail',
+      severity: ExternalLogSeverity.ERROR,
+    })
 
     return
   }

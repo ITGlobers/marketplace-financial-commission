@@ -1,0 +1,23 @@
+{
+    "type": "object",
+    "properties": {
+        "loggerSettings": {
+            "type": "object",
+            "properties": {
+                "eventName": {
+                    "type": "string"
+                },
+                "resourceId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "eventName",
+                "resourceId"
+            ]
+        }
+    },
+    "required": [
+        "loggerSettings"
+    ]
+}

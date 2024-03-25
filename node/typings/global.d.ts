@@ -1,8 +1,15 @@
-import type { ServiceContext } from '@vtex/api'
+import type { RecorderState, ServiceContext } from '@vtex/api'
 import type { Clients } from '../clients'
+import type { ApplicationSettings } from './applicationSettings'
+import type { MiddlewareLog } from './middlewareLog'
 
 declare global {
-  type Context = ServiceContext<Clients>
+  interface AppState extends RecorderState {
+    logs: MiddlewareLog[]
+    appSettings: ApplicationSettings
+  }
+
+  type Context = ServiceContext<Clients, AppState>
 
   type LoggerMessage = {
     workflowInstance: string
