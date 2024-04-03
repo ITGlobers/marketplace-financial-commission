@@ -5,10 +5,10 @@ export async function validationParams(type: string, query: any) {
     case 'Sellers': {
       const { dateStart, dateEnd, page, pageSize } = query
 
-      isRequerid(dateStart, 'dateStart')
-      isRequerid(dateEnd, 'dateEnd')
-      isRequerid(page, 'page')
-      isRequerid(pageSize, 'pageSize')
+      isRequired(dateStart, 'dateStart')
+      isRequired(dateEnd, 'dateEnd')
+      isRequired(page, 'page')
+      isRequired(pageSize, 'pageSize')
       isValidDate(dateStart, 'dateStart')
       isValidDate(dateEnd, 'dateEnd')
 
@@ -18,11 +18,11 @@ export async function validationParams(type: string, query: any) {
     case 'Orders': {
       const { sellerName, dateStart, dateEnd, page, perpage } = query
 
-      isRequerid(dateStart, 'dateStart')
-      isRequerid(dateEnd, 'dateEnd')
-      isRequerid(page, 'page')
-      isRequerid(perpage, 'perpage')
-      isRequerid(sellerName, 'sellerName')
+      isRequired(dateStart, 'dateStart')
+      isRequired(dateEnd, 'dateEnd')
+      isRequired(page, 'page')
+      isRequired(perpage, 'perpage')
+      isRequired(sellerName, 'sellerName')
       isValidDate(dateStart, 'dateStart')
       isValidDate(dateEnd, 'dateEnd')
       break
@@ -31,8 +31,8 @@ export async function validationParams(type: string, query: any) {
     case 'Statistics': {
       const { dateStart, dateEnd } = query
 
-      isRequerid(dateStart, 'dateStart')
-      isRequerid(dateEnd, 'dateEnd')
+      isRequired(dateStart, 'dateStart')
+      isRequired(dateEnd, 'dateEnd')
       isValidDate(dateStart, 'dateStart')
       isValidDate(dateEnd, 'dateEnd')
       break
@@ -46,8 +46,8 @@ export async function validationParams(type: string, query: any) {
         (dateStart && !dateEnd) ||
         (dateStart && dateEnd)
       ) {
-        isRequerid(dateStart, 'dateStart')
-        isRequerid(dateEnd, 'dateEnd')
+        isRequired(dateStart, 'dateStart')
+        isRequired(dateEnd, 'dateEnd')
         isValidDate(dateStart, 'dateStart')
         isValidDate(dateEnd, 'dateEnd')
 
@@ -62,8 +62,8 @@ export async function validationParams(type: string, query: any) {
     case 'ListSellers': {
       const { page, pageSize } = query
 
-      isRequerid(page, 'page')
-      isRequerid(pageSize, 'pageSize')
+      isRequired(page, 'page')
+      isRequired(pageSize, 'pageSize')
 
       break
     }
@@ -128,7 +128,7 @@ function isValidDate(dateString: string, name: string) {
   }
 }
 
-function isRequerid(value: string | number, name: string) {
+function isRequired(value: string | number, name: string) {
   if (!value || value === '' || value === null) {
     throw new CustomError(
       400,

@@ -3,6 +3,7 @@ import { NotFoundError, UserInputError } from '@vtex/api'
 import { processInvoiceExternal } from './processInvoiceExternal'
 import { sendEmailInvoiceExternal } from './sendEmailInvoiceExternal'
 import { validateDateFormat } from '../validationParams'
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
 
 export async function createInvoiceExternal(
   ctx: Context,
@@ -11,6 +12,7 @@ export async function createInvoiceExternal(
   const {
     state: {
       body: { requestData },
+      logs,
     },
     clients: { sellersIO },
   } = ctx
@@ -38,7 +40,15 @@ export async function createInvoiceExternal(
     try {
       await sendEmailInvoiceExternal(ctx, documentId, requestData)
     } catch (error) {
-      console.error(error)
+      logs.push({
+        message: 'Error while sending the email',
+        middleware: 'Middlewares/Invoice External/createInvoiceExternal',
+        severity: ExternalLogSeverity.ERROR,
+        payload: {
+          details: error.message,
+          stack: error.stack,
+        },
+      })
     }
 
     status = 200

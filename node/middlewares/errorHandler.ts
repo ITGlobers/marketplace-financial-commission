@@ -12,14 +12,14 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
     state,
   } = ctx
 
-  state.logs = []
+  if (!state.logs) state.logs = []
 
   try {
     await next()
   } catch (err) {
     state.logs.push({
       message: 'Error on execution',
-      middleware: 'Error Handler',
+      middleware: 'Middlewares/Error Handler',
       severity: ExternalLogSeverity.ERROR,
       payload: {
         details: err.message,

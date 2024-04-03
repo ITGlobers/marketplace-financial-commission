@@ -1,43 +1,29 @@
-import { SCHEMAS } from '../constants'
+import { errorHandler } from '../middlewares'
+import setApplicationSettings from '../middlewares/setApplicationSettings'
+import { setSchemaVersion } from '../middlewares/setSchema'
 
-type ResolverCallback = (...args: unknown[]) => Promise<unknown>
+type ResolverCallback = (...args: any[]) => Promise<any>
 interface ContextFunction<T> {
   (_: any, params: any, ctx: Context): Promise<T>
 }
-type WrappedFunction<T> = (_: any, params: any, ctx: Context) => Promise<T>
+type WrappedFunction = (_: any, params: any, ctx: Context) => Promise<void>
 
 export const wrapperFunction = <T>(
   originalFunction: ContextFunction<T>
-): WrappedFunction<T> => {
-  return async (_: any, params: any, ctx: Context): Promise<T> => {
-    const {
-      vtex: { production, workspace },
-    } = ctx
+): WrappedFunction => {
+  const nextHandler = () => Promise.resolve()
 
-    ctx.clients.externalInvoices.schema = production
-      ? SCHEMAS.DEFAULT
-      : `${SCHEMAS.DEFAULT}-${workspace}`
-    ctx.clients.payoutReports.schema = production
-      ? SCHEMAS.DEFAULT
-      : `${SCHEMAS.DEFAULT}-${workspace}`
-    ctx.clients.commissionInvoices.schema = production
-      ? SCHEMAS.DEFAULT
-      : `${SCHEMAS.DEFAULT}-${workspace}`
-    ctx.clients.sellersDashboardClientMD.schema = production
-      ? SCHEMAS.DEFAULT
-      : `${SCHEMAS.DEFAULT}-${workspace}`
-    ctx.clients.statisticsDashboardClientMD.schema = production
-      ? SCHEMAS.DEFAULT
-      : `${SCHEMAS.DEFAULT}-${workspace}`
+  return async (_: any, params: any, ctx: Context) => {
+    await setApplicationSettings(ctx, nextHandler)
+    await errorHandler(ctx, nextHandler)
+    await setSchemaVersion(ctx, nextHandler)
 
-    const result = await originalFunction(_, params, ctx)
-
-    return result
+    await originalFunction(_, params, ctx)
   }
 }
 
 export const resolversWrapper = (items: Record<string, ResolverCallback>) => {
-  const mappedResolvers: Record<string, WrappedFunction<unknown>> = {}
+  const mappedResolvers: Record<string, WrappedFunction> = {}
 
   for (const key in items) {
     mappedResolvers[key] = wrapperFunction(items[key])

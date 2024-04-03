@@ -1,9 +1,11 @@
 import { config } from '../constants'
+import { ExternalLogSeverity } from '../typings/externalLogMetadata'
 import { createKeyToken } from '../utils'
 
 export const createTokenService = async (seller: Seller, ctx: Context) => {
   const {
     clients: { vbase },
+    state: { logs },
   } = ctx
 
   const date = new Date()
@@ -27,7 +29,15 @@ export const createTokenService = async (seller: Seller, ctx: Context) => {
       keyBucket
     )
   } catch (err) {
-    console.info('Token new')
+    logs.push({
+      message: 'Error while sending the email',
+      middleware: 'Services/CreateTokenService',
+      severity: ExternalLogSeverity.INFO,
+      payload: {
+        details: err.message,
+        stack: err.stack,
+      },
+    })
   }
 
   if (vbaseData) {

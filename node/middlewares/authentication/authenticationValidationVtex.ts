@@ -29,7 +29,7 @@ export async function authenticationValidationVtex(
     } else {
       if (!appkey) {
         const error: ErrorLike = {
-          message: 'Header "X-VTEX-API-AppKey" is requerid.',
+          message: 'Header "X-VTEX-API-AppKey" is required.',
           name: 'X-VTEX-API-AppKey',
           stack: '',
         }
@@ -39,7 +39,7 @@ export async function authenticationValidationVtex(
 
       if (!apptoken) {
         const error: ErrorLike = {
-          message: 'Header "X-VTEX-API-AppToken" is requerid.',
+          message: 'Header "X-VTEX-API-AppToken" is required.',
           name: 'X-VTEX-API-AppToken',
           stack: '',
         }
@@ -47,14 +47,10 @@ export async function authenticationValidationVtex(
         throw new UserInputError(error)
       }
 
-      const dataAppToken = {
+      const resultToken = await appTokenClient.validateAppKeyAndToken({
         appkey,
         apptoken,
-      }
-
-      const resultToken = await appTokenClient.validateAppKeyAndToken(
-        dataAppToken
-      )
+      })
 
       const { authStatus } = resultToken
 
@@ -67,6 +63,7 @@ export async function authenticationValidationVtex(
     ctx.vtex.route.params = params
 
     ctx.set('Cache-Control', 'no-cache ')
+
     await next()
   } catch (err) {
     const error: any = err

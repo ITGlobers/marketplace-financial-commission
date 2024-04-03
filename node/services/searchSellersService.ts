@@ -5,6 +5,8 @@ import { calculateSellersSearch } from '../middlewares/dashboard/search/calculat
 import { findSeller } from '../middlewares/dashboard/search/findSeller'
 import { unificationSellers } from '../middlewares/dashboard/search/unificationSellers'
 import { sortGeneric } from '../middlewares/dashboard/search/sortGeneric'
+import { ExternalLogSeverity } from '../typings/externalLogMetadata'
+import { removeDash } from '../utils/dashRemover'
 
 export const searchSellersService = async (
   searchDashboardParams: SearchSellersServiceRequest,
@@ -12,6 +14,7 @@ export const searchSellersService = async (
 ) => {
   const {
     clients: { sellersDashboardClientMD, vbase },
+    state: { logs },
   } = ctx
 
   let pagination = {
@@ -22,9 +25,7 @@ export const searchSellersService = async (
   const { dateStart, dateEnd, sellersId, page, pageSize, reIndex, sort } =
     searchDashboardParams
 
-  const vbaseId = `${dateStart.replace('-', '').replace('-', '')}-${dateEnd
-    .replace('-', '')
-    .replace('-', '')}`
+  const vbaseId = `${removeDash(dateStart)}-${removeDash(dateEnd)}`
 
   let result: any = ''
   let vbaseResponse: any | null = null
@@ -40,7 +41,15 @@ export const searchSellersService = async (
 
     vbaseSellers = sellerDashboardVbase.sellers
   } catch (error) {
-    console.info('No exist data')
+    logs.push({
+      message: 'Error while searching the financial bucket file',
+      middleware: 'Services/SearchSellersService',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error.stack,
+      },
+    })
   }
 
   if (

@@ -1,6 +1,7 @@
 import { AuthenticationError } from '@vtex/api'
 
 import { config } from '../../constants'
+import verifyToken from '../../utils/verifyToken'
 
 /**
  * @description
@@ -40,25 +41,11 @@ export async function authentication(ctx: Context, next: () => Promise<any>) {
     throw new AuthenticationError('Unauthorized')
   }
 
-  const verifyToken = async (): Promise<void> => {
-    const bearerHeader = header.authorization
-
-    if (bearerHeader) {
-      const bearer = bearerHeader.split(' ')
-
-      if (autheticationToken !== bearer[1]) {
-        throw new AuthenticationError('Unauthorized')
-      }
-
-      if (!enabledToken) {
-        throw new AuthenticationError('Unauthorized')
-      }
-    } else {
-      throw new AuthenticationError('Unauthorized')
-    }
-  }
-
-  await verifyToken()
+  await verifyToken({
+    authToken: autheticationToken,
+    enabledToken,
+    headers: header,
+  })
 
   ctx.query.sellerName = name
 

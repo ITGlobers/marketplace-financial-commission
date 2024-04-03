@@ -1,10 +1,13 @@
-import { ExternalLogSeverity } from '../typings/externalLogMetadata'
 import applicationSettingsParser from '../utils/applicationSettingsParser'
 
 async function setApplicationSettings(
   ctx: Context,
   next: () => Promise<void>
 ): Promise<void> {
+  const {
+    vtex: { logger },
+  } = ctx
+
   try {
     ctx.state.appSettings = applicationSettingsParser({
       settings: ctx.vtex.settings,
@@ -13,10 +16,9 @@ async function setApplicationSettings(
 
     await next()
   } catch (e) {
-    ctx.state.logs.push({
-      severity: ExternalLogSeverity.ERROR,
+    logger.error({
       message: 'Error while getting the application setttings',
-      middleware: 'Set Application Settings',
+      middleware: 'Middlewares/Set Application Settings',
       payload: {
         details: e.message,
         stack: e.stack,

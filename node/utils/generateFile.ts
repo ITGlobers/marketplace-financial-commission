@@ -47,7 +47,7 @@ async function generatePDF(data: any, ctx: Context): Promise<any> {
   return pdf.generatePdf(htmlToPdf)
 }
 
-type FileType = 'csv' | 'xls' | 'pdf'
+type FileType = Type['type']
 
 type GenerateFileFunction = (invoice: any, ctx: Context, origin: string) => any
 

@@ -1,4 +1,5 @@
 import { config } from '../constants'
+import { ExternalLogSeverity } from '../typings/externalLogMetadata'
 
 export const createSettings = async (
   _: unknown,
@@ -11,6 +12,7 @@ export const createSettings = async (
 ): Promise<string> => {
   const {
     clients: { vbase },
+    state: { logs },
     vtex: { account: marketplace },
   } = ctx
 
@@ -20,7 +22,17 @@ export const createSettings = async (
   try {
     await vbase.saveJSON<any>(config.SETTINGS_BUCKET, idBucket, settingsData)
   } catch (err) {
-    console.info('error ', err)
+    logs.push({
+      message: 'Error while storing the settings',
+      middleware: 'Resolvers/Create Settings',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: err.message,
+        stack: err.stack,
+        idBucket,
+        settingsData,
+      },
+    })
   }
 
   return settingsData

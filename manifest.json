@@ -1,7 +1,7 @@
 {
   "vendor": "marketplace20demo",
   "name": "marketplace-financial-commission",
-  "version": "0.0.1",
+  "version": "0.0.1-beta",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -11,17 +11,15 @@
     "docs": "0.x",
     "admin": "0.x",
     "graphql": "1.x",
-    "masterdata": "1.x"
+    "masterdata": "1.x",
+    "configuration": "0.x"
   },
   "billingOptions": {
     "type": "free",
     "support": {
-      "email": "support@com.br",
-      "url": "https://support.com/hc/requests"
+      "url": "https://support.vtex.com/hc/requests"
     },
-    "availableCountries": [
-      "*"
-    ]
+    "availableCountries": ["*"]
   },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
@@ -32,22 +30,26 @@
     "vtex.format-currency": "0.x",
     "obi.components-financial-commission": "1.x"
   },
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "credentialType": "absolute",
   "policies": [
     {
-      "name": "colossus-fire-event"
+      "name": "vbase-read-write"
     },
     {
-      "name": "colossus-write-logs"
+      "name": "update-app-settings"
+    },
+    {
+      "name": "read-workspace-apps"
+    },
+    {
+      "name": "read-workspace-apps"
+    },
+    {
+      "name": "install-apps"
     },
     {
       "name": "template-criar"
-    },
-    {
-      "name": "vbase-read-write"
     },
     {
       "name": "OMSViewer"

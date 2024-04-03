@@ -1,6 +1,8 @@
 import { format, parse } from 'date-fns'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
+
 import { payoutMapper } from '../../mappings/payoutMapper'
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
 
 async function createPayoutReportServices(
   ctx: Context,
@@ -8,6 +10,7 @@ async function createPayoutReportServices(
 ): Promise<any> {
   const {
     clients: { payoutReports },
+    state: { logs },
   } = ctx
 
   const parsedDate = parse(data.reportCreatedDate, 'dd/MM/yyyy', new Date())
@@ -53,12 +56,21 @@ async function createPayoutReportServices(
       })
     )
   } catch (error) {
-    console.error('generate and upload file error: ', error)
+    logs.push({
+      message: 'Error while creating the payout report',
+      middleware: 'Services/PayoutReport/Create',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error.stack,
+      },
+    })
   }
 
   data.jsonData = JSON.stringify(jsonData)
-  data.id =  `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
+  data.id = `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
   const document = payoutReports.save(data)
+
   return document
 }
 

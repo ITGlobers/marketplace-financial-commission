@@ -1,4 +1,5 @@
 import { config } from '../constants'
+import { ExternalLogSeverity } from '../typings/externalLogMetadata'
 import { createKeyToken } from '../utils'
 
 export const createTokenMarketplaceService = async (
@@ -7,6 +8,7 @@ export const createTokenMarketplaceService = async (
 ) => {
   const {
     clients: { vbase },
+    state: { logs },
   } = ctx
 
   const date = new Date()
@@ -25,7 +27,15 @@ export const createTokenMarketplaceService = async (
       keyBucket
     )
   } catch (err) {
-    console.error(err)
+    logs.push({
+      message: 'Error while getting the account token',
+      middleware: 'Services/CreateTokenMarketplaceService',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: err.message,
+        stack: err.stack,
+      },
+    })
   }
 
   if (vbaseData) {

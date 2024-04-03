@@ -1,11 +1,12 @@
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData'
 import type { ExternalInvoice } from 'obi.marketplace-financial-commission'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 import { config, JOB_STATUS, TYPES } from '../../constants'
 import type { InvoiceExternal } from '../../typings/externalInvoice'
 import { randomId } from '../../utils/randomId'
 import { jsonDataMapper } from '../../mappings/jsonDataMapper'
+import { removeDash } from '../../utils/dashRemover'
 
 interface JobHistory {
   referenceId: string | null
@@ -69,7 +70,7 @@ export const processInvoiceExternal = async (
 
   bodyExternalInvoiceWithId.id = `${
     bodyExternalInvoiceWithId.id.split('_')[0]
-  }_${bodyExternalInvoiceWithId.invoiceCreatedDate.replace(/-/g, '')}_${
+  }_${removeDash(bodyExternalInvoiceWithId.invoiceCreatedDate)}_${
     jsonData.sapCommissionId
   }_${isOutbound}`
   bodyExternalInvoiceWithId.jsonData = jsonDataMapper(dataInvoice.jsonData)

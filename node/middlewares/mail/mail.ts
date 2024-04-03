@@ -21,9 +21,10 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
   if (!email) {
     ctx.status = 400
     ctx.body = 'Specify an email address'
+
     logs.push({
       message: String(ctx.body),
-      middleware: 'Mail',
+      middleware: 'Middlewares/Mail',
       severity: ExternalLogSeverity.ERROR,
     })
 
@@ -33,9 +34,10 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
   if (!validateEmail(email)) {
     ctx.status = 400
     ctx.body = 'Invalid email address'
+
     logs.push({
       message: String(ctx.body),
-      middleware: 'Mail',
+      middleware: 'Middlewares/Mail',
       severity: ExternalLogSeverity.ERROR,
     })
 
@@ -47,9 +49,10 @@ export async function sendMail(ctx: Context, next: () => Promise<any>) {
   if (!body.jsonData) {
     ctx.status = 400
     ctx.body = 'Specify a jsonData attribute for invoice payload'
+
     logs.push({
       message: String(ctx.body),
-      middleware: 'Mail',
+      middleware: 'Middlewares/Mail',
       severity: ExternalLogSeverity.ERROR,
     })
 

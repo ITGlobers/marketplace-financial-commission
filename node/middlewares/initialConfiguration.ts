@@ -1,12 +1,10 @@
-import type { EventContext } from '@vtex/api'
+import { ExternalLogSeverity } from '../typings/externalLogMetadata'
 
-import type { Clients } from '../clients'
-
-export const onAppsInstalled = async (ctx: EventContext<Clients>) => {
+export const onAppsInstalled = async (ctx: AppEventContext) => {
   const {
     clients: { scheduler },
     body: { to, from },
-    vtex: { logger },
+    state: { logs },
   } = ctx
 
   if (to) {
@@ -41,13 +39,20 @@ export const onAppsInstalled = async (ctx: EventContext<Clients>) => {
 
       try {
         await scheduler.createScheduler(appName, schedulerPingRequest)
-        logger.info({
+        logs.push({
+          severity: ExternalLogSeverity.INFO,
+          middleware: 'Middlewares/Initial Configuration',
           message: 'create-scheduler-financial-commission-ping',
         })
       } catch (error) {
-        logger.error({
+        logs.push({
+          severity: ExternalLogSeverity.ERROR,
+          middleware: 'Middlewares/Initial Configuration',
           message: 'error-create-scheduler-financial-commission-ping',
-          error,
+          payload: {
+            details: error.message,
+            stack: error.stack,
+          },
         })
       }
 
@@ -64,13 +69,21 @@ export const onAppsInstalled = async (ctx: EventContext<Clients>) => {
 
       try {
         await scheduler.deleteScheduler(appName, idName)
-        logger.info({
+
+        logs.push({
+          severity: ExternalLogSeverity.INFO,
+          middleware: 'Middlewares/Initial Configuration',
           message: 'delete-scheduler-financial-commission-ping',
         })
       } catch (error) {
-        logger.error({
+        logs.push({
+          severity: ExternalLogSeverity.ERROR,
+          middleware: 'Middlewares/Initial Configuration',
           message: 'error-delete-scheduler-financial-commission-ping',
-          error,
+          payload: {
+            details: error.message,
+            stack: error.stack,
+          },
         })
       }
 

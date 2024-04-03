@@ -41,101 +41,72 @@ export class OrdersClient extends JanusClient {
   }
 
   public async getOrder(orderId: string): Promise<VtexOrder> {
-    const { logger } = this.context
-
-    try {
-      const loadData = () => {
-        return Polly()
-          .waitAndRetry([1000, 2000, 3000, 4000, 5000, 6000, 7000])
-          .executeForPromise(async () => {
-            const rsp = await fetch(
-              routes.getOrder(this.context.account, orderId),
-              {
-                method: 'get',
-                headers: this.options?.headers,
-              }
-            )
-
-            if (rsp.ok) {
-              return rsp.json()
+    const loadData = () => {
+      return Polly()
+        .waitAndRetry([1000, 2000, 3000, 4000, 5000, 6000, 7000])
+        .executeForPromise(async () => {
+          const rsp = await fetch(
+            routes.getOrder(this.context.account, orderId),
+            {
+              method: 'get',
+              headers: this.options?.headers,
             }
+          )
 
-            return Promise.reject(rsp)
-          })
-      }
-      // const order = await this.http.get(routes.getOrder(orderId))
+          if (rsp.ok) {
+            return rsp.json()
+          }
 
-      const order = await loadData()
-
-      return order
-    } catch (err) {
-      logger.error({
-        workflowInstance: 'GetOrder',
-        message: 'Error Getting VTEX order',
-        exception: err,
-      } as LoggerMessage)
-
-      throw err
+          return Promise.reject(rsp)
+        })
     }
+
+    const order = await loadData()
+
+    return order
   }
 
   /* eslint max-params: ["error", 4] */
   public async listOrders(params: ParamsListOrders): Promise<VtexListOrder> {
-    const { logger } = this.context
+    const characterReplace = '%26'
+    let sellersNameReplace
 
-    try {
-      const characterReplace = '%26'
-      let sellersNameReplace
+    if (params.sellerName.includes('&', 0)) {
+      const splitSellerName = params.sellerName.split(' ')
+      const arrayResult: string[] = []
 
-      if (params.sellerName.includes('&', 0)) {
-        const splitSellerName = params.sellerName.split(' ')
-        const arrayResult: string[] = []
+      splitSellerName.forEach((element) => {
+        const salida = element.replace('&', characterReplace)
 
-        splitSellerName.forEach((element) => {
-          const salida = element.replace('&', characterReplace)
-
-          arrayResult.push(salida)
-        })
-        sellersNameReplace = arrayResult.join(' ')
-      }
-
-      params.sellerName = sellersNameReplace ?? params.sellerName
-
-      const loadData = () => {
-        return Polly()
-          .waitAndRetry([3000, 5000, 7000, 9000, 10000])
-          .executeForPromise(async () => {
-            const rsp = await fetch(
-              routes.listOrders(this.context.account, params),
-              {
-                method: 'get',
-                headers: this.options?.headers,
-              }
-            )
-
-            if (rsp.ok) {
-              return rsp.json()
-            }
-
-            return Promise.reject(rsp)
-          })
-      }
-
-      const listOrders = await loadData()
-
-      // const order = await this.http.get<VtexListOrder>(
-      //   routes.listOrders(params)
-      // )
-
-      return listOrders
-    } catch (err) {
-      logger.error({
-        workflowInstance: 'GetListOrders',
-        message: 'Error Getting VTEX List Order',
-        exception: err,
-      } as LoggerMessage)
-
-      throw err
+        arrayResult.push(salida)
+      })
+      sellersNameReplace = arrayResult.join(' ')
     }
+
+    params.sellerName = sellersNameReplace ?? params.sellerName
+
+    const loadData = () => {
+      return Polly()
+        .waitAndRetry([3000, 5000, 7000, 9000, 10000])
+        .executeForPromise(async () => {
+          const rsp = await fetch(
+            routes.listOrders(this.context.account, params),
+            {
+              method: 'get',
+              headers: this.options?.headers,
+            }
+          )
+
+          if (rsp.ok) {
+            return rsp.json()
+          }
+
+          return Promise.reject(rsp)
+        })
+    }
+
+    const listOrders = await loadData()
+
+    return listOrders
   }
 }
