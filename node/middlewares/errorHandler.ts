@@ -49,7 +49,7 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
       workspace: ctx.vtex.workspace,
       text: log.message,
       middleware: log.middleware,
-      stack: log.payload?.stack,
+      additionalInfo: log.payload,
     }
 
     return message

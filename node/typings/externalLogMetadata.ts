@@ -3,8 +3,10 @@ export type ExternalLogMetadata = {
   workspace: string
   middleware: string
   text: string
-  stack?: unknown
-  additionalInfo?: unknown
+  additionalInfo?: {
+    details: unknown
+    stack?: string
+  } & Record<string, unknown>
   severity: ExternalLogSeverity
 }
 
