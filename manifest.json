@@ -43,10 +43,13 @@
       "name": "read-workspace-apps"
     },
     {
-      "name": "read-workspace-apps"
+      "name": "install-apps"
     },
     {
-      "name": "install-apps"
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
     },
     {
       "name": "template-criar"
