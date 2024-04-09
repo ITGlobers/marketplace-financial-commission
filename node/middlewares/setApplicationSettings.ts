@@ -9,10 +9,7 @@ async function setApplicationSettings(
   } = ctx
 
   try {
-    ctx.state.appSettings = applicationSettingsParser({
-      settings: ctx.vtex.settings,
-      userAgent: ctx.vtex.userAgent,
-    })
+    ctx.state.appSettings = applicationSettingsParser(ctx.vtex.settings)
 
     await next()
   } catch (e) {
