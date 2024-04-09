@@ -14,11 +14,12 @@ export const wrapperFunction = <T>(
   const nextHandler = () => Promise.resolve()
 
   return async (_: any, params: any, ctx: Context) => {
-    await setApplicationSettings(ctx, nextHandler)
-    await errorHandler(ctx, nextHandler)
-    await setSchemaVersion(ctx, nextHandler)
+    await errorHandler(ctx, async () => {
+      await setApplicationSettings(ctx, nextHandler)
+      await setSchemaVersion(ctx, nextHandler)
 
-    await originalFunction(_, params, ctx)
+      await originalFunction(_, params, ctx)
+    })
   }
 }
 
