@@ -1,28 +1,37 @@
 import { SEPARATOR_CHAR } from '../constants'
 import type { ApplicationSettings } from '../typings/applicationSettings'
 
-export type ApplicationSettingsParserParams = {
-  userAgent: string
-  settings?: Array<{ declarer: string } & Record<string, unknown>> | null
-}
+export type ApplicationSettingsParserParams = Array<
+  { declarer: string } & Record<string, unknown>
+> | null
 
-const applicationSettingsParser = ({
-  settings,
-  userAgent,
-}: ApplicationSettingsParserParams): ApplicationSettings => {
+const applicationSettingsParser = (
+  settings: ApplicationSettingsParserParams
+): ApplicationSettings => {
   if (!settings || settings === null) {
     throw new Error('Applications settings not found')
   }
 
-  const settingsFound = settings.find((setting) =>
-    setting.declarer.includes(userAgent.split(SEPARATOR_CHAR)[0])
-  )
+  let settingsFound: ApplicationSettings | undefined
+
+  settings.forEach((setting) => {
+    const settingsToEval = setting[setting.declarer.split(SEPARATOR_CHAR)[0]]
+
+    if (isApplicationSettings(settingsToEval)) settingsFound = settingsToEval
+  })
 
   if (!settingsFound) throw new Error('Applications settings not found')
 
-  return settingsFound[
-    settingsFound.declarer.split(SEPARATOR_CHAR)[0]
-  ] as ApplicationSettings
+  return settingsFound
+}
+
+const isApplicationSettings = (obj: unknown): obj is ApplicationSettings => {
+  return (
+    obj !== undefined &&
+    typeof obj === 'object' &&
+    obj !== null &&
+    'loggerSettings' in obj
+  )
 }
 
 export default applicationSettingsParser
