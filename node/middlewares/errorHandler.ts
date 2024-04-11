@@ -31,11 +31,7 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
   if (ctx.state.logs.length === 0) return
 
   const {
-    state: {
-      appSettings: {
-        loggerSettings: { eventName, resourceId },
-      },
-    },
+    state: { appSettings },
   } = ctx
 
   const mappedLogs = ctx.state.logs.map((log) => {
@@ -55,5 +51,11 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
     return message
   })
 
-  await ctx.clients.events.sendEvent(resourceId, eventName, mappedLogs)
+  if (appSettings) {
+    await ctx.clients.events.sendEvent(
+      appSettings.loggerSettings.resourceId,
+      appSettings.loggerSettings.eventName,
+      mappedLogs
+    )
+  }
 }

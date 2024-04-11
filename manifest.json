@@ -1,7 +1,7 @@
 {
   "vendor": "marketplace20demo",
   "name": "marketplace-financial-commission",
-  "version": "0.0.1-beta",
+  "version": "1.0.0",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -13,13 +13,6 @@
     "graphql": "1.x",
     "masterdata": "1.x",
     "configuration": "0.x"
-  },
-  "billingOptions": {
-    "type": "free",
-    "support": {
-      "url": "https://support.vtex.com/hc/requests"
-    },
-    "availableCountries": ["*"]
   },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
