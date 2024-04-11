@@ -43,7 +43,7 @@ import setApplicationSettings from './middlewares/setApplicationSettings'
 
 const template = templateMethod
 
-const baseMiddlewares = [setApplicationSettings, errorHandler, setSchemaVersion]
+const baseMiddlewares = [errorHandler, setApplicationSettings, setSchemaVersion]
 
 const routes: Record<string, RouteHandler<Clients, AppState>> = {
   mail: method({
