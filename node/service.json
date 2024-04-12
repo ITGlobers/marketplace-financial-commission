@@ -10,12 +10,12 @@
     "value": 80,
     "scalingPercentage": 95
   },
-  "onAppsInstalled": {
-    "sender": "apps",
-    "topics": [
-      "setup"
-    ],
-    "settingsType": "workspace"
+  "events": {
+    "onAppsInstalled": {
+      "sender": "apps",
+      "keys": ["linked", "setup"],
+      "settingsType": "workspace"
+    }
   },
   "routes": {
     "mail": {
@@ -30,9 +30,7 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "post"
-          ],
+          "actions": ["post"],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
@@ -63,9 +61,7 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get"
-          ],
+          "actions": ["get"],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
@@ -101,10 +97,7 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get",
-            "post"
-          ],
+          "actions": ["get", "post"],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
@@ -125,12 +118,8 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "post"
-          ],
-          "principals": [
-            "*"
-          ]
+          "actions": ["post"],
+          "principals": ["*"]
         }
       ],
       "settingsType": "workspace"
@@ -141,9 +130,7 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get"
-          ],
+          "actions": ["get"],
           "principals": [
             "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*"
           ]
@@ -163,9 +150,7 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get"
-          ],
+          "actions": ["get"],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:vtex.vtex-id:*:*:*:user/*"
@@ -196,12 +181,8 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get"
-          ],
-          "principals": [
-            "*"
-          ]
+          "actions": ["get"],
+          "principals": ["*"]
         }
       ],
       "settingsType": "workspace"
@@ -213,9 +194,7 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get"
-          ],
+          "actions": ["get"],
           "principals": [
             "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
             "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*",
@@ -237,12 +216,8 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get"
-          ],
-          "principals": [
-            "*"
-          ]
+          "actions": ["get"],
+          "principals": ["*"]
         }
       ],
       "settingsType": "workspace"
@@ -259,12 +234,8 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": [
-            "get"
-          ],
-          "principals": [
-            "*"
-          ]
+          "actions": ["get"],
+          "principals": ["*"]
         }
       ],
       "settingsType": "workspace"

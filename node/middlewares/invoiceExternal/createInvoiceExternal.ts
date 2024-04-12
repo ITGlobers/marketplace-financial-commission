@@ -59,8 +59,9 @@ export async function createInvoiceExternal(
   } else {
     status = 400
     body = {
-      message: `It was not possible to create the invoice`,
+      message: `It was not possible to register in master data document Id null`,
       exception: documentMD,
+      body: requestData,
     }
   }
 

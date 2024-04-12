@@ -1,6 +1,8 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { JanusClient } from '@vtex/api'
 
+import { config } from '../../constants'
+
 const TEMPLATE_RENDER_PATH = '/api/template-render/pvt/templates'
 
 export default class Template extends JanusClient {
@@ -14,9 +16,12 @@ export default class Template extends JanusClient {
   }
 
   public getTemplate() {
-    return this.http.get(`${TEMPLATE_RENDER_PATH}/invoice-detail`, {
-      metric: 'mail-get-template',
-    })
+    return this.http.get(
+      `${TEMPLATE_RENDER_PATH}/${config.INVOICE_MAIL_TEMPLATE}`,
+      {
+        metric: 'mail-get-template',
+      }
+    )
   }
 
   public getPayoutTemplate() {

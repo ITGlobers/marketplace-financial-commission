@@ -1,8 +1,10 @@
+import type { Clients } from '../clients'
+import { config } from '../constants'
 import readFile from '../utils/readFile'
-import { typeIntegration } from '../utils/typeIntegration'
+import { typeIntegrationWithoutContext } from '../utils/typeIntegration'
 
-export const GetBody = async (ctx: Context) => {
-  const integration = await typeIntegration(ctx)
+export const GetBody = async (clients: Clients) => {
+  const integration = await typeIntegrationWithoutContext(clients)
 
   const MESSAGE_BODY =
     integration === TypeIntegration.internal
@@ -10,7 +12,7 @@ export const GetBody = async (ctx: Context) => {
       : readFile('../assets/invoiceDetailExternal.html')
 
   const invoiceDetailMessage = {
-    Name: 'invoice-detail',
+    Name: config.INVOICE_MAIL_TEMPLATE,
     FriendlyName: 'Invoice Detail',
     IsDefaultTemplate: false,
     IsPersisted: true,

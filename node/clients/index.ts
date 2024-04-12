@@ -17,6 +17,7 @@ import AppTokenClient from './vtexLogin'
 import { Catalog } from './catalog'
 import PdfBuilder from './pdf'
 import Scheduler from './scheduler'
+import Doxis from './doxis'
 
 export class Clients extends IOClients {
   public get mail() {
@@ -77,7 +78,11 @@ export class Clients extends IOClients {
   public get catalog() {
     return this.getOrSet('catalog', Catalog)
   }
-  
+
+  public get doxis() {
+    return this.getOrSet('doxis', Doxis)
+  }
+
   public get pdf() {
     return this.getOrSet('pdf', PdfBuilder)
   }
@@ -89,6 +94,8 @@ export class Clients extends IOClients {
 
 const TIMEOUT_MS = 60000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
+const TREE_SECONDS_MS = 3 * 1000
+const CONCURRENCY = 10
 
 metrics.trackCache('financial-commission', memoryCache)
 
@@ -99,6 +106,14 @@ const clients: ClientsConfig<Clients> = {
       retries: 2,
       timeout: TIMEOUT_MS,
       memoryCache,
+    },
+    events: {
+      exponentialTimeoutCoefficient: 2,
+      exponentialBackoffCoefficient: 2,
+      initialBackoffDelay: 50,
+      retries: 1,
+      timeout: TREE_SECONDS_MS,
+      concurrency: CONCURRENCY,
     },
   },
 }
