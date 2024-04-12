@@ -1,12 +1,14 @@
-import type { EventContext } from '@vtex/api'
-
-import type { Clients } from '../clients'
+import { errorHandler } from '../middlewares'
+import setApplicationSettings from '../middlewares/setApplicationSettings'
+import { ExternalLogSeverity } from '../typings/externalLogMetadata'
 import { createTemplate } from '../utils/createTemplate'
 
-export async function onAppsInstalled(ctx: EventContext<Clients>) {
+const MW_NAME = 'Initial Configuration'
+
+async function runEvent(ctx: AppEventContext) {
   const {
     clients: { scheduler },
-    vtex: { logger },
+    state: { logs },
   } = ctx
 
   const schedulerPingRequest: SchedulerRequest = {
@@ -36,28 +38,53 @@ export async function onAppsInstalled(ctx: EventContext<Clients>) {
 
   try {
     await scheduler.createScheduler(appName, schedulerPingRequest)
-    logger.info({
+
+    logs.push({
       message: 'create-scheduler-financial-commission-ping',
+      middleware: MW_NAME,
+      severity: ExternalLogSeverity.INFO,
     })
   } catch (error) {
-    logger.error({
+    logs.push({
       message: 'error-create-scheduler-financial-commission-ping',
-      error,
+      middleware: MW_NAME,
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error?.stack,
+      },
     })
   }
 
   try {
     await createTemplate(ctx.clients)
-    logger.error({
+
+    logs.push({
       message: 'create-template-commission',
+      middleware: MW_NAME,
+      severity: ExternalLogSeverity.INFO,
     })
   } catch (error) {
-    logger.error({
+    logs.push({
       message: 'error-create-template-commission',
-      error,
-      data: JSON.stringify(error),
+      middleware: MW_NAME,
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error?.stack,
+      },
     })
   }
 
   return true
+}
+
+export async function onAppsInstalled(ctx: AppEventContext) {
+  const mwContext = ctx as unknown as Context
+  const nextHandler = () => Promise.resolve()
+
+  await errorHandler(mwContext, async () => {
+    await setApplicationSettings(mwContext, nextHandler)
+    await runEvent(ctx)
+  })
 }

@@ -1,6 +1,8 @@
 import type { ErrorLike } from '@vtex/api'
 import { AuthenticationError, UserInputError } from '@vtex/api'
 
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
+
 export async function authenticationValidationVtex(
   ctx: Context,
   next: () => Promise<any>
@@ -8,6 +10,7 @@ export async function authenticationValidationVtex(
   const {
     clients: { appTokenClient },
     request: { header },
+    state: { logs },
     vtex: {
       route: { params },
     },
@@ -65,9 +68,18 @@ export async function authenticationValidationVtex(
     ctx.set('Cache-Control', 'no-cache ')
 
     await next()
-  } catch (err) {
-    const error: any = err
+  } catch (error) {
+    logs.push({
+      message: 'Error while validating credentials',
+      middleware: 'Authentication Validation VTEX',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error?.stack,
+        appkey,
+      },
+    })
 
-    throw new Error(error)
+    throw error
   }
 }
