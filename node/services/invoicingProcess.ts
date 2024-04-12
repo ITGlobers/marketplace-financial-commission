@@ -1,7 +1,9 @@
+import type { CommissionInvoice } from 'obi.marketplace-financial-commission'
+import { v4 as uuidv4 } from 'uuid'
+
 import { config, JOB_STATUS, TYPES } from '../constants'
-import { DoxisCredentialsDev } from '../environments'
+import { ExternalLogSeverity } from '../typings/externalLogMetadata'
 import { draftInvoice } from '../utils/draftInvoice'
-import { generateFileByType } from '../utils/generateFile'
 import { randomId } from '../utils/randomId'
 
 interface JobHistory {
@@ -12,6 +14,12 @@ interface JobHistory {
 }
 
 type JobStatus = 'ONGOING' | 'COMPLETE' | 'ERROR' | 'OMITTED'
+
+type BodyInvoice = CommissionInvoice & {
+  id: string
+  jsonData: string
+  files: Record<string, string>
+}
 
 /**
  * @description
@@ -35,7 +43,8 @@ export const invoicingProcess = async (
   automated?: boolean
 ): Promise<string> => {
   const {
-    clients: { vbase, commissionInvoices, mail, doxis },
+    clients: { vbase, commissionInvoices, mail },
+    state: { logs },
     vtex: { account: marketplace },
   } = ctx
 
@@ -45,7 +54,7 @@ export const invoicingProcess = async (
 
   const BUCKET = automated ? config.AUTO_JOB_BUCKET : config.MANUAL_JOB_BUCKET
 
-  const HISTORY = {
+  const HISTORY: JobHistory = {
     referenceId: null,
     sellerId,
     status: JOB_STATUS.ONGOING,
@@ -54,64 +63,51 @@ export const invoicingProcess = async (
 
   await vbase.saveJSON<JobHistory>(BUCKET, SELLER_NAME, HISTORY)
 
-  let invoice = await draftInvoice(ctx, sellerData)
+  const invoice = await draftInvoice(ctx, sellerData)
 
   if (!invoice) {
-    await vbase.saveJSON<JobHistory>(BUCKET, SELLER_NAME, {
-      ...HISTORY,
-      status: JOB_STATUS.OMITTED,
-      message: `No eligible orders to invoice between ${sellerData.startDate} and ${sellerData.endDate}`,
-    })
+    HISTORY.status = JOB_STATUS.OMITTED
+    HISTORY.message = `No eligible orders to invoice between ${sellerData.startDate} and ${sellerData.endDate}`
 
-    return JOB_STATUS.OMITTED
+    await vbase.saveJSON<JobHistory>(BUCKET, SELLER_NAME, HISTORY)
+
+    return HISTORY.status
   }
 
   if (automated) {
-    invoice = { ...invoice, comment: `Invoice manually created on ${today}` }
+    invoice.comment = `Invoice manually created on ${today}`
   }
 
   const idInvoice = randomId(sellerData.id)
 
-  let bodyInvoiceWithId = {
+  const bodyInvoiceWithId: BodyInvoice = {
+    ...invoice,
+
     id: idInvoice,
     jsonData: JSON.stringify(invoice),
-    ...invoice,
+    files: {},
   }
 
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
   await Promise.all(
-    TYPES.map(async (type: Type) => {
-      const { type: typeFile } = type
-
+    TYPES.map(async ({ type: typeFile }: Type) => {
       try {
-        const file = await generateFileByType(
-          bodyInvoiceWithId,
-          typeFile as any,
-          ctx,
-          'commissionReport'
-        )
-
-        const { documentWsTO }: any = await doxis.createDocument(
-          idInvoice,
-          file,
-          type
-        )
-
-        bodyInvoiceWithId = {
-          ...bodyInvoiceWithId,
-          files: {
-            ...bodyInvoiceWithId.files,
-            [typeFile]: JSON.stringify({
-              uuid: documentWsTO?.uuid,
-              versionNr: 'current',
-              representationId: 'default',
-              contentObjectId: 'primary',
-            }),
-          },
-        }
+        bodyInvoiceWithId.files[typeFile] = JSON.stringify({
+          uuid: uuidv4(),
+          versionNr: 'current',
+          representationId: 'default',
+          contentObjectId: 'primary',
+        })
       } catch (error) {
-        console.error('Error generating file: ', type)
-        console.error('Error generating file: ', error?.response)
+        logs.push({
+          message: 'Error while setting the files',
+          middleware: 'Services/InvoicingProcess',
+          severity: ExternalLogSeverity.ERROR,
+          payload: {
+            details: error.message,
+            stack: error.stack,
+            typeFile,
+          },
+        })
       }
     })
   )

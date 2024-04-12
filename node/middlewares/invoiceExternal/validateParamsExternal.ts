@@ -31,7 +31,7 @@ export async function validateParamsExternal(
 
       if (!requestData || JSON.stringify(requestData) === '{}') {
         const error: ErrorLike = {
-          message: 'Body is requerid',
+          message: 'Body is required',
           name: '',
           stack: '',
         }
@@ -41,7 +41,7 @@ export async function validateParamsExternal(
 
       if (!params.id || params.id === '' || params.id === null) {
         const error: ErrorLike = {
-          message: `The param id is requerid`,
+          message: `The param id is required`,
           name: 'id',
           stack: '',
         }
@@ -90,7 +90,7 @@ export async function validateParamsExternal(
 
         if (contact === '' || contact === null || contact === {}) {
           const error: ErrorLike = {
-            message: `Error model, is requerid object contact`,
+            message: `Error model, is required object contact`,
           }
 
           throw new UserInputError(error)
@@ -100,7 +100,7 @@ export async function validateParamsExternal(
           const { email } = contact
 
           isNullorEmpty(email, 'email')
-          isRequerid(email, 'email')
+          isRequired(email, 'email')
 
           if (email) {
             validateEmail(email)
@@ -126,7 +126,7 @@ export async function validateParamsExternal(
 
       if (!requestData || JSON.stringify(requestData) === '{}') {
         const error: ErrorLike = {
-          message: 'Body is requerid',
+          message: 'Body is required',
           name: '',
           stack: '',
         }
@@ -137,43 +137,43 @@ export async function validateParamsExternal(
       const { invoiceCreatedDate, status, seller, jsonData } = requestData
 
       if (!invoiceCreatedDate) {
-        isRequerid(invoiceCreatedDate, 'invoiceCreatedDate')
+        isRequired(invoiceCreatedDate, 'invoiceCreatedDate')
       }
 
       if (!status) {
-        isRequerid(status, 'status')
+        isRequired(status, 'status')
       } else {
         validateStatus(status)
       }
 
       if (!seller) {
-        isRequerid(seller, 'seller')
+        isRequired(seller, 'seller')
       }
 
       const { id, name, contact } = seller
 
       if (!id) {
-        isRequerid(id, 'seller.id')
+        isRequired(id, 'seller.id')
       }
 
       if (!name) {
-        isRequerid(name, 'seller.name')
+        isRequired(name, 'seller.name')
       }
 
       if (!contact) {
-        isRequerid(contact, 'seller.contact')
+        isRequired(contact, 'seller.contact')
       }
 
       const { email } = contact
 
       if (!email) {
-        isRequerid(email, 'seller.contact.email')
+        isRequired(email, 'seller.contact.email')
       } else {
         validateEmail(email)
       }
 
       if (!jsonData) {
-        isRequerid(jsonData, 'jsonData')
+        isRequired(jsonData, 'jsonData')
       } else {
         isJsonString(jsonData)
       }
@@ -193,7 +193,7 @@ export async function validateParamsExternal(
 
       if (!params.id || params.id === '' || params.id === null) {
         const error: ErrorLike = {
-          message: `The param id is requerid`,
+          message: `The param id is required`,
           name: 'id',
           stack: '',
         }
@@ -216,10 +216,10 @@ export async function validateParamsExternal(
   await next()
 }
 
-function isRequerid(value: string | number, name: string) {
+function isRequired(value: string | number, name: string) {
   if (!value || value === '' || value === null) {
     const error: ErrorLike = {
-      message: `The field ${name} is requerid`,
+      message: `The field ${name} is required`,
       name,
       stack: '',
     }
@@ -233,7 +233,7 @@ function isNullorEmpty(value: string, name: string) {
     const errorString: ErrorLike = {
       message:
         name === 'seller'
-          ? 'Object seller is requerid'
+          ? 'Object seller is required'
           : `Field "${name}" cannot be empty or null`,
       name,
     }

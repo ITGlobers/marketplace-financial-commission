@@ -1,6 +1,7 @@
 import { AuthenticationError } from '@vtex/api'
 
 import { config } from '../../constants'
+import verifyToken from '../../utils/verifyToken'
 
 /**
  * @description
@@ -14,7 +15,6 @@ export async function authentication(ctx: Context, next: () => Promise<any>) {
   const {
     clients: { vbase },
     request: { header },
-    vtex: { logger },
     state: {
       body: { seller },
     },
@@ -41,34 +41,11 @@ export async function authentication(ctx: Context, next: () => Promise<any>) {
     throw new AuthenticationError('Unauthorized')
   }
 
-  const verifyToken = async (): Promise<void> => {
-    const bearerHeader = header.authorization
-
-    if (bearerHeader) {
-      const bearer = bearerHeader.split(' ')
-
-      if (autheticationToken !== bearer[1]) {
-        logger.warn({
-          message: 'incoming-wrongApiKey',
-        })
-        throw new AuthenticationError('Unauthorized')
-      }
-
-      if (!enabledToken) {
-        logger.warn({
-          message: 'incoming-disabledApiKey',
-        })
-        throw new AuthenticationError('Unauthorized')
-      }
-    } else {
-      logger.warn({
-        message: 'incoming-missingApiKey',
-      })
-      throw new AuthenticationError('Unauthorized')
-    }
-  }
-
-  await verifyToken()
+  await verifyToken({
+    authToken: autheticationToken,
+    enabledToken,
+    headers: header,
+  })
 
   ctx.query.sellerName = name
 

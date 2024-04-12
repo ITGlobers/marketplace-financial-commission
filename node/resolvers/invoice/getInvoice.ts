@@ -2,6 +2,8 @@ import type { CommissionInvoice } from 'obi.marketplace-financial-commission'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
+import { removeDash } from '../../utils/dashRemover'
 
 export const getInvoice = async (
   _: unknown,
@@ -10,6 +12,7 @@ export const getInvoice = async (
 ): Promise<any> => {
   const {
     clients: { commissionInvoices, externalInvoices },
+    state: { logs },
   } = ctx
 
   const { id } = params
@@ -71,11 +74,9 @@ export const getInvoice = async (
           ? 'Rechnung'
           : 'Gutschrift'
 
-      jsonDataParsed.id = `${
-        id.split('_')[0]
-      }_${externalInvoice[0].invoiceCreatedDate.replace(/-/g, '')}_${
-        jsonDataParsed.sapCommissionId
-      }_${isOutbound}`
+      jsonDataParsed.id = `${id.split('_')[0]}_${removeDash(
+        externalInvoice[0].invoiceCreatedDate
+      )}_${jsonDataParsed.sapCommissionId}_${isOutbound}`
 
       delete externalInvoice[0].jsonData
       invoice = [
@@ -125,7 +126,16 @@ export const getInvoice = async (
   }
 
   if (invoice.length > 1) {
-    console.warn('Invoice duplication, seek resolution')
+    logs.push({
+      message: 'Error while sending the email',
+      middleware: 'Resolvers/invoice/getInvoice',
+      severity: ExternalLogSeverity.WARN,
+      payload: {
+        details: {
+          id,
+        },
+      },
+    })
   }
 
   if (invoice.length > 0) {

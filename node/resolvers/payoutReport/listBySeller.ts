@@ -1,4 +1,5 @@
 import payoutReportService from '../../services/payoutReport/search'
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
 
 interface SearchPayoutReportParams {
   sellerId: string
@@ -19,10 +20,22 @@ export async function searchPayoutReport(
   }: { searchPayoutReportParams: SearchPayoutReportParams },
   ctx: Context
 ) {
+  const {
+    state: { logs },
+  } = ctx
+
   try {
     return payoutReportService(ctx).search(searchPayoutReportParams)
   } catch (error) {
-    console.error(error.message)
+    logs.push({
+      message: 'Error while searching the payout report',
+      middleware: 'Resolvers/PayoutReport/ListBySeller',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error.stack,
+      },
+    })
 
     return { error: 'Error creating payout report' }
   }

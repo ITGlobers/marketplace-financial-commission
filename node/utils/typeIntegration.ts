@@ -1,4 +1,4 @@
-import { Clients } from '../clients'
+import type { Clients } from '../clients'
 import { config } from '../constants'
 
 export const typeIntegration = async (ctx: Context): Promise<any> => {
@@ -16,8 +16,11 @@ export const typeIntegration = async (ctx: Context): Promise<any> => {
 
   return response.integration
 }
-export const typeIntegrationWithoutContext = async (clients: Clients): Promise<any> => {
-  const  { vbase } = clients
+
+export const typeIntegrationWithoutContext = async (
+  clients: Clients
+): Promise<any> => {
+  const { vbase } = clients
 
   const idBucket = process.env.account || 'obidev'
 

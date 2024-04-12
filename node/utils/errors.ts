@@ -6,8 +6,6 @@ export function statusToError(e: any) {
     throw e
   }
 
-  console.error(e.response.data)
-
   const { response } = e as AxiosError
   const { status } = response!
 

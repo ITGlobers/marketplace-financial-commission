@@ -1,3 +1,5 @@
+# This showcase version was generated from the obi/develop branch
+
 # Financial commission for Marketplace
 
 Marketplace Financial App is an application that is responsible for displaying, generating sales commissions from affiliated sellers.

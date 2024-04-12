@@ -1,7 +1,7 @@
 import type { InstanceOptions, IOContext } from '@vtex/api'
 import { AuthenticationError, JanusClient } from '@vtex/api'
 
-interface Data {
+interface ApiCredentials {
   appkey: string
   apptoken: string
 }
@@ -23,7 +23,7 @@ export default class AppTokenClient extends JanusClient {
     })
   }
 
-  public async validateAppKeyAndToken(data: Data): Promise<any> {
+  public async validateAppKeyAndToken(data: ApiCredentials): Promise<any> {
     try {
       const result = await this.http.post(`/api/vtexid/apptoken/login`, data)
 

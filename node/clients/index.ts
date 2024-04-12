@@ -15,9 +15,9 @@ import SellersIO from './sellers'
 import Template from './template'
 import AppTokenClient from './vtexLogin'
 import { Catalog } from './catalog'
-import Doxis from './doxis'
 import PdfBuilder from './pdf'
 import Scheduler from './scheduler'
+import Doxis from './doxis'
 
 export class Clients extends IOClients {
   public get mail() {

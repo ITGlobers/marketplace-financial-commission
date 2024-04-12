@@ -2,6 +2,7 @@ import { AuthenticationError } from '@vtex/api'
 import type { CommissionInvoice } from 'obi.marketplace-financial-commission'
 
 import { typeIntegration } from '../../utils/typeIntegration'
+import { removeDash } from '../../utils/dashRemover'
 
 /**
  * @description Retrieves a specific Invoice by ID.
@@ -42,17 +43,15 @@ export async function getInvoice(ctx: Context): Promise<any> {
         ? 'Rechnung'
         : 'Gutschrift'
 
-    invoice.id = `${
-      invoice.id.split('_')[0]
-    }_${invoice.invoiceCreatedDate.replace(/-/g, '')}_${
-      jsonDataParsed.sapCommissionId
-    }_${isOutbound}`
+    invoice.id = `${invoice.id.split('_')[0]}_${removeDash(
+      invoice.invoiceCreatedDate
+    )}_${jsonDataParsed.sapCommissionId}_${isOutbound}`
   } else {
     const internalInvoice = (await commissionInvoices.get(id as string, [
       'id,status,invoiceCreatedDate,seller,orders,totalizers,comment',
     ])) as unknown as CommissionInvoice
 
-    const orders: any[] = internalInvoice.orders.map((order) => {
+    const orders = internalInvoice.orders.map((order) => {
       return {
         orderId: order.orderId as string,
         sellerOrderId: order.sellerOrderId as string,

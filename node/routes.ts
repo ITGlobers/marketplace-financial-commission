@@ -1,3 +1,4 @@
+import type { RouteHandler } from '@vtex/api'
 import { method } from '@vtex/api'
 
 import {
@@ -37,123 +38,132 @@ import { getTypeIntegration } from './middlewares/typeIntegration/getTypeIntegra
 import { getPayoutReportFile } from './middlewares/payoutReport/getFile'
 import { ping } from './middlewares/ping'
 import { setSchemaVersion } from './middlewares/setSchema'
+import type { Clients } from './clients'
+import setApplicationSettings from './middlewares/setApplicationSettings'
 
 const template = templateMethod
 
-const routes = {
+const baseMiddlewares = [errorHandler, setApplicationSettings, setSchemaVersion]
+
+const routes: Record<string, RouteHandler<Clients, AppState>> = {
   mail: method({
-    POST: [setSchemaVersion, sendMail],
+    POST: [...baseMiddlewares, sendMail],
   }),
   _mail: method({
-    POST: [setSchemaVersion, sendMail],
+    POST: [...baseMiddlewares, sendMail],
   }),
   sellers: method({
-    GET: [setSchemaVersion, sellers, sellersResponse],
+    GET: [...baseMiddlewares, sellers, sellersResponse],
   }),
   template: method({
-    GET: [setSchemaVersion, template],
+    GET: [...baseMiddlewares, template],
   }),
   payoutTemplate: method({
-    GET: [setSchemaVersion, payoutTemplateMethod],
+    GET: [...baseMiddlewares, payoutTemplateMethod],
   }),
   _template: method({
-    GET: [setSchemaVersion, template],
+    GET: [...baseMiddlewares, template],
   }),
   generateDashboard: method({
-    POST: [setSchemaVersion, sellers, generate],
+    POST: [...baseMiddlewares, sellers, generate],
   }),
   searchSellersDashboard: method({
-    GET: [setSchemaVersion, searchSellers],
+    GET: [...baseMiddlewares, searchSellers],
   }),
   searchStatisticsDashboard: method({
-    GET: [setSchemaVersion, searchStatistics],
+    GET: [...baseMiddlewares, searchStatistics],
   }),
   singleInvoice: method({
-    GET: [setSchemaVersion, seller, authentication, resolveInvoice],
-    POST: [setSchemaVersion, seller, authentication, resolveInvoice],
-    DELETE: [setSchemaVersion, seller, authentication, resolveInvoice],
-    PATCH: [setSchemaVersion, seller, authentication, resolveInvoice],
+    GET: [...baseMiddlewares, seller, authentication, resolveInvoice],
+    POST: [...baseMiddlewares, seller, authentication, resolveInvoice],
+    DELETE: [...baseMiddlewares, seller, authentication, resolveInvoice],
+    PATCH: [...baseMiddlewares, seller, authentication, resolveInvoice],
   }),
   _singleInvoice: method({
-    GET: [setSchemaVersion, seller, policy, resolveInvoice],
-    POST: [setSchemaVersion, seller, policy, resolveInvoice],
+    GET: [...baseMiddlewares, seller, policy, resolveInvoice],
+    POST: [...baseMiddlewares, seller, policy, resolveInvoice],
   }),
   invoicesBySeller: method({
-    POST: [setSchemaVersion, seller, invoicesBySeller],
+    POST: [...baseMiddlewares, seller, invoicesBySeller],
   }),
   _invoicesBySeller: method({
-    POST: [setSchemaVersion, seller, policy, invoicesBySeller],
+    POST: [...baseMiddlewares, seller, policy, invoicesBySeller],
   }),
   generateInvoices: method({
-    GET: [setSchemaVersion, errorHandler, eligibleSellers, generateInvoices],
+    GET: [...baseMiddlewares, errorHandler, eligibleSellers, generateInvoices],
   }),
   orders: method({
-    GET: [setSchemaVersion, seller, authentication, orders],
+    GET: [...baseMiddlewares, seller, authentication, orders],
   }),
   _orders: method({
-    GET: [setSchemaVersion, seller, policy, orders],
+    GET: [...baseMiddlewares, seller, policy, orders],
   }),
   token: method({
     POST: [
-      setSchemaVersion,
+      ...baseMiddlewares,
       authenticationValidationVtex,
       switchUser,
       createTokenAuth,
     ],
     PUT: [
-      setSchemaVersion,
+      ...baseMiddlewares,
       authenticationValidationVtex,
       switchUser,
       updateToken,
     ],
-    GET: [setSchemaVersion, authenticationValidationVtex, switchUser, getToken],
+    GET: [
+      ...baseMiddlewares,
+      authenticationValidationVtex,
+      switchUser,
+      getToken,
+    ],
   }),
   invoiceExternal: method({
     POST: [
-      setSchemaVersion,
+      ...baseMiddlewares,
       authenticationMarketplace,
       validateParamsExternal,
       createInvoiceExternal,
     ],
-    GET: [setSchemaVersion, authenticationMarketplace, getInvoiceExternal],
+    GET: [...baseMiddlewares, authenticationMarketplace, getInvoiceExternal],
     DELETE: [
-      setSchemaVersion,
+      ...baseMiddlewares,
       authenticationMarketplace,
       validateParamsExternal,
       deleteInvoiceExternal,
     ],
     PATCH: [
-      setSchemaVersion,
+      ...baseMiddlewares,
       authenticationMarketplace,
       validateParamsExternal,
       updateInvoiceExternal,
     ],
   }),
   invoiceExternalFile: method({
-    GET: [setSchemaVersion, getInvoiceExternalFile],
+    GET: [...baseMiddlewares, getInvoiceExternalFile],
   }),
   _invoiceExternalFile: method({
-    GET: [setSchemaVersion, getInvoiceExternalFile],
+    GET: [...baseMiddlewares, getInvoiceExternalFile],
   }),
   typeIntegration: method({
-    GET: [setSchemaVersion, getTypeIntegration],
+    GET: [...baseMiddlewares, getTypeIntegration],
   }),
   payoutReport: method({
-    GET: [setSchemaVersion, seller, searchPayoutReport],
-    POST: [setSchemaVersion, seller, createPayoutReport],
+    GET: [...baseMiddlewares, seller, searchPayoutReport],
+    POST: [...baseMiddlewares, seller, createPayoutReport],
   }),
   _payoutReport: method({
-    GET: [setSchemaVersion, seller, searchPayoutReport],
-    POST: [setSchemaVersion, seller, createPayoutReport],
+    GET: [...baseMiddlewares, seller, searchPayoutReport],
+    POST: [...baseMiddlewares, seller, createPayoutReport],
   }),
   payoutReportFile: method({
-    GET: [setSchemaVersion, getPayoutReportFile],
+    GET: [...baseMiddlewares, getPayoutReportFile],
   }),
   _payoutReportFile: method({
-    GET: [setSchemaVersion, getPayoutReportFile],
+    GET: [...baseMiddlewares, getPayoutReportFile],
   }),
   ping: method({
-    POST: [setSchemaVersion, ping],
+    POST: [ping],
   }),
 }
 

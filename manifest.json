@@ -11,17 +11,8 @@
     "docs": "0.x",
     "admin": "0.x",
     "graphql": "1.x",
-    "masterdata": "1.x"
-  },
-  "billingOptions": {
-    "type": "free",
-    "support": {
-      "email": "support@com.br",
-      "url": "https://support.com/hc/requests"
-    },
-    "availableCountries": [
-      "*"
-    ]
+    "masterdata": "1.x",
+    "configuration": "0.x"
   },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
@@ -32,11 +23,18 @@
     "vtex.format-currency": "0.x",
     "obi.components-financial-commission": "1.x"
   },
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "credentialType": "absolute",
   "policies": [
+    {
+      "name": "vbase-read-write"
+    },
+    {
+      "name": "update-app-settings"
+    },
+    {
+      "name": "read-workspace-apps"
+    },
     {
       "name": "install-apps"
     },

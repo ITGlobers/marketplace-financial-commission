@@ -1,4 +1,5 @@
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
+import { removeDash } from '../../utils/dashRemover'
 import { typeIntegration } from '../../utils/typeIntegration'
 
 export const invoicesBySeller = async (
@@ -60,9 +61,8 @@ export const invoicesBySeller = async (
     const isOutbound =
       orders[0].items[0].positionType === 'outbound' ? 'Rechnung' : 'Gutschrift'
 
-    const newId = `${id.split('_')[0]}_${invoiceCreatedDate.replace(
-      /-/g,
-      ''
+    const newId = `${id.split('_')[0]}_${removeDash(
+      invoiceCreatedDate
     )}_${sapCommissionId}_${isOutbound}`
 
     return {

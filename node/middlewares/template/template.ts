@@ -1,4 +1,4 @@
-import { createTemplate } from "../../utils/createTemplate"
+import { createTemplate } from '../../utils/createTemplate'
 
 export async function templateMethod(ctx: Context, next: () => Promise<any>) {
   ctx.body = createTemplate(ctx.clients)

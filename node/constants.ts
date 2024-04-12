@@ -74,3 +74,5 @@ export const SCHEMAS = {
   SELLERS_DASHBOARD_CLIENT_MD: '0.0.4',
   STATISTICS_DASHBOARD_CLIENT_MD: '0.0.4',
 }
+
+export const SEPARATOR_CHAR = '@'

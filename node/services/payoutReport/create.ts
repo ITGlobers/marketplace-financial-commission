@@ -1,21 +1,17 @@
 import { format, parse } from 'date-fns'
+import { v4 as uuidv4 } from 'uuid'
 
-import { DoxisCredentialsDev } from '../../environments'
-import { generateFileByType } from '../../utils/generateFile'
-import { randomId } from '../../utils/randomId'
 import { payoutMapper } from '../../mappings/payoutMapper'
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
 
 async function createPayoutReportServices(
   ctx: Context,
   data?: any
 ): Promise<any> {
   const {
-    clients: { doxis, payoutReports },
+    clients: { payoutReports },
+    state: { logs },
   } = ctx
-
-  doxis.dmsRepositoryId = DoxisCredentialsDev.COMMISSION_REPORT
-
-  const idPayoutReport = randomId(data.seller.id)
 
   const parsedDate = parse(data.reportCreatedDate, 'dd/MM/yyyy', new Date())
 
@@ -44,26 +40,13 @@ async function createPayoutReportServices(
       ].map(async (type: any) => {
         const { type: typeFile } = type
 
-        const file = await generateFileByType(
-          data,
-          typeFile as any,
-          ctx,
-          'payoutReport'
-        )
-
-        const { documentWsTO }: any = await doxis.createDocument(
-          idPayoutReport,
-          file,
-          type
-        )
-
         data = {
           ...data,
           reportCreatedDate: formattedDate,
           files: {
             ...data.files,
             [typeFile]: JSON.stringify({
-              uuid: documentWsTO?.uuid,
+              uuid: uuidv4(),
               versionNr: 'current',
               representationId: 'default',
               contentObjectId: 'primary',
@@ -73,12 +56,21 @@ async function createPayoutReportServices(
       })
     )
   } catch (error) {
-    console.error('generate and upload file error: ', error)
+    logs.push({
+      message: 'Error while creating the payout report',
+      middleware: 'Services/PayoutReport/Create',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error.stack,
+      },
+    })
   }
 
   data.jsonData = JSON.stringify(jsonData)
-  data.id =  `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
+  data.id = `${data.seller.id}_${data.reportCreatedDate}_${data.payoutReportFileName}`
   const document = payoutReports.save(data)
+
   return document
 }
 

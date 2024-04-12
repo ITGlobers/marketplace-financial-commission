@@ -3,17 +3,19 @@ import type {
   EmailInvoiceData,
   InvoiceExternal,
 } from '../../typings/externalInvoice'
+import { ExternalLogSeverity } from '../../typings/externalLogMetadata'
 
 export const sendEmailInvoiceExternal = async (
   ctx: Context,
   documentId: string,
   dataInvoice: InvoiceExternal
 ): Promise<any> => {
-  try {
-    const {
-      clients: { mail },
-    } = ctx
+  const {
+    clients: { mail },
+    state: { logs },
+  } = ctx
 
+  try {
     const emailData: EmailInvoiceData = {
       id: documentId,
       invoiceCreatedDate: dataInvoice.invoiceCreatedDate,
@@ -32,6 +34,14 @@ export const sendEmailInvoiceExternal = async (
       },
     })
   } catch (error) {
-    console.error(error)
+    logs.push({
+      message: 'Error while sending the email',
+      middleware: 'Middlewares/Invoice External/sendEmailInvoiceExternal',
+      severity: ExternalLogSeverity.ERROR,
+      payload: {
+        details: error.message,
+        stack: error.stack,
+      },
+    })
   }
 }

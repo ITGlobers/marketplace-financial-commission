@@ -1,4 +1,4 @@
-import { Clients } from '../clients'
+import type { Clients } from '../clients'
 import { config } from '../constants'
 import readFile from '../utils/readFile'
 import { typeIntegrationWithoutContext } from '../utils/typeIntegration'

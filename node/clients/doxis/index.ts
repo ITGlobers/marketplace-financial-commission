@@ -24,13 +24,11 @@ export default class Doxis extends ExternalClient {
     )
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-  get dmsRepositoryId() {
+  public get dmsRepositoryId() {
     return this._dmsRepositoryId
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-  set dmsRepositoryId(dmsRepositoryId: any) {
+  public set dmsRepositoryId(dmsRepositoryId: string) {
     this._dmsRepositoryId = dmsRepositoryId
   }
 

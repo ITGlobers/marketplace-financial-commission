@@ -1,15 +1,17 @@
-import type { ServiceContext } from '@vtex/api'
+import type { EventContext, RecorderState, ServiceContext } from '@vtex/api'
 import type { Clients } from '../clients'
+import type { ApplicationSettings } from './applicationSettings'
+import type { MiddlewareLog } from './middlewareLog'
 
 declare global {
-  type Context = ServiceContext<Clients>
-
-  type LoggerMessage = {
-    workflowInstance: string
-    message: string
-    exception?: string
-    request?: any
+  interface AppState extends RecorderState {
+    logs: MiddlewareLog[]
+    appSettings: ApplicationSettings
   }
+
+  type Context = ServiceContext<Clients, AppState>
+
+  type AppEventContext = EventContext<Clients, AppState>
 
   interface DatesInvoice {
     dateInvoiceInitial: string

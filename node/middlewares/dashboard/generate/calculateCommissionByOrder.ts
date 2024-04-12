@@ -6,6 +6,10 @@ export async function calculateCommissionByOrder(
     clients: { ordersClient },
   } = ctx
 
+  if (orderListBySeller.length === 0) {
+    throw new Error('List order cannot be empty')
+  }
+
   const formatVtexNumber = (v: number) => v / 100
 
   const commissionByOrder: OrderComission[] = await Promise.all(

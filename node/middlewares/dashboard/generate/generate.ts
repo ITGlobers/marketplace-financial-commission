@@ -7,15 +7,16 @@ import type {
 import { createKeyToken, getDatesInvoiced, numberOfDays } from '../../../utils'
 import { validationParams } from '../../validationParams'
 import { calculateSellers } from './calculateSellers'
+import { ExternalLogSeverity } from '../../../typings/externalLogMetadata'
 
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 export async function generate(ctx: Context, next: () => Promise<Dashboards>) {
   const {
     state: {
       body: { sellers },
+      logs,
     },
     clients: { sellersDashboardClientMD, statisticsDashboardClientMD },
-    vtex: { logger },
   } = ctx
 
   const start = ctx.query.dateStart as string
@@ -126,33 +127,48 @@ export async function generate(ctx: Context, next: () => Promise<Dashboards>) {
         Statistics: responseStatisticsMD,
       }
 
-      logger.info({
+      logs.push({
+        severity: ExternalLogSeverity.INFO,
+        middleware: 'Dashboard/generate/generate',
         message: 'Process completed',
-        data: `dateStart: ${start} - dateEnd: ${end}`,
+        payload: {
+          details: {
+            start,
+            end,
+          },
+        },
       })
 
       return responseGenerateDashboard
     } catch (error) {
-      logger.error({
-        message: `Error while completing the process ----> ${error} `,
-        data: `dateStart: ${start} - dateEnd: ${end}`,
+      logs.push({
+        severity: ExternalLogSeverity.ERROR,
+        middleware: 'Dashboard/generate/generate',
+        message: `Error while completing the process`,
+        payload: {
+          details: error.message,
+          stack: error.stack,
+          data: {
+            start,
+            end,
+          },
+        },
       })
+
       throw error
     }
   }
 
   if (numDays > 5) {
     processGenerate()
-    ctx.status = 200
     ctx.body = {
       message: 'We are processing your request, please validate in 15 minutes.',
     }
-    ctx.set('Cache-Control', 'no-cache ')
-    await next()
   } else {
-    ctx.status = 200
     ctx.body = await processGenerate() // responseGenerateDashboard
-    ctx.set('Cache-Control', 'no-cache ')
-    await next()
   }
+
+  ctx.status = 200
+  ctx.set('Cache-Control', 'no-cache ')
+  await next()
 }
