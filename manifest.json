@@ -48,6 +48,9 @@
       "name": "template-criar"
     },
     {
+      "name": "vbase-read-write"
+    },
+    {
       "name": "OMSViewer"
     },
     {
@@ -92,6 +95,20 @@
     },
     {
       "name": "vtex.catalog-api-proxy:authenticated-catalog-proxy"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "trx-proxy-vtex-doxis.stage-eks.dbs.obi.solutions",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "trx-proxy-vtex-doxis.prod-eks.dbs.obi.solutions",
+        "path": "*"
+      }
     },
     {
       "name": "outbound-access",
