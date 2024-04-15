@@ -33,7 +33,7 @@ export async function searchPayoutReport(
         html = hbTemplate(response)
       }
     } else {
-      const payoutResports = await payoutReportService(ctx).search({
+      const payoutReports = await payoutReportService(ctx).search({
         sellerId,
         dates: {
           startDate,
@@ -45,22 +45,27 @@ export async function searchPayoutReport(
         },
       })
 
-      const payoutResportsResonse = payoutResports.data.map(
+      const payoutReportsResponse = payoutReports.data.map(
         (payoutReport: any) => {
-          const jsonData = JSON.parse(payoutReport.jsonData)
-          const headline = jsonData.shift()
+          if (payoutReport.jsonData !== '') {
+            const jsonData = JSON.parse(payoutReport.jsonData)
 
-          return {
-            ...payoutReport,
-            headline,
-            jsonData: JSON.stringify(jsonData),
+            const headline = jsonData.shift()
+
+            return {
+              ...payoutReport,
+              headline,
+              jsonData: JSON.stringify(jsonData),
+            }
           }
+
+          return { ...payoutReport }
         }
       )
 
       response = {
-        data: payoutResportsResonse,
-        pagination: payoutResports.pagination,
+        data: payoutReportsResponse,
+        pagination: payoutReports.pagination,
       }
     }
 
