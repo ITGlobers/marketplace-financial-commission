@@ -1,11 +1,11 @@
 const formatNumberToCustomString = (input: any) => {
-  const number = Number(input)
+  const amount = input.replace(',', '.')
 
-  const formattedNumber = number.toFixed(2)
+  const amountNumber = Number(amount)
 
-  const finalFormat = formattedNumber.replace('.', ',')
+  const formattedNumber = amountNumber.toFixed(2)
 
-  return finalFormat
+  return formattedNumber
 }
 
 export default formatNumberToCustomString

@@ -171,7 +171,11 @@
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../orderId}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{../paymentMethod}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemId}}</td>
-          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemCategoryId}}</td>
+          {{#if this.isShipping}}
+            <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">Versandkosten</td>
+          {{else}}
+            <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemCategoryId}}</td>
+          {{/if}}
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemQuantity}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.itemGrossPrice}}</td>
           <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.positionGrossPrice}}

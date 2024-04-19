@@ -5,14 +5,16 @@ export const invoiceMapper = (data: any) =>
     .map((order: any) => {
       const { orderId, paymentMethod, items, reference } = order
 
-      return items.map((item: any) => {
+      return items.map((item: any, index: number) => {
         return {
           // ...item,
-          Pos: item.positionID,
+          Pos: index + 1,
           'Order ID': orderId,
           Zahlmethode: paymentMethod,
           Artikelnr: item.itemId,
-          Artikelkategorie: item.itemCategoryId,
+          Artikelkategorie: item.isShipping
+            ? 'Versandkosten'
+            : item.itemCategoryId,
           Menge: item.itemQuantity,
           'Einzelpreis (brutto)': formatNumberToCustomString(
             item.itemGrossPrice
@@ -20,10 +22,10 @@ export const invoiceMapper = (data: any) =>
           'Umsatzbrutto pro Position': formatNumberToCustomString(
             item.positionGrossPrice
           ),
-          'Gebühren in % inkl. MwSt': item.isShipping
+          'Geühren  in % inkl. MwSt': item.isShipping
             ? formatNumberToCustomString(item.itemFreightCommissionPercentage)
             : formatNumberToCustomString(item.itemCommissionPercentage),
-          'Gebühren in € inkl. MwSt': item.isShipping
+          'Geühren in € inkl. MwSt': item.isShipping
             ? formatNumberToCustomString(item.itemFreightCommissionAmount)
             : formatNumberToCustomString(item.itemCommissionAmount),
           Reference: reference,
