@@ -19,27 +19,27 @@ const createXLSBuffer = (data: any, origin: string) => {
 
   const orders = XLSX.utils.json_to_sheet(data.jsonData)
 
-  const dataType = 'n'
-  const numFmt = '0.00'
+  // const dataType = 'n'
+  // const numFmt = '0.00'
 
-  const startColumn = 'G'
-  const endColumn = 'J'
+  // const startColumn = 'G'
+  // const endColumn = 'J'
 
-  // @ts-ignore
-  const range = XLSX.utils.decode_range(orders['!ref'])
-  const startColIndex = XLSX.utils.decode_col(startColumn)
-  const endColIndex = XLSX.utils.decode_col(endColumn)
+  // // @ts-ignore
+  // const range = XLSX.utils.decode_range(orders['!ref'])
+  // const startColIndex = XLSX.utils.decode_col(startColumn)
+  // const endColIndex = XLSX.utils.decode_col(endColumn)
 
-  for (let col = startColIndex; col <= endColIndex; col++) {
-    for (let row = range.s.r + 1; row <= range.e.r; row++) {
-      // Comienza desde la segunda fila
-      const cellAddress = XLSX.utils.encode_cell({ r: row, c: col })
+  // for (let col = startColIndex; col <= endColIndex; col++) {
+  //   for (let row = range.s.r + 1; row <= range.e.r; row++) {
+  //     // Comienza desde la segunda fila
+  //     const cellAddress = XLSX.utils.encode_cell({ r: row, c: col })
 
-      if (!orders[cellAddress]) continue
-      orders[cellAddress].t = dataType
-      orders[cellAddress].z = numFmt
-    }
-  }
+  //     if (!orders[cellAddress]) continue
+  //     orders[cellAddress].t = dataType
+  //     orders[cellAddress].z = numFmt
+  //   }
+  // }
 
   XLSX.utils.book_append_sheet(
     workbook,

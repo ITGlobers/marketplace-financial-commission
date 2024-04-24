@@ -5,10 +5,10 @@ export const invoiceMapper = (data: any) =>
     .map((order: any) => {
       const { orderId, paymentMethod, items, reference } = order
 
-      return items.map((item: any, index: number) => {
+      return items.map((item: any) => {
         return {
           // ...item,
-          Pos: index + 1,
+          Pos: items.positionID,
           'Order ID': orderId,
           Zahlmethode: paymentMethod,
           Artikelnr: item.itemId,
