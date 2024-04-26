@@ -28,7 +28,7 @@ export const invoiceMapper = (data: any) =>
           'Geühren in € inkl. MwSt': item.isShipping
             ? formatNumberToCustomString(item.itemFreightCommissionAmount)
             : formatNumberToCustomString(item.itemCommissionAmount),
-          Reference: reference,
+          Referenz: reference,
         }
       })
     })

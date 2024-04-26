@@ -1,5 +1,6 @@
 import type { DocumentResponse } from '@vtex/clients/build/clients/masterData'
 import type { ExternalInvoice } from 'obi.marketplace-financial-commission'
+import { format, parse } from 'date-fns'
 
 import { config, JOB_STATUS, TYPES } from '../../constants'
 import type { InvoiceExternal } from '../../typings/externalInvoice'
@@ -111,38 +112,47 @@ export const processInvoiceExternal = async (
         )
       }
 
-      // type.attributes = [
-      //   {
-      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303839', // Report Date (yyyy.mm.dd)
-      //     values: [dataInvoice.invoiceCreatedDate],
-      //     attributeDataType: 'STRING',
-      //   },
-      //   {
-      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303236', // Date (yyyyMMdd)
-      //     values: [dataInvoice.invoiceCreatedDate],
-      //     attributeDataType: 'STRING',
-      //   },
-      //   {
-      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303231', // Document type
-      //     values: [type.type],
-      //     attributeDataType: 'STRING',
-      //   },
-      //   {
-      //     attributeDefinitionUUID: '10000002-0000-9000-3030-303131303830', // Country code
-      //     values: ['DE'],
-      //     attributeDataType: 'STRING',
-      //   },
-      //   {
-      //     attributeDefinitionUUID: '22c73bc8-6c1a-4a21-ae61-cbbb203b594d', // Seller ID
-      //     values: [dataInvoice.seller.id],
-      //     attributeDataType: 'STRING',
-      //   },
-      //   {
-      //     attributeDefinitionUUID: 'd180776f-fedf-420e-8b28-252074e3fda4', // invoice ID
-      //     values: [bodyExternalInvoiceWithId.id],
-      //     attributeDataType: 'STRING',
-      //   },
-      // ]
+      const currentFormatDate = parse(
+        dataInvoice.invoiceCreatedDate,
+        'yyyy-MM-dd',
+        new Date()
+      )
+
+      const reportDate = format(currentFormatDate, 'yyyy.MM.dd')
+      const fileDate = format(currentFormatDate, 'yyyyMMdd')
+
+      type.attributes = [
+        {
+          attributeDefinitionUUID: '10000002-0000-9000-3030-303131303839', // Report Date (yyyy.mm.dd)
+          values: [reportDate],
+          attributeDataType: 'STRING',
+        },
+        {
+          attributeDefinitionUUID: '10000002-0000-9000-3030-303131303236', // Date (yyyyMMdd)
+          values: [fileDate],
+          attributeDataType: 'STRING',
+        },
+        {
+          attributeDefinitionUUID: '10000002-0000-9000-3030-303131303231', // Document type
+          values: [type.type],
+          attributeDataType: 'STRING',
+        },
+        {
+          attributeDefinitionUUID: '10000002-0000-9000-3030-303131303830', // Country code
+          values: ['DE'],
+          attributeDataType: 'STRING',
+        },
+        {
+          attributeDefinitionUUID: '22c73bc8-6c1a-4a21-ae61-cbbb203b594d', // Seller ID
+          values: [dataInvoice.seller.id],
+          attributeDataType: 'STRING',
+        },
+        {
+          attributeDefinitionUUID: 'd180776f-fedf-420e-8b28-252074e3fda4', // invoice ID
+          values: [bodyExternalInvoiceWithId.id],
+          attributeDataType: 'STRING',
+        },
+      ]
 
       try {
         const { documentWsTO }: any = await doxis.createDocument(
