@@ -1,7 +1,7 @@
 {
   "vendor": "obi",
   "name": "marketplace-financial-commission",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -19,9 +19,7 @@
       "email": "support@com.br",
       "url": "https://support.com/hc/requests"
     },
-    "availableCountries": [
-      "*"
-    ]
+    "availableCountries": ["*"]
   },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
@@ -32,9 +30,7 @@
     "vtex.format-currency": "0.x",
     "obi.components-financial-commission": "1.x"
   },
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "credentialType": "absolute",
   "policies": [
     {
