@@ -1,6 +1,6 @@
 const formatNumberToCustomString = (input: any) => {
   if (typeof input === 'number') {
-    input = `${input}`
+    input = `${input.toFixed(2)}`
   }
 
   const amount = input.replace('.', ',')
