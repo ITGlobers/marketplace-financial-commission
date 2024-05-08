@@ -31,10 +31,9 @@ export async function createInvoiceExternal(
   let body
 
   const documentMD = await processInvoiceExternal(ctx, requestData)
-  const { DocumentId } = documentMD
-  const documentId = DocumentId
+  const { DocumentId: documentId, exist } = documentMD
 
-  if (documentId) {
+  if (documentId && !exist) {
     try {
       await sendEmailInvoiceExternal(ctx, documentId, requestData)
     } catch (error) {
@@ -46,12 +45,18 @@ export async function createInvoiceExternal(
       message: `Invoice Created, Shortly you will receive an email with the invoice created to your email address. ${requestData.seller.contact.email}`,
       id: documentId,
     }
+  } else if (documentId && exist) {
+    status = 200
+    body = {
+      message: `The invoice with id ${documentId} already exists`,
+      id: documentId,
+    }
   } else {
     status = 400
     body = {
       message: `It was not possible to register in master data document Id null`,
       exception: documentMD,
-      body: requestData
+      body: requestData,
     }
   }
 

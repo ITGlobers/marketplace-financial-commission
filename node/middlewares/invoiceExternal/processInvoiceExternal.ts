@@ -22,7 +22,7 @@ type JobStatus = 'ONGOING' | 'COMPLETE' | 'ERROR' | 'OMITTED'
 export const processInvoiceExternal = async (
   ctx: Context,
   dataInvoice: InvoiceExternal
-): Promise<DocumentResponse> => {
+): Promise<DocumentResponse & { exist: boolean }> => {
   const {
     clients: { vbase, externalInvoices, doxis },
   } = ctx
@@ -71,6 +71,17 @@ export const processInvoiceExternal = async (
     jsonData.sapCommissionId
   }_${isOutbound}`
 
+  const invoiceExternalExist = await externalInvoices.get(idInvoice, ['id'])
+
+  if (invoiceExternalExist) {
+    return {
+      Id: '',
+      Href: '',
+      DocumentId: idInvoice,
+      exist: true,
+    }
+  }
+
   let bodyExternalInvoiceWithId = {
     id: idInvoice,
     ...bodyExternalInvoice,
@@ -105,7 +116,6 @@ export const processInvoiceExternal = async (
           'commissionReport'
         )
       } catch (error) {
-        console.info('Error generating file', error)
         throw new Error(
           error?.response?.data?.message ??
             "It wasn't possible to generate file by type."
@@ -198,5 +208,5 @@ export const processInvoiceExternal = async (
     status: JOB_STATUS.COMPLETE,
   })
 
-  return document
+  return { ...document, exist: false }
 }
