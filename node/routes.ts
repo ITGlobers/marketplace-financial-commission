@@ -141,7 +141,7 @@ const routes = {
   }),
   payoutReport: method({
     GET: [setSchemaVersion, seller, searchPayoutReport],
-    POST: [setSchemaVersion, seller, createPayoutReport],
+    POST: [errorHandler, setSchemaVersion, seller, createPayoutReport],
   }),
   _payoutReport: method({
     GET: [setSchemaVersion, seller, searchPayoutReport],

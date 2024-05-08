@@ -24,7 +24,7 @@ export async function validateParamsExternal(
 
   ctx.state.logs.push({
     message: 'Request received',
-    middleware: 'Middleware Handler',
+    middleware: 'Validate External Invoice Handler',
     severity: ExternalLogSeverity.INFO,
     payload: {
       details: 'Body of the request captured',

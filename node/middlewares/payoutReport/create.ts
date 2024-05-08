@@ -2,6 +2,7 @@ import { json } from 'co-body'
 
 import createPayoutReportServices from '../../services/payoutReport/create'
 import schemaPayoutReport from '../../validations/payoutReport'
+import { ExternalLogSeverity } from '../errorHandler'
 
 export async function createPayoutReport(
   ctx: Context,
@@ -19,10 +20,20 @@ export async function createPayoutReport(
   try {
     const body = await json(req, { limit: '50mb' })
 
+    ctx.state.logs.push({
+      message: 'Request received',
+      middleware: 'Create Payout Report Handler',
+      severity: ExternalLogSeverity.INFO,
+      payload: {
+        details: 'Body of the request captured',
+        stack: JSON.stringify(body),
+      },
+    })
+
     const jsonData = JSON.parse(body.jsonData)
 
     const adjustmentData = jsonData.filter(
-      (order: any) => !order.orderId || order.orderId === ''
+      (order: any) => !order.orderId || order.orderId === '-'
     )
 
     adjustmentData.forEach((adjustmentItem: any) => {
