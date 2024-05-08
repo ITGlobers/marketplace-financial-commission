@@ -110,6 +110,7 @@ const routes = {
   }),
   invoiceExternal: method({
     POST: [
+      errorHandler,
       setSchemaVersion,
       authenticationMarketplace,
       validateParamsExternal,

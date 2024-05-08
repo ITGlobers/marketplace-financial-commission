@@ -5,6 +5,7 @@ import { json } from 'co-body'
 
 import { INVOICE_STATUS, validationMessage } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
+import { ExternalLogSeverity } from '../errorHandler'
 // import type { InvoiceExternal } from '../../typings/externalInvoice'
 
 export async function validateParamsExternal(
@@ -19,7 +20,17 @@ export async function validateParamsExternal(
     },
   } = ctx
 
-  const requestData = await json(req, { limit: '50mb' }) // as InvoiceExternal
+  const requestData = await json(req, { limit: '50mb' })
+
+  ctx.state.logs.push({
+    message: 'Request received',
+    middleware: 'Middleware Handler',
+    severity: ExternalLogSeverity.INFO,
+    payload: {
+      details: 'Body of the request captured',
+      stack: JSON.stringify(requestData),
+    },
+  })
 
   switch (method) {
     case 'PATCH': {
