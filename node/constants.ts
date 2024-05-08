@@ -59,11 +59,11 @@ export const TYPES: Type[] = [
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     fileExtension: 'xlsx',
   },
-  {
-    type: 'pdf',
-    mimeTypeName: 'application/pdf',
-    fileExtension: 'pdf',
-  },
+  // {
+  //   type: 'pdf',
+  //   mimeTypeName: 'application/pdf',
+  //   fileExtension: 'pdf',
+  // },
 ]
 
 export const SCHEMAS = {
