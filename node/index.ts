@@ -1,13 +1,17 @@
-import type { ParamsContext, RecorderState } from '@vtex/api'
+import type { ParamsContext } from '@vtex/api'
 import { Service } from '@vtex/api'
 
 import clients from './clients'
 import type { Clients } from './clients'
 import { queries, mutations } from './resolvers'
 import { routes } from './routes'
+import { onAppsInstalled } from './events/initialConfiguration'
 
-export default new Service<Clients, RecorderState, ParamsContext>({
+export default new Service<Clients, State, ParamsContext>({
   clients,
+  events: {
+    onAppsInstalled,
+  },
   routes,
   graphql: {
     resolvers: {

@@ -13,6 +13,14 @@ export async function updateToken(ctx: Context, next: () => Promise<any>) {
 
   const bodyReq = await json(ctx.req)
 
+  const { enabled } = bodyReq
+
+  if (enabled !== undefined && typeof enabled !== 'boolean') {
+    throw new UserInputError(
+      'Invalid enabled value. Only boolean values are accepted.'
+    )
+  }
+
   switch (originToken) {
     case 'SELLER': {
       const { status, resultUpdateToken } = await updateTokenService(

@@ -1,12 +1,12 @@
 export const config = {
   BUCKET_VBASE: 'FinancialDSH',
-  BUCKET_VBASE_TOKEN: 'TokenConfig',
+  BUCKET_VBASE_TOKEN: 'TC',
   PRIVATE_KEY: 'daMud5nb5ZEHipscucqAGu5pPM224HUM',
-  SETTINGS_BUCKET: 'settings',
+  SETTINGS_BUCKET: 'SETT',
   RETRY_SELLERS_BUCKET: 'retry',
   MANUAL_JOB_BUCKET: 'manual',
   AUTO_JOB_BUCKET: 'automatic',
-  APIREST_JOB_BUCKET: 'api-rest',
+  APIREST_JOB_BUCKET: 'api',
   INVOICE_MAIL_TEMPLATE: 'invoice-detail',
   INVOICE_MAIL_TEMPLATE_EXTERNAL: 'invoice-detail-external',
   INVOICE_EXTERNAL_BUCKET: 'invoice-ext',
@@ -46,3 +46,31 @@ export const INVOICE_STATUS = {
 
 export const PAGE_DEFAULT = 1
 export const PAGE_SIZE_DEFAULT = 5
+
+export const TYPES: Type[] = [
+  {
+    type: 'csv',
+    mimeTypeName: 'text/plain',
+    fileExtension: 'csv',
+  },
+  {
+    type: 'xls',
+    mimeTypeName:
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    fileExtension: 'xlsx',
+  },
+  // {
+  //   type: 'pdf',
+  //   mimeTypeName: 'application/pdf',
+  //   fileExtension: 'pdf',
+  // },
+]
+
+export const SCHEMAS = {
+  DEFAULT: '0.0.4',
+  EXTERNAL_INVOICES: '0.0.4',
+  PAYOUT_REPORTS: '0.0.4',
+  COMMISSION_INVOICES: '0.0.4',
+  SELLERS_DASHBOARD_CLIENT_MD: '0.0.4',
+  STATISTICS_DASHBOARD_CLIENT_MD: '0.0.4',
+}

@@ -3,6 +3,7 @@ import { json } from 'co-body'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
+import { validateDateFormat } from '../validationParams'
 
 /**
  * @description Retrieves a REFERENCE list of invoices for a given seller.
@@ -39,9 +40,23 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     )
   }
 
-  const where = `seller.name="${seller.name}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+  if (!validateDateFormat(startDate) || !validateDateFormat(endDate)) {
+    throw new UserInputError(
+      'Invalid startDate or endDate format. The date format is yyyy-mm-dd.'
+    )
+  }
 
-  const fields = ['id', 'status', 'invoiceCreatedDate', 'totalizers']
+  const where = `seller.id="${seller.id}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+
+  const fields = [
+    'id',
+    'status',
+    'seller',
+    'invoiceCreatedDate',
+    'totalizers',
+    'files',
+    'jsonData',
+  ]
 
   let sellerInvoices
 
@@ -51,21 +66,21 @@ export async function invoicesBySeller(ctx: Context, next: () => Promise<any>) {
     sellerInvoices = await externalInvoices.searchRaw(
       { page, pageSize },
       fields,
-      'invoiceCreatedDate',
+      'createdIn DESC',
       where
     )
   } else {
     sellerInvoices = await commissionInvoices.searchRaw(
       { page, pageSize },
       fields,
-      'invoiceCreatedDate',
+      'createdIn DESC',
       where
     )
   }
 
   ctx.status = 200
   ctx.body = sellerInvoices
-  ctx.set('Cache-Control', 'no-cache ')
+  ctx.set('Cache-Control', 'no-cache')
 
   await next()
 }

@@ -1,4 +1,7 @@
+import { UserInputError } from '@vtex/api'
 import { json } from 'co-body'
+
+import { validateDateFormat } from '../validationParams'
 
 /**
  * @description
@@ -18,6 +21,15 @@ export async function updateInvoice(ctx: Context): Promise<string> {
   } = ctx
 
   const requestBody = await json(req)
+
+  if (
+    requestBody.invoiceCreatedDate &&
+    !validateDateFormat(requestBody.invoiceCreatedDate)
+  ) {
+    throw new UserInputError(
+      'Invalid invoiceCreatedDate format. The date format is yyyy-mm-dd.'
+    )
+  }
 
   const invoice = {
     id: id[0],

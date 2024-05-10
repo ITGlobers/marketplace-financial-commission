@@ -2,7 +2,7 @@
 import type {
   SellersDashboard,
   StatisticsDashboard,
-} from 'vtex.marketplace-financial-commission'
+} from 'obi.marketplace-financial-commission'
 
 import { createKeyToken, getDatesInvoiced, numberOfDays } from '../../../utils'
 import { validationParams } from '../../validationParams'

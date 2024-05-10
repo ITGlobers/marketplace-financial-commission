@@ -1,7 +1,7 @@
 {
-  "vendor": "vtex",
+  "vendor": "obi",
   "name": "marketplace-financial-commission",
-  "version": "0.3.23",
+  "version": "0.0.19",
   "title": "Financial commission for Marketplace",
   "description": "Streamline the commissioning flows between a marketplace operator and the sellers",
   "builders": {
@@ -13,6 +13,14 @@
     "graphql": "1.x",
     "masterdata": "1.x"
   },
+  "billingOptions": {
+    "type": "free",
+    "support": {
+      "email": "support@com.br",
+      "url": "https://support.com/hc/requests"
+    },
+    "availableCountries": ["*"]
+  },
   "dependencies": {
     "vtex.catalog-api-proxy": "0.x",
     "vtex.sellers-graphql": "8.x",
@@ -20,13 +28,20 @@
     "vtex.render-runtime": "8.x",
     "vtex.native-types": "0.x",
     "vtex.format-currency": "0.x",
-    "vtex.components-financial-commission": "0.x"
+    "obi.components-financial-commission": "1.x"
   },
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "credentialType": "absolute",
   "policies": [
+    {
+      "name": "install-apps"
+    },
+    {
+      "name": "colossus-fire-event"
+    },
+    {
+      "name": "colossus-write-logs"
+    },
     {
       "name": "template-criar"
     },
@@ -35,6 +50,16 @@
     },
     {
       "name": "OMSViewer"
+    },
+    {
+      "name": "ListOrders"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/oms/pvt/orders/*"
+      }
     },
     {
       "name": "outbound-access",
@@ -68,6 +93,27 @@
     },
     {
       "name": "vtex.catalog-api-proxy:authenticated-catalog-proxy"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "trx-proxy-vtex-doxis.stage-eks.dbs.obi.solutions",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "trx-proxy-vtex-doxis.prod-eks.dbs.obi.solutions",
+        "path": "*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "2pff1ku37k.execute-api.us-east-1.amazonaws.com",
+        "path": "*"
+      }
     }
   ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"

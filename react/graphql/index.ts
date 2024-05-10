@@ -12,6 +12,7 @@ import CREATE_SETTINGS from './createSettings.gql'
 import GET_SETTINGS from './getSettings.gql'
 import GET_TEMPLATE from './getTemplate.gql'
 import SEND_EMAIL from './sendEmail.gql'
+import GET_PAYOUT from './getPayout.gql'
 
 export {
   SEARCH_ORDERS,
@@ -28,4 +29,5 @@ export {
   GET_SETTINGS,
   GET_TEMPLATE,
   SEND_EMAIL,
+  GET_PAYOUT,
 }

@@ -1,0 +1,188 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{_accountInfo.TradingName}}</title>
+</head>
+
+<body style="margin: 20px; background-color: #fff; background-color: #f1f1f1 !important">
+  <center>
+    <table style="
+          padding-top: 4rem;
+          font-family: Helvetica, Arial, sans-serif !important;
+          line-height: 150% !important;
+          margin: 0px !important;
+          min-width: 800px;
+          background-color: #fff !important;
+        " align="center" border="0" cellpading="0" cellspacing="0" width="800">
+      <tr style="
+              font-family: Helvetica, Arial, sans-serif !important;
+              line-height: 150% !important;
+              margin: 0px !important;
+            ">
+        <td align="right" valign="left" style="
+                font-family: Helvetica, Arial, sans-serif !important;
+                margin: 0px !important;
+                padding: 22px 30px;
+              ">
+          <p style="line-height: 1.1rem !important; font-size: 10px !important; margin-left: 0%; text-align: left;">
+            <span style="font-size: 19px; font-weight: bold; line-height: 3rem !important;">OBI COMPANY</span><br />
+            123 Anywhere St., Any city, ST 12345<br />
+            Phone Number: 123-456-7890<br />
+            Email: hello@obi.com<br />
+            http://www.obi.de
+          </p>
+        </td>
+        <td style="
+                font-family: Helvetica, Arial, sans-serif !important;
+                line-height: 150% !important;
+                margin: 0px !important;
+                padding: 22px 30px;
+                max-width: 15rem;
+              ">
+          <div style="text-align: right;">
+            <a href="https://obi.com" style="color: #f71963; fill: #f71963">
+              <img alt border="0" width="auto" src="https://1000marcas.net/wp-content/uploads/2021/06/OBI-logo.jpg"
+                style="
+                    vertical-align: top;
+                    outline: none;
+                    text-decoration: none;
+                    -ms-interpolation-mode: bicubic;
+                    min-width: 44%;
+                    border: none;
+                    width: 15% !important;
+                  " />
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <table style="
+          background-color: #fff;
+          padding-top: 1rem;
+          font-family: Helvetica, Arial, sans-serif !important;
+          line-height: 150% !important;
+          margin: 0px !important;
+          min-width: 800px;">
+      <tr style="
+              font-family: Helvetica, Arial, sans-serif !important;
+              line-height: 150% !important;
+              margin: 0px !important;
+            ">
+        <td align="left" valign="left" style="
+                font-family: Helvetica, Arial, sans-serif !important;
+                margin: 0px !important;
+              ">
+          <p
+            style="color: black; font-weight: bold; background-color: white; border: 0; text-align: center; max-width: 800px; font-size: 26px !important; font-family: Helvetica, Arial, sans-serif !important; margin: 0px; padding-bottom: 1rem;">
+            Rechnungsanhang inkl. MwSt
+          </p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <table border="1"
+      style="background-color: white; font-size: 10px !important; font-family: Helvetica, Arial, sans-serif !important; border-collapse: collapse; border-color: black; min-width: 800px; max-width: 800px;">
+      <thead style="margin-top: 20px; color: black; font-weight: lighter;">
+        <tr>
+          <th colspan="2" style="width: 10%; padding: 4px !important; word-wrap: break-word; text-align: left;">
+            Vertragspartner:</th>
+          <th colspan="2" style="width: 10%; padding: 4px !important; word-wrap: break-word; text-align: left;">
+            {{seller.name}}</th>
+        </tr>
+      </thead>
+      <thead>
+        <tr>
+          <td colspan="2" style="padding: 4px !important; word-wrap: break-word; text-align: left;">Seller ID:</td>
+          <td colspan="2" style="padding: 4px !important; word-wrap: break-word; text-align: left;">{{seller.id}}</td>
+        </tr>
+      </thead>
+    </table>
+
+    <table
+      style=" max-width: 800px; background-color: #fff; padding-top: 1rem; font-family: Helvetica, Arial, sans-serif; font-size: 13px;">
+      <tr>
+        <td style="font-weight: bold; text-align: justify; min-width: 9rem;">Rechnungsnummer:</td>
+        <td>
+          <div style="display: inline;">
+            <p
+              style="min-width: 17rem; border-color: black; border-style: solid; border-width: 1px; padding: 5px; text-align: justify; text-justify: inter-word; word-break: break-all; white-space: normal;">
+              {{id}}</p>
+          </div>
+        </td>
+        <td style="font-weight: bold; text-align: justify; min-width: 4rem;">Datum:</td>
+        <td>
+          <div style="display: inline;">
+            <p
+              style="min-width: 17.6rem; border-color: black; border-style: solid; border-width: 1px; padding: 5px; text-align: justify; text-justify: inter-word; word-break: break-all; white-space: normal;">
+              {{reportCreatedDate}}</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+
+    <table
+      style="border-color: black; border-style: solid; border-width: 1px; background-color: white; font-size: 16px !important; font-family: Helvetica, Arial, sans-serif !important; border-collapse: collapse; border-color: black; min-width: 800px; max-width: 800px;">
+      <thead style="margin-top: 20px; background-color: #ff7e21; color: white; font-weight: lighter;">
+        <tr>
+          <th style="text-align: justify; margin-left: 10rem; padding-left: 5rem; word-wrap: break-word;">Beschreibung
+          </th>
+          <th style="text-align: justify; width: 20%; padding: 12px; word-wrap: break-word;">Werte</th>
+        </tr>
+      </thead>
+    </table>
+    <table border="1"
+      style="background-color: white; font-size: 10px !important; font-family: Helvetica, Arial, sans-serif !important; border-collapse: collapse; border-color: black; min-width: 800px; max-width: 800px;">
+      <thead style="margin-top: 20px; color: black; font-weight: lighter;">
+        <tr>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.sellerId}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.paymentMethod}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.creationDate}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.transactionType}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.grossCurrency}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.grossDebit}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.grossCredit}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.exchangeRate}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.netCurrency}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.netCredit}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.netDebit}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.commissionAmount}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.orderId}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.invoiceId}}</th>
+          <th style="padding: 4px !important; word-wrap: break-word;">{{columns.chargebackType}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each orders}}
+        <tr>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.sellerId}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.paymentMethod}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.creationDate}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.transactionType}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.grossCurrency}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.grossDebit}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.grossCredit}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.exchangeRate}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.netCurrency}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.netCredit}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.netDebit}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.commissionAmount}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.orderId}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.invoiceId}}</td>
+          <td style="text-align:center; padding: 4px !important; word-wrap: break-word;">{{this.chargebackType}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </center>
+
+</body>
+
+</html>

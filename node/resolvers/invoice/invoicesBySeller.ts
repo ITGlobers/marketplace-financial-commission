@@ -16,7 +16,7 @@ export const invoicesBySeller = async (
     dates: { startDate, endDate },
   } = params.sellerInvoiceParams
 
-  const where = `seller.name="${sellerName}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+  const where = `seller.id="${sellerName}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
   const fields = ['id', 'status', 'invoiceCreatedDate', 'totalizers', 'seller']
 
@@ -27,7 +27,7 @@ export const invoicesBySeller = async (
   const integration = await typeIntegration(ctx)
 
   if (TypeIntegration.external === integration) {
-    const whereExternal = `seller.name="${sellerName}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
+    const whereExternal = `seller.id="${sellerName}" AND (invoiceCreatedDate between ${startDate} AND ${endDate})`
 
     const fieldsExternal = [
       'id',
@@ -40,31 +40,26 @@ export const invoicesBySeller = async (
     sellerInvoices = await externalInvoices.searchRaw(
       pagination,
       fieldsExternal,
-      'invoiceCreatedDate',
+      'createdIn DESC',
       whereExternal
     )
   } else {
     sellerInvoices = await commissionInvoices.searchRaw(
       pagination,
       fields,
-      'invoiceCreatedDate',
+      'createdIn DESC',
       where
     )
   }
 
   sellerInvoices.data = sellerInvoices.data.map((invoice: any) => {
-    const { id, invoiceCreatedDate } = invoice
-
-    const newId = `${id.split('_')[0]}_${invoiceCreatedDate.replace(
-      /-/g,
-      ''
-    )}_${id.split('_')[id.split('_').length - 1]}`
+    const { id } = invoice
 
     return {
       ...invoice,
       columnId: {
         href: id,
-        idVisible: newId,
+        idVisible: id,
       },
       downloadFiles: {
         id,

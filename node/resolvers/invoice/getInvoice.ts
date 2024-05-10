@@ -1,7 +1,8 @@
-import type { CommissionInvoice } from 'vtex.marketplace-financial-commission'
+import type { CommissionInvoice } from 'obi.marketplace-financial-commission'
 
 import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../../constants'
 import { typeIntegration } from '../../utils/typeIntegration'
+import { jsonStorageService } from '../../services/jsonService'
 
 export const getInvoice = async (
   _: unknown,
@@ -9,69 +10,36 @@ export const getInvoice = async (
   ctx: Context
 ): Promise<any> => {
   const {
-    clients: { commissionInvoices, externalInvoices, sellersIO, catalog },
+    clients: { commissionInvoices, externalInvoices },
   } = ctx
 
   const { id } = params
 
   const where = `id=${id}`
 
-  let invoice, items: any[] = []
+  let invoice
 
   const integration = await typeIntegration(ctx)
 
-  const setSymbol = ({ CurrencySymbol, CurrencyFormatInfo: { StartsWithCurrencySymbol } }: any, value: number) => {
-    if (StartsWithCurrencySymbol) {
-      return `${CurrencySymbol} ${value}`
-    }
-    return `${value.toFixed(2)} ${CurrencySymbol}`
-  }
-
   if (TypeIntegration.external === integration) {
-    let externalInvoice = await externalInvoices.search(
-      { page: PAGE_DEFAULT, pageSize: PAGE_SIZE_DEFAULT },
-      ['id,status,invoiceCreatedDate,seller,jsonData,comment'],
-      '',
-      where
-    )
+    const externalInvoice: any = await externalInvoices.get(id, [
+      'id,status,invoiceCreatedDate,seller,jsonData,comment',
+    ])
 
-    // @ts-ignore
-    const sellerInfo = await sellersIO.seller(externalInvoice[0].seller?.id)
-    // @ts-ignore
-    const culture = await catalog.salesChannelById(sellerInfo?.salesChannel)
-    // @ts-ignore
-    let objectData = JSON.parse(externalInvoice[0].jsonData)
-    objectData.orders = objectData.orders.map((order: any) => {
-      order.items = order.items.map((item: any) => {
-        const { itemGrossPrice, itemTotalValue, itemCommissionAmount} = item
-        return {
-          ...item,
-          orderId: order.orderId,
-          itemGrossPrice: setSymbol(culture, itemGrossPrice),
-          itemTotalValue: setSymbol(culture, itemTotalValue),
-          itemCommissionAmount: setSymbol(culture, itemCommissionAmount),
-        }
-      })
-      items.push(...order.items)
-      return order
-    })
-    objectData.items = items
-    console.info("objectData.items", objectData.items)
-    externalInvoice[0].jsonData = JSON.stringify(objectData);
+    let jsonDataParsed = JSON.parse(externalInvoice.jsonData)
 
-    if (externalInvoice.length === 0) {
-      invoice = externalInvoice
-    } else {
-      invoice = [
-        {
-          id: externalInvoice[0].id,
-          status: externalInvoice[0].status,
-          invoiceCreatedDate: externalInvoice[0].invoiceCreatedDate,
-          seller: externalInvoice[0].seller,
-          jsonData: JSON.parse(externalInvoice[0].jsonData as string),
-          comment: externalInvoice[0].comment,
-        },
-      ]
+    if (!jsonDataParsed.orders) {
+      jsonDataParsed = await jsonStorageService(ctx, 'CR').get(id)
+    }
+
+    delete externalInvoice.jsonData
+    invoice = {
+      id: externalInvoice.id,
+      status: externalInvoice.status,
+      invoiceCreatedDate: externalInvoice.invoiceCreatedDate,
+      seller: externalInvoice.seller,
+      jsonData: { ...externalInvoice, ...jsonDataParsed },
+      comment: externalInvoice.comment,
     }
   } else {
     const internalInvoice = (await commissionInvoices.search(
@@ -81,9 +49,7 @@ export const getInvoice = async (
       where
     )) as unknown as CommissionInvoice[]
 
-    console.info("internalInvoice", internalInvoice)
-
-    const orders: any[] = internalInvoice[0].orders.map((order) => {
+    const orders: any[] = internalInvoice[0].orders.map((order: any) => {
       return {
         orderId: order.orderId as string,
         sellerOrderId: order.sellerOrderId as string,
@@ -110,13 +76,5 @@ export const getInvoice = async (
     ]
   }
 
-  if (invoice.length > 1) {
-    console.warn('Invoice duplication, seek resolution')
-  }
-
-  if (invoice.length > 0) {
-    return invoice[0]
-  }
-
-  return null
+  return invoice
 }

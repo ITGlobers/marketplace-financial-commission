@@ -1,8 +1,50 @@
-import type { ServiceContext } from '@vtex/api'
+import type { ServiceContext, RecorderState } from '@vtex/api'
 import type { Clients } from '../clients'
 
 declare global {
-  type Context = ServiceContext<Clients>
+  type Context = ServiceContext<Clients, State>
+
+  // // eslint-disable-next-line no-restricted-syntax
+  // enum ExternalLogSeverity {
+  //   DEBUG = 1,
+  //   INFO = 3,
+  //   WARN = 4,
+  //   ERROR = 5,
+  // }
+
+  type MiddlewareLog = {
+    severity: ExternalLogSeverity
+    middleware: string
+    message: string
+    payload?: {
+      details: unknown
+      stack?: string
+    } & Record<string, unknown>
+  }
+
+  type ExternalLogMetadata = {
+    account: string
+    workspace: string
+    middleware: string
+    text: string
+    additionalInfo?: {
+      details: unknown
+      stack?: string
+    } & Record<string, unknown>
+    severity: ExternalLogSeverity
+  }
+
+  type ApplicationSettings = {
+    loggerSettings: {
+      resourceId: string
+      eventName: string
+    }
+  }
+
+  interface State extends RecorderState {
+    logs: MiddlewareLog[]
+    appSettings: ApplicationSettings
+  }
 
   type LoggerMessage = {
     workflowInstance: string
@@ -152,6 +194,13 @@ declare global {
   interface ResultSearchSellerList {
     sellers: ItemSeller[]
     pagination: Pagination
+  }
+
+  interface Type {
+    type: 'csv' | 'xls' | 'pdf'
+    mimeTypeName: string
+    fileExtension: string
+    attributes?: any[]
   }
 }
 

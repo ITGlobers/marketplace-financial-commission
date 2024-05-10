@@ -1,27 +1,27 @@
 {
+  "extends": "@vtex/tsconfig",
+  "include": [
+    "typings",
+    "typings.d.ts",
+    "**/*.ts"
+  ],
   "compilerOptions": {
-    "types": ["node", "jest"],
-    "typeRoots": ["node_modules/@types"],
-    "target": "es2019",
+    "alwaysStrict": true,
+    "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "allowJs": false,
-    "esModuleInterop": true,
-    "noEmitOnError": false,
-    "noImplicitReturns": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "skipLibCheck": true,
-    "lib": ["ES2020"]
-  },
-  "typeAcquisition": {
-    "enable": false
-  },
-  "include": ["./**/*.ts", "./typings/*.d.ts"],
-  "exclude": ["node_modules"]
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "target": "es2020",
+    "lib": [
+      "ES2020"
+    ]
+  }
 }

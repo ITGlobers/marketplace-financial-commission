@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "title": "PayoutReport",
+  "type": "object",
+  "properties": {
+    "reportCreatedDate": {
+      "type": "string"
+    },
+    "seller": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "payoutReportFileName": {
+      "type": "string"
+    },
+    "jsonData": {
+      "type": "string"
+    },
+    "files": {
+      "type": "object",
+      "properties": {
+        "xls": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "v-indexed": ["id", "reportCreatedDate", "seller"],
+  "required": ["reportCreatedDate", "seller", "jsonData"],
+  "v-cache": false,
+  "v-immediate-indexing": true
+}

@@ -1,10 +1,12 @@
 query GET_INVOICE($id: String!) {
   getInvoice(id: $id) {
+    id
     status
     invoiceCreatedDate
     seller {
       id
       name
+      sapSellerId
       contact {
         phone
         email

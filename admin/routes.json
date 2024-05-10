@@ -1,8 +1,4 @@
 {
-  "admin.app.dashboard": {
-    "component": "commissionReport",
-    "path": "/admin/app/commission-report"
-  },
   "admin.app.detail": {
     "component": "commissionReportDetail",
     "path": "/admin/app/commission-report/detail/*seller"
@@ -18,5 +14,9 @@
   "admin.app.invoiceDetail": {
     "component": "invoiceMarketplaceDetail",
     "path": "/admin/app/commission-report/invoice/:id"
+  },
+  "admin.app.payoutDetail": {
+    "component": "payoutReportDetail",
+    "path": "/admin/app/commission-report/payout/:id"
   }
 }

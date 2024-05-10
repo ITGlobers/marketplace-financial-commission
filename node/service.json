@@ -1,14 +1,23 @@
 {
   "stack": "nodejs",
-  "memory": 512,
+  "memory": 1024,
   "ttl": 60,
-  "timeout": 60,
+  "timeout": 30,
   "minReplicas": 2,
-  "maxReplicas": 12,
+  "maxReplicas": 4,
   "cpu": {
     "type": "shared",
     "value": 80,
     "scalingPercentage": 95
+  },
+  "events": {
+    "onAppsInstalled": {
+      "sender": "apps",
+      "keys": [
+        "linked",
+        "setup"
+      ]
+    }
   },
   "routes": {
     "mail": {
@@ -22,10 +31,12 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post"],
+          "actions": [
+            "post"
+          ],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.seller-financial-commission@*",
-            "vrn:vtex.vtex-id:*:*:*:user/*@vtex.com.br"
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]
@@ -38,6 +49,10 @@
       "path": "/_v/segment/template",
       "public": true
     },
+    "payoutTemplate": {
+      "path": "/_v/segment/payout/template",
+      "public": true
+    },
     "_template": {
       "path": "/_v/policy/financial-commission/template",
       "public": false,
@@ -45,26 +60,19 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.seller-financial-commission@*",
-            "vrn:vtex.vtex-id:*:*:*:user/*@vtex.com.br"
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]
     },
     "generateDashboard": {
       "path": "/dashboard/generate",
-      "public": false,
-      "policies": [
-        {
-          "effect": "allow",
-          "actions": ["post"],
-          "principals": [
-            "vrn:apps:*:*:*:app/vtex.marketplace-financial-commission-cron@*"
-          ]
-        }
-      ]
+      "public": true
     },
     "searchSellersDashboard": {
       "path": "/_v/dashboard/sellers/search",
@@ -85,10 +93,13 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get", "post"],
+          "actions": [
+            "get",
+            "post"
+          ],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.seller-financial-commission@*",
-            "vrn:vtex.vtex-id:*:*:*:user/*@vtex.com.br"
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]
@@ -104,10 +115,11 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["post"],
+          "actions": [
+            "post"
+          ],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.seller-financial-commission@*",
-            "vrn:vtex.vtex-id:*:*:*:user/*@vtex.com.br"
+            "*"
           ]
         }
       ]
@@ -118,16 +130,14 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.marketplace-financial-commission-cron@*"
+            "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*"
           ]
         }
       ]
-    },
-    "generateInvoiceFile": {
-      "path": "/_v/financial-commission/:sellerId/invoice/:id/generate/:type",
-      "public": true
     },
     "orders": {
       "path": "/_v/private/orders",
@@ -140,10 +150,12 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.seller-financial-commission@*",
-            "vrn:vtex.vtex-id:*:*:*:user/*@vtex.com.br"
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]
@@ -156,6 +168,26 @@
       "path": "/_v/private/financial-commission/external/invoice/*id",
       "public": true
     },
+    "invoiceExternalFile": {
+      "path": "/_v/private/financial-commission/external/invoice/file/:id/type/:type",
+      "public": true
+    },
+    "_invoiceExternalFile": {
+      "path": "/_v/policy/external/financial-commission/invoice/file/:id/type/:type",
+      "public": false,
+      "access": "authenticated",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": [
+            "get"
+          ],
+          "principals": [
+            "*"
+          ]
+        }
+      ]
+    },
     "typeIntegration": {
       "path": "/_v/policy/financial-commission/typeIntegration",
       "public": false,
@@ -163,14 +195,60 @@
       "policies": [
         {
           "effect": "allow",
-          "actions": ["get"],
+          "actions": [
+            "get"
+          ],
           "principals": [
-            "vrn:apps:*:*:*:app/vtex.seller-financial-commission@*",
-            "vrn:apps:*:*:*:app/vtex.marketplace-financial-commission-cron@*",
-            "vrn:vtex.vtex-id:*:*:*:user/*@vtex.com.br"
+            "vrn:apps:*:*:*:app/obi.seller-financial-commission@*",
+            "vrn:apps:*:*:*:app/obi.marketplace-financial-commission-cron@*",
+            "vrn:vtex.vtex-id:*:*:*:user/*"
           ]
         }
       ]
+    },
+    "payoutReport": {
+      "path": "/_v/financial-commission/payout/:sellerId/report/*id",
+      "public": true
+    },
+    "_payoutReport": {
+      "path": "/_v/policy/financial-commission/payout/:sellerId/report/*id",
+      "public": false,
+      "access": "authenticated",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": [
+            "get"
+          ],
+          "principals": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "payoutReportFile": {
+      "path": "/_v/private/financial-commission/external/payout/file/:id/type/:type",
+      "public": true
+    },
+    "_payoutReportFile": {
+      "path": "/_v/policy/external/financial-commission/payout/file/:id/type/:type",
+      "public": false,
+      "access": "authenticated",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": [
+            "get"
+          ],
+          "principals": [
+            "*"
+          ]
+        }
+      ]
+    },
+    "ping": {
+      "path": "/_v/financial-commission/ping",
+      "public": true
     }
   }
 }

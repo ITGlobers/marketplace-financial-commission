@@ -1,117 +1,160 @@
 import { method } from '@vtex/api'
 
 import {
-  sendMail,
+  authenticationValidationVtex,
+  createInvoiceExternal,
+  eligibleSellers,
+  errorHandler,
+  generateInvoices,
+  getInvoiceExternal,
+  invoicesBySeller,
+  orders,
+  policy,
+  resolveInvoice,
   searchSellers,
   searchStatistics,
   sellers,
   sellersResponse,
-  orders,
-  resolveInvoice,
-  invoicesBySeller,
-  generateInvoices,
-  errorHandler,
-  eligibleSellers,
+  sendMail,
   templateMethod,
-  policy,
-  createInvoiceExternal,
-  getInvoiceExternal,
-  authenticationValidationVtex,
+  payoutTemplateMethod,
+  createPayoutReport,
+  getInvoiceExternalFile,
+  searchPayoutReport,
 } from './middlewares'
-import { createTokenAuth } from './middlewares/authentication/createTokenAuth'
-import { seller } from './middlewares/sellers/seller'
 import { authentication } from './middlewares/authentication/authentication'
-import { updateToken } from './middlewares/authentication/updateToken'
+import { authenticationMarketplace } from './middlewares/authentication/authenticationMarketplace'
+import { createTokenAuth } from './middlewares/authentication/createTokenAuth'
 import { getToken } from './middlewares/authentication/getToken'
+import { switchUser } from './middlewares/authentication/switchUser'
+import { updateToken } from './middlewares/authentication/updateToken'
 import { generate } from './middlewares/dashboard/generate/generate'
-import { validateParamsExternal } from './middlewares/invoiceExternal/validateParamsExternal'
-import { getTypeIntegration } from './middlewares/typeIntegration/getTypeIntegration'
 import { deleteInvoiceExternal } from './middlewares/invoiceExternal/deleteInvoiceExternal'
 import { updateInvoiceExternal } from './middlewares/invoiceExternal/updateInvoiceExternal'
-import { switchUser } from './middlewares/authentication/switchUser'
-import { authenticationMarketplace } from './middlewares/authentication/authenticationMarketplace'
-import { generateFileByType } from './middlewares/invoice/generateFile'
+import { validateParamsExternal } from './middlewares/invoiceExternal/validateParamsExternal'
+import { seller } from './middlewares/sellers/seller'
+import { getTypeIntegration } from './middlewares/typeIntegration/getTypeIntegration'
+import { getPayoutReportFile } from './middlewares/payoutReport/getFile'
+import { ping } from './middlewares/ping'
+import { setSchemaVersion } from './middlewares/setSchema'
 
 const template = templateMethod
 
 const routes = {
   mail: method({
-    POST: [sendMail],
+    POST: [setSchemaVersion, sendMail],
   }),
   _mail: method({
-    POST: [sendMail],
+    POST: [setSchemaVersion, sendMail],
   }),
   sellers: method({
-    GET: [sellers, sellersResponse],
+    GET: [setSchemaVersion, sellers, sellersResponse],
   }),
   template: method({
-    GET: [template],
+    GET: [setSchemaVersion, template],
+  }),
+  payoutTemplate: method({
+    GET: [setSchemaVersion, payoutTemplateMethod],
   }),
   _template: method({
-    GET: [template],
+    GET: [setSchemaVersion, template],
   }),
   generateDashboard: method({
-    POST: [sellers, generate],
+    POST: [setSchemaVersion, sellers, generate],
   }),
   searchSellersDashboard: method({
-    GET: [searchSellers],
+    GET: [setSchemaVersion, searchSellers],
   }),
   searchStatisticsDashboard: method({
-    GET: [searchStatistics],
+    GET: [setSchemaVersion, searchStatistics],
   }),
   singleInvoice: method({
-    GET: [seller, authentication, resolveInvoice],
-    POST: [seller, authentication, resolveInvoice],
-    DELETE: [seller, authentication, resolveInvoice],
-    PATCH: [seller, authentication, resolveInvoice],
+    GET: [setSchemaVersion, seller, authentication, resolveInvoice],
+    POST: [setSchemaVersion, seller, authentication, resolveInvoice],
+    DELETE: [setSchemaVersion, seller, authentication, resolveInvoice],
+    PATCH: [setSchemaVersion, seller, authentication, resolveInvoice],
   }),
   _singleInvoice: method({
-    GET: [seller, policy, resolveInvoice],
-    POST: [seller, policy, resolveInvoice],
+    GET: [setSchemaVersion, seller, policy, resolveInvoice],
+    POST: [setSchemaVersion, seller, policy, resolveInvoice],
   }),
   invoicesBySeller: method({
-    POST: [seller, authentication, invoicesBySeller],
+    POST: [setSchemaVersion, seller, invoicesBySeller],
   }),
   _invoicesBySeller: method({
-    POST: [seller, policy, invoicesBySeller],
+    POST: [setSchemaVersion, seller, policy, invoicesBySeller],
   }),
   generateInvoices: method({
-    GET: [errorHandler, eligibleSellers, generateInvoices],
-  }),
-  generateInvoiceFile: method({
-    GET: [seller, generateFileByType],
+    GET: [setSchemaVersion, errorHandler, eligibleSellers, generateInvoices],
   }),
   orders: method({
-    GET: [seller, authentication, orders],
+    GET: [setSchemaVersion, seller, authentication, orders],
   }),
   _orders: method({
-    GET: [seller, policy, orders],
+    GET: [setSchemaVersion, seller, policy, orders],
   }),
   token: method({
-    POST: [authenticationValidationVtex, switchUser, createTokenAuth],
-    PUT: [authenticationValidationVtex, switchUser, updateToken],
-    GET: [authenticationValidationVtex, switchUser, getToken],
+    POST: [
+      setSchemaVersion,
+      authenticationValidationVtex,
+      switchUser,
+      createTokenAuth,
+    ],
+    PUT: [
+      setSchemaVersion,
+      authenticationValidationVtex,
+      switchUser,
+      updateToken,
+    ],
+    GET: [setSchemaVersion, authenticationValidationVtex, switchUser, getToken],
   }),
   invoiceExternal: method({
     POST: [
+      errorHandler,
+      setSchemaVersion,
       authenticationMarketplace,
       validateParamsExternal,
       createInvoiceExternal,
     ],
-    GET: [authenticationMarketplace, getInvoiceExternal],
+    GET: [setSchemaVersion, authenticationMarketplace, getInvoiceExternal],
     DELETE: [
+      setSchemaVersion,
       authenticationMarketplace,
       validateParamsExternal,
       deleteInvoiceExternal,
     ],
     PATCH: [
+      setSchemaVersion,
       authenticationMarketplace,
       validateParamsExternal,
       updateInvoiceExternal,
     ],
   }),
+  invoiceExternalFile: method({
+    GET: [setSchemaVersion, getInvoiceExternalFile],
+  }),
+  _invoiceExternalFile: method({
+    GET: [setSchemaVersion, getInvoiceExternalFile],
+  }),
   typeIntegration: method({
-    GET: [getTypeIntegration],
+    GET: [setSchemaVersion, getTypeIntegration],
+  }),
+  payoutReport: method({
+    GET: [setSchemaVersion, seller, searchPayoutReport],
+    POST: [errorHandler, setSchemaVersion, seller, createPayoutReport],
+  }),
+  _payoutReport: method({
+    GET: [setSchemaVersion, seller, searchPayoutReport],
+    POST: [setSchemaVersion, seller, createPayoutReport],
+  }),
+  payoutReportFile: method({
+    GET: [setSchemaVersion, getPayoutReportFile],
+  }),
+  _payoutReportFile: method({
+    GET: [setSchemaVersion, getPayoutReportFile],
+  }),
+  ping: method({
+    POST: [setSchemaVersion, ping],
   }),
 }
 

@@ -13,6 +13,9 @@
     "seller": {
       "type": "object",
       "properties": {
+        "sapSellerId": {
+          "type": "string"
+        },
         "id": {
           "type": "string"
         },
@@ -35,11 +38,25 @@
     "jsonData": {
       "type": "string"
     },
+    "files": {
+      "type": "object",
+      "properties": {
+        "csv": {
+          "type": "string"
+        },
+        "pdf": {
+          "type": "string"
+        },
+        "xls": {
+          "type": "string"
+        }
+      }
+    },
     "comment": {
       "type": ["string", "null"]
     }
   },
-  "v-indexed": ["id", "status", "invoiceCreatedDate", "seller", "contact"],
+  "v-indexed": ["id", "status", "invoiceCreatedDate", "seller"],
   "required": ["status", "invoiceCreatedDate", "seller", "jsonData"],
   "v-cache": false,
   "v-immediate-indexing": true

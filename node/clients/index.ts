@@ -4,7 +4,8 @@ import type {
   StatisticsDashboard,
   CommissionInvoice,
   ExternalInvoice,
-} from 'vtex.marketplace-financial-commission'
+  PayoutReport,
+} from 'obi.marketplace-financial-commission'
 import { IOClients, LRUCache } from '@vtex/api'
 import { masterDataFor } from '@vtex/clients'
 
@@ -14,6 +15,10 @@ import SellersIO from './sellers'
 import Template from './template'
 import AppTokenClient from './vtexLogin'
 import { Catalog } from './catalog'
+import Doxis from './doxis'
+import PdfBuilder from './pdf'
+import Scheduler from './scheduler'
+import { MasterData } from './masterdata'
 
 export class Clients extends IOClients {
   public get mail() {
@@ -60,6 +65,13 @@ export class Clients extends IOClients {
     )
   }
 
+  public get payoutReports() {
+    return this.getOrSet(
+      'payoutreports',
+      masterDataFor<PayoutReport>('payoutreports')
+    )
+  }
+
   public get appTokenClient() {
     return this.getOrSet('appTokenClient', AppTokenClient)
   }
@@ -67,10 +79,28 @@ export class Clients extends IOClients {
   public get catalog() {
     return this.getOrSet('catalog', Catalog)
   }
+
+  public get doxis() {
+    return this.getOrSet('doxis', Doxis)
+  }
+
+  public get pdf() {
+    return this.getOrSet('pdf', PdfBuilder)
+  }
+
+  public get scheduler() {
+    return this.getOrSet('scheduler', Scheduler)
+  }
+
+  public get masterdataV1() {
+    return this.getOrSet('masterdataV1', MasterData)
+  }
 }
 
 const TIMEOUT_MS = 60000
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
+const TREE_SECONDS_MS = 3 * 1000
+const CONCURRENCY = 10
 
 metrics.trackCache('financial-commission', memoryCache)
 
@@ -81,6 +111,14 @@ const clients: ClientsConfig<Clients> = {
       retries: 2,
       timeout: TIMEOUT_MS,
       memoryCache,
+    },
+    events: {
+      exponentialTimeoutCoefficient: 2,
+      exponentialBackoffCoefficient: 2,
+      initialBackoffDelay: 50,
+      retries: 1,
+      timeout: TREE_SECONDS_MS,
+      concurrency: CONCURRENCY,
     },
   },
 }

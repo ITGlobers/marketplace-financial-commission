@@ -1,5 +1,5 @@
 import React from 'react'
-import { invoiceDetail as InvoiceDetail } from 'vtex.components-financial-commission'
+import { invoiceDetail as InvoiceDetail } from 'obi.components-financial-commission'
 
 import { GET_INVOICE, GET_TEMPLATE, SEND_EMAIL } from './graphql'
 

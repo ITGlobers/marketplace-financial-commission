@@ -1,5 +1,5 @@
 import React from 'react'
-import { settings as Settings } from 'vtex.components-financial-commission'
+import { settings as Settings } from 'obi.components-financial-commission'
 
 import {
   GET_SELLERS,

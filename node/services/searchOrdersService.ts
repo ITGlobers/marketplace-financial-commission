@@ -1,3 +1,5 @@
+import { format, isToday, subDays } from 'date-fns'
+
 import { orderDetailCommission } from '../middlewares/orders/orderDetailCommission'
 import { orderListSeller } from '../middlewares/orders/orderListSeller'
 
@@ -7,13 +9,17 @@ export const searchOrdersService = async (
 ) => {
   const { dateStart, dateEnd, sellerName, page, perpage } = searchOrdersParams
 
+  const beforeToday = isToday(new Date(dateEnd))
+    ? format(subDays(new Date(dateEnd), 1), 'yyyy-MM-dd')
+    : dateEnd
+
   const status = searchOrdersParams.status as string
 
   const listOrders = await orderListSeller(
     ctx,
     sellerName,
     dateStart,
-    dateEnd,
+    beforeToday,
     page,
     perpage,
     status

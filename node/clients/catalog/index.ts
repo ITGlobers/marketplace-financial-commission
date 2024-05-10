@@ -11,12 +11,11 @@ const inflightKey = ({ baseURL, url, params, headers }: RequestConfig) => {
   const segmentToken = headers['x-vtex-segment']
   const segmentQs = segmentToken ? `&segmentToken=${segmentToken}` : ''
 
-  return (
-    baseURL! +
-    url! +
-    stringify(params, { arrayFormat: 'repeat', addQueryPrefix: true }) +
-    segmentQs
-  )
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return `${baseURL!}${url!}${stringify(params, {
+    arrayFormat: 'repeat',
+    addQueryPrefix: true,
+  })}${segmentQs}`
 }
 
 interface CatalogPageTypeResponse {
@@ -49,16 +48,12 @@ export class Catalog extends AppClient {
   }
 
   public salesChannelById = (id: string) =>
-  this.get<any[]>(
-    `/pub/saleschannel/${id}`,
-    {
+    this.get<any[]>(`/pub/saleschannel/${id}`, {
       metric: 'get-sales-channel-by-id',
-    }
-  )
+    })
 
   private get = <T = any>(url: string, config: RequestConfig = {}) => {
-    const segmentData: SegmentData | undefined = (this
-      .context! as any).segment
+    const segmentData: SegmentData | undefined = (this.context as any).segment
 
     const { channel: salesChannel = '' } = segmentData ?? {}
 

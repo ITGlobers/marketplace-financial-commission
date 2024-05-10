@@ -1,5 +1,5 @@
 import React from 'react'
-import { settingsDetail as SettingsDetail } from 'vtex.components-financial-commission'
+import { settingsDetail as SettingsDetail } from 'obi.components-financial-commission'
 
 import {
   CREATE_TOKEN,
